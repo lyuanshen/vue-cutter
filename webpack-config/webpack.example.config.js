@@ -22,7 +22,7 @@ module.exports = merge(base, {
         minifyCSS: true// 压缩内联css
       },
       filename: 'index.html',
-      template: 'index.html'
+      template: 'public/index.html'
     })
   ],
   performance: {
