@@ -6,8 +6,8 @@
         height: typeof containerHeight === 'undefined' ? containerWidth + 'px' : containerHeight + 'px' }"
     >
         <div
-            class="cropper-container"
-            :class="themes.indexOf(theme) !== -1 ? 'theme-' +  theme : 'theme-dark'"
+            class="cropper-container theme"
+            :class="themes.indexOf(theme) !== -1 ? 'theme-' + theme : 'theme-dark'"
         >
 
         </div>
@@ -17,6 +17,7 @@
 
 <script>
     import Exif from './exif-js-min'
+
     export default {
         name: "vue-picture-cropper",
         props: {
@@ -27,11 +28,11 @@
                 type: Number
             },
             theme: {
-                type:String,
+                type: String,
                 default: 'dark'
             },
             image: {
-                type: [ String, Blob, null, File ],
+                type: [String, Blob, null, File],
                 default: ''
             },
             mode: {
@@ -44,10 +45,10 @@
                 default: 2000
             }
         },
-        data(){
-            return{
-                themes: [ 'dark', 'warm', 'pink' ],
-                modes: [ 'contain', 'cover', 'auto' ],
+        data() {
+            return {
+                themes: ['dark', 'warm', 'pink'],
+                modes: ['contain', 'cover', 'auto'],
                 // 图片加载
                 loading: true,
                 scale: 1,
@@ -72,7 +73,7 @@
         methods: {
             //checkout pic
             checkedImg() {
-                if (this.image === null || this.image === ''){
+                if (this.image === null || this.image === '') {
                     this.image = '';
                     return
                 }
@@ -85,7 +86,7 @@
                         // something will be do
                         return
                     }
-                    const { sourceImageData } = this;
+                    const {sourceImageData} = this;
 
                     let width = img.width;
                     let height = img.height;
@@ -102,7 +103,6 @@
                 };
 
 
-
                 img.onerror = () => {
                     // something will be do
                     return;
@@ -113,21 +113,21 @@
                 }
                 if (this.isIE) {
                     var xhr = new XMLHttpRequest();
-                    xhr.onload = function() {
+                    xhr.onload = function () {
                         var url = URL.createObjectURL(this.response);
                         img.src = url;
                     };
                     xhr.open("GET", this.img, true);
                     xhr.responseType = "blob";
                     xhr.send();
-                }else{
+                } else {
                     img.src = this.image;
                 }
             },
-            checkOrientationImage(){
+            checkOrientationImage() {
 
             },
-            getVersion (name){
+            getVersion(name) {
 
             }
         }
