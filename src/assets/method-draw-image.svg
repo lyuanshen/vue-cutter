@@ -1,0 +1,22 @@
+<svg width="201" height="201" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="203" width="203" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_4" y2="55.5" x2="144.5" y1="1.5" x1="144.5" stroke-width="5" stroke="#fc98b5" fill="none"/>
+  <line transform="rotate(90 171.50000000000003,56.500000000000014) " stroke-linecap="null" stroke-linejoin="null" id="svg_6" y2="83.5" x2="171.5" y1="29.5" x1="171.5" fill-opacity="null" stroke-width="5" stroke="#fc98b5" fill="none"/>
+  <line stroke="#fc98b5" stroke-linecap="null" stroke-linejoin="null" id="svg_7" y2="199.5" x2="55.5" y1="145.5" x1="55.5" fill-opacity="null" stroke-width="5" fill="none"/>
+  <line transform="rotate(90 27.499999999999975,144.50000000000003) " stroke-linecap="null" stroke-linejoin="null" id="svg_8" y2="171.5" x2="27.5" y1="117.5" x1="27.5" fill-opacity="null" stroke-width="5" stroke="#fc98b5" fill="none"/>
+  <text stroke="#000" transform="matrix(2.9496289781034766,0,0,2.977347290585049,-220.7545032052634,-162.3048779855781) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_10" y="96.55" x="100.910538" stroke-opacity="null" stroke-width="0" fill="#fc98b5">V</text>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_11" y2="56.55" x2="145" y1="56.55" x1="54" stroke-width="5" stroke="#fc98b5" fill="none"/>
+  <line stroke="#fc98b5" stroke-linecap="null" stroke-linejoin="null" id="svg_12" y2="54.55" x2="56" y1="151.549998" x1="56" stroke-width="5" fill="none"/>
+  <line stroke="#fc98b5" stroke-linecap="null" stroke-linejoin="null" id="svg_13" y2="147.549997" x2="144" y1="54.55" x1="144" stroke-width="5" fill="none"/>
+  <line stroke="#fc98b5" stroke-linecap="null" stroke-linejoin="null" id="svg_14" y2="145" x2="143.000002" y1="145" x1="55" fill-opacity="null" stroke-width="5" fill="none"/>
+ </g>
+</svg>

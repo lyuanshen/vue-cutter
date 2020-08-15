@@ -21,6 +21,7 @@ module.exports = merge(base, {
         collapseWhitespace: true, // 删除空白符与换行符
         minifyCSS: true// 压缩内联css
       },
+      favicon: 'public/favicon.ico',
       filename: 'index.html',
       template: 'public/index.html'
     })
