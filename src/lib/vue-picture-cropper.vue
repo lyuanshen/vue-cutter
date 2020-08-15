@@ -15,10 +15,12 @@
           class="cropper-box-canvas"
           v-show="!loading"
           :style="{
-            width: sourceImageData.width,
-            height: sourceImageData.height,
+            width: sourceImageData.width + 'px',
+            height: sourceImageData.height + 'px',
             transform: 'scale(' + sourceImageData.scale + ',' + sourceImageData.scale + ') '
-            + 'translate3d('+ sourceImageData.x / sourceImageData.scale + 'px,' + sourceImageData.y / sourceImageData.scale + 'px,' + '0)' + 'rotateZ('+ sourceImageData.rotate * 90 +'deg)'
+            + 'translate3d('+ sourceImageData.x / sourceImageData.scale + 'px,'
+             + sourceImageData.y / sourceImageData.scale + 'px,' + '0)'
+             + 'rotateZ('+ sourceImageData.rotate * 90 +'deg)'
           }"
         >
           <img :src="showImg" alt="">
@@ -66,6 +68,10 @@
         type: Boolean,
         default: false
       },
+      canScale: {
+        type: Boolean,
+        default: true
+      }
     },
     data() {
       return {
@@ -79,12 +85,18 @@
         // 图片加载
         loading: true,
         rotate: 0,
+
+        // 图片信息
         sourceImageData: {
           width: '',
           height: '',
+          //缩放倍数
           scale: '',
+          //选装
           rotate: '',
+          // 横坐标
           x: '',
+          // 纵坐标
           y: '',
           orientation: 0
         }
@@ -309,11 +321,12 @@
           }
 
           this.$nextTick(() => {
-            sourceImageData.x = - (sourceImageData.width - sourceImageData.width * sourceImageData.scale) +
+            sourceImageData.x = - (sourceImageData.width - sourceImageData.width * sourceImageData.scale)/2 +
               (cropperContainer.width - sourceImageData.width * sourceImageData.scale) / 2;
-            sourceImageData.y = -(sourceImageData.height - sourceImageData.height * sourceImageData.scale) +
+            sourceImageData.y = - (sourceImageData.height - sourceImageData.height * sourceImageData.scale)/2 +
               (cropperContainer.height - sourceImageData.height * sourceImageData.scale) / 2;
             this.loading = false;
+
           })
         }
       },
@@ -335,7 +348,6 @@
           case 'contain':
             if (imgWidth > contWidth) {
               scale = contWidth / imgWidth;
-              console.log(scale)
             }
 
             if (imgHeight > contHeight) {
@@ -347,14 +359,15 @@
             // 扩展布局 默认填充满整个容器
             // 图片宽度大于容器
             scale = contWidth / imgWidth;
-            imgHeight = imgHeight * scale;
-            if (imgHeight < contHeight) {
-              scale = contHeight / imgHeight;
+            let h = imgHeight * scale;
+            if (h < contHeight) {
+              h = contHeight;
+              scale = h / imgHeight;
             }
             break;
           default:
             try {
-              let str = arr[0];
+              let str = md[0];
               if (str.search('px') !== -1) {
                 str.replace('px', '');
                 scale = parseFloat(str) / imgWidth;
@@ -370,7 +383,12 @@
             }
         }
         return scale;
+      },
+
+      scaleImage(){
+
       }
+
     }
   }
 </script>
