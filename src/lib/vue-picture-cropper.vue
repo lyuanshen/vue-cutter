@@ -73,6 +73,10 @@
       canScale: {
         type: Boolean,
         default: true
+      },
+      overImageBorder: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
@@ -89,8 +93,11 @@
         rotate: 0,
         support: "",
         // 图片缩放系数
-        coe: 0.2,
+        imgZF: 0.2,
         // 图片信息
+        imgZFStatus: '',
+        scaling: false,
+        scalingSet: '',
         sourceImageData: {
           width: '',
           height: '',
@@ -411,9 +418,11 @@
           window.removeEventListener(this.support,this.changeSize)
         }
       },
+
       changeSize(e) {
         e.preventDefault();
-        let scale = this.sourceImageData.scale
+        const { sourceImageData, imgZF, imgZFStatus } = this
+        let scale = sourceImageData.scale
         var change = e.deltaY || e.wheelDelta;
         var isFirefox = navigator.userAgent.indexOf("Firefox");
         change = isFirefox > 0 ? change * 30 : change;
@@ -422,15 +431,89 @@
           change = -change;
         }
 
-        var coe = this.coe;
-        coe =
-          coe / this.trueWidth > coe / this.trueHeight
-            ? coe / this.trueHeight
-            : coe / this.trueWidth;
+        var IZF = imgZF;
+        IZF =
+          IZF / sourceImageData.width > IZF / sourceImageData.height
+            ? IZF / sourceImageData.height
+            : IZF / sourceImageData.width;
 
-        var num = coe * change;
+        var num = IZF * change;
 
+        num < 0
+          ? (scale += Math.abs(num))
+          : scale > Math.abs(num)
+          ? (scale -= Math.abs(num))
+          : scale;
+
+        let status = num < 0 ? "add" : "reduce";
+
+        if (status !== imgZFStatus) {
+          this.imgZFStatus = status
+          this.imgZF =0.2
+        }
+
+        if (!this.scaling) {
+          this.scalingSet = setTimeout(() => {
+            this.scaling = false;
+            this.imgZF = this.imgZF += 0.01;
+          }, 50);
+        }
+
+        this.scaling = true;
+
+        if (!this.checkoutImageAxis(sourceImageData.x, sourceImageData.y, scale)){
+          return false;
+        }
+        this.sourceImageData.scale = scale
+      },
+
+      checkoutImageAxis(x, y, scale) {
+        let goScale = true;
+        const { overImageBorder } = this
+        if (overImageBorder) {
+          let axis = this.getImageAxis(x, y, scale)
+          console.log(axis)
+        }
+        return goScale;
+      },
+
+      getImageAxis(x, y, scale) {
+        const { sourceImageData, } = this;
+        let obj = {
+          x1: 0,
+          x2: 0,
+          y1: 0,
+          y2: 0
+        };
+        let imgW = sourceImageData.width * sourceImageData.scale;
+        let imgH = sourceImageData.height * sourceImageData.scale;
+
+        switch (sourceImageData.rotate) {
+          case 0 :
+            obj.x1 = x + (sourceImageData.width * (1 - scale)) / 2;
+            obj.x2 = obj.x1 + sourceImageData.width * scale;
+            obj.y1 = y + (sourceImageData.height * (1 - scale)) / 2 ;
+            obj.y2 = obj.y1 + sourceImageData.height * scale;
+            break;
+          case 1:
+          case -1:
+          case 3:
+          case -3:
+            obj.x1 = x + (sourceImageData.width * (1 - scale)) / 2 + (imgW - imgH) / 2;
+            obj.x2 = obj.x1 + sourceImageData.height * scale;
+            obj.y1 = y + (sourceImageData.height * (1 - scale)) / 2 + (imgW -imgH) / 2;
+            obj.y2 = obj.y1 + sourceImageData.width * scale;
+            break;
+          default:
+            obj.x1 = x + (sourceImageData.width * (1 - scale)) / 2;
+            obj.x2 = obj.x1 + sourceImageData.width  * scale;
+            obj.y1 = y + (sourceImageData.height * (1 - scale)) / 2;
+            obj.y2 = obj.y1 + sourceImageData.height * scale;
+            break;
+        }
+        return obj;
       }
+
     }
   }
 </script>
