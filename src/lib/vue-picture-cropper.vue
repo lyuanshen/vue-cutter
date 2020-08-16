@@ -2,6 +2,8 @@
   <div
     class="container"
     ref="cropper"
+    @mouseover="scaleImage"
+    @mouseout="cancelScale"
     :style="{
         width: typeof containerWidth !== 'undefined' ? containerWidth + 'px' : containerHeight + 'px' ,
         height: typeof containerHeight === 'undefined' ? containerWidth + 'px' : containerHeight + 'px' }"
@@ -85,7 +87,9 @@
         // 图片加载
         loading: true,
         rotate: 0,
-
+        support: "",
+        // 图片缩放系数
+        coe: 0.2,
         // 图片信息
         sourceImageData: {
           width: '',
@@ -107,6 +111,11 @@
         var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
         const isIE = !!window.ActiveXObject || 'ActiveXObject' in window; //判断是否IE浏览器
         return isIE;
+      },
+      passive () {
+        return this.isIE ? null : {
+          passive: false
+        }
       }
     },
     watch: {
@@ -118,6 +127,12 @@
       }
     },
     mounted() {
+      this.support =
+        "onwheel" in document.createElement("div")
+          ? "wheel"
+          : document.onmousewheel !== undefined
+          ? "mousewheel"
+          : "DOMMouseScroll";
       this.checkedImg()
     },
     methods: {
@@ -386,9 +401,36 @@
       },
 
       scaleImage(){
+        if (this.canScale) {
+          window.addEventListener(this.support,this.changeSize, this.passive);
+        }
+      },
+
+      cancelScale(){
+        if (this.canScale){
+          window.removeEventListener(this.support,this.changeSize)
+        }
+      },
+      changeSize(e) {
+        e.preventDefault();
+        let scale = this.sourceImageData.scale
+        var change = e.deltaY || e.wheelDelta;
+        var isFirefox = navigator.userAgent.indexOf("Firefox");
+        change = isFirefox > 0 ? change * 30 : change;
+
+        if (this.isIE) {
+          change = -change;
+        }
+
+        var coe = this.coe;
+        coe =
+          coe / this.trueWidth > coe / this.trueHeight
+            ? coe / this.trueHeight
+            : coe / this.trueWidth;
+
+        var num = coe * change;
 
       }
-
     }
   }
 </script>
