@@ -28,6 +28,10 @@
           <img :src="showImg" alt="">
         </div>
       </div>
+      <div
+        @mousedown="moveImage"
+        class="cropper-drag-box">
+      </div>
     </div>
 
   </div>
@@ -77,6 +81,10 @@
       overImageBorder: {
         type: Boolean,
         default: true
+      },
+      canMoveImage:{
+        type: Boolean,
+        default: true
       }
     },
     data() {
@@ -110,6 +118,11 @@
           // 纵坐标
           y: '',
           orientation: 0
+        },
+        ImgMoveData: {
+          move: true,
+          x: '',
+          y: ''
         }
       }
     },
@@ -166,7 +179,7 @@
           Exif.getData(img).then(data => {
             sourceImageData.orientation = data.orientation || 1;
             let max = this.maxImgSize;
-            if (!this.orientation && (width < max) & (height < max)) {
+            if (!this.orientation && (width < max) && (height < max)) {
               this.showImg = this.image;
               return;
             }
@@ -212,7 +225,7 @@
           orientation = -1;
         } else {
           if (this.getVersion('safari')[0] >= 605) {
-            const safariVersion = this.getVersion('version')
+            const safariVersion = this.getVersion('version');
             if (safariVersion[0] > 13 && safariVersion[1] > 1) {
               orientation = -1
             }
@@ -221,8 +234,8 @@
             // 针对 ios 版本大于 13.4的系统不做图片旋转
             const isIos = navigator.userAgent.toLowerCase().match(/cpu iphone os (.*?) like mac os/)
             if (isIos) {
-              let version = isIos[1]
-              version = version.split('_')
+              let version = isIos[1];
+              version = version.split('_');
               if (version[0] > 13 || (version[0] >= 13 && version[1] >= 4)) {
                 orientation = -1
               }
@@ -310,7 +323,7 @@
         var arr = navigator.userAgent.split(' ');
         var chromeVersion = '';
         let result = 0;
-        const reg = new RegExp(name, 'i')
+        const reg = new RegExp(name, 'i');
         for (var i = 0; i < arr.length; i++) {
           if (reg.test(arr[i]))
             chromeVersion = arr[i]
@@ -354,14 +367,14 @@
       },
 
       dealMode() {
-        const {mode, modes, sourceImageData, cropperContainer} = this
+        const {mode, modes, sourceImageData, cropperContainer} = this;
         let scale = 1;
         let md = '';
         let imgWidth = sourceImageData.width,
           imgHeight = sourceImageData.height;
         let contWidth = cropperContainer.width,
           contHeight = cropperContainer.height;
-        md = modes.find(element => element === mode)
+        md = modes.find(element => element === mode);
         if (typeof md === 'undefined') {
           md = mode.split(' ')
         }
@@ -421,8 +434,8 @@
 
       changeSize(e) {
         e.preventDefault();
-        const { sourceImageData, imgZF, imgZFStatus } = this
-        let scale = sourceImageData.scale
+        const { sourceImageData, imgZF, imgZFStatus } = this;
+        let scale = sourceImageData.scale;
         var change = e.deltaY || e.wheelDelta;
         var isFirefox = navigator.userAgent.indexOf("Firefox");
         change = isFirefox > 0 ? change * 30 : change;
@@ -448,7 +461,7 @@
         let status = num < 0 ? "add" : "reduce";
 
         if (status !== imgZFStatus) {
-          this.imgZFStatus = status
+          this.imgZFStatus = status;
           this.imgZF =0.2
         }
 
@@ -469,9 +482,9 @@
 
       checkoutImageAxis(x, y, scale) {
         let goScale = true;
-        const { overImageBorder } = this
+        const { overImageBorder } = this;
         if (overImageBorder) {
-          let axis = this.getImageAxis(x, y, scale)
+          let axis = this.getImageAxis(x, y, scale);
           console.log(axis)
         }
         return goScale;
@@ -512,6 +525,20 @@
             break;
         }
         return obj;
+      },
+
+      moveImage(e) {
+        e.preventDefault();
+        const { ImgMoveData, canMoveImage, sourceImageData } = this
+        if (!canMoveImage) {
+          return
+        }else{
+          if (ImgMoveData.move) {
+            ImgMoveData.x = ( e.clientX ? e.clientX : e.touches[0].clientX ) - sourceImageData.x;
+            ImgMoveData.y = ( e.clientY ? e.clientY : e.touches[0].clientY ) - sourceImageData.y;
+
+          }
+        }
       }
 
     }
