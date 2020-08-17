@@ -15,7 +15,7 @@
       <div class="cropper-box" v-if="showImg">
         <div
           class="cropper-box-canvas"
-          v-show="!loading"
+          v-if="!loading"
           :style="{
             width: sourceImageData.width + 'px',
             height: sourceImageData.height + 'px',
@@ -34,6 +34,7 @@
       </div>
       <div
         class="cropper-context"
+        v-show="!loading && cropperBox.ready"
         :style="{
         width: cropperBox.width + 'px',
         height: cropperBox.height + 'px',
@@ -59,6 +60,22 @@
           class="cropper-view-box-dr cropper-view-box-dr-bg">
         </span>
 
+        <div class="fixedBox" v-if="!fixedBox && showImg">
+          <span class="f fht"
+                @mousedown="resizeCropBox($event, false, true, 0, 1)"
+          ></span>
+          <span class="f fvr"></span>
+          <span class="f fhb"></span>
+          <span class="f fvl"></span>
+          <span class="f dot dot-1"></span>
+          <span class="f dot dot-2"></span>
+          <span class="f dot dot-3"></span>
+          <span class="f dot dot-4"></span>
+          <span class="f dot dot-5"></span>
+          <span class="f dot dot-6"></span>
+          <span class="f dot dot-7"></span>
+          <span class="f dot dot-8"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -148,6 +165,7 @@ export default {
         height: '',
       },
       cropperBox: {
+        ready: false,
         // 开启截图
         crop: false,
         // 正在截图
@@ -155,11 +173,19 @@ export default {
         // 裁剪框大小
         width: '',
         height: '',
+        //裁剪框坐标
         x: 0,
         y: 0,
         cropX: 0,
-        cropY: 0
-
+        cropY: 0,
+        canChangeX: '',
+        canChangeY: '',
+        changeCropTypeX: '',
+        changeCropTypeY: '',
+        cropOldW: '',
+        cropOldH: '',
+        cropChangeX: '',
+        cropChangeY: ''
       },
       showImg: '',
       // 图片加载
@@ -209,8 +235,8 @@ export default {
       if (val === '' || val === null) {
         return
       }
-      this.initCropBox()
       this.reload()
+      this.initCropBox()
     },
     cropBoxBoundary(val) {
       console.log(val)
@@ -223,7 +249,7 @@ export default {
         : document.onmousewheel !== undefined
         ? "mousewheel"
         : "DOMMouseScroll";
-    this.checkedImg()
+   this.checkedImg()
   },
   methods: {
     //checkout pic
@@ -247,6 +273,7 @@ export default {
         let height = img.height;
 
         Exif.getData(img).then(data => {
+
           sourceImageData.orientation = data.orientation || 1;
           let max = this.maxImgSize;
           if (!this.orientation && (width < max) && (height < max)) {
@@ -431,7 +458,6 @@ export default {
           sourceImageData.y = -(sourceImageData.height - sourceImageData.height * sourceImageData.scale) / 2 +
             (cropperContainer.height - sourceImageData.height * sourceImageData.scale) / 2;
           this.loading = false;
-
         })
       }
     },
@@ -651,7 +677,10 @@ export default {
     //初始化截图框
     // type ： '10', '10px', '10%', '10px 10', 'auto' **
     initCropBox(bo) {
-      const {showImg, cropBoxBoundary, cropperBox} = this
+      const {showImg, cropBoxBoundary, cropperBox , fixed, fixedNumber} = this
+      if (fixed) {
+
+      }
       if (showImg === '' || showImg === null || typeof showImg === 'undefined') return
       cropperBox.cropping = true;
       let cropBoxB = bo || cropBoxBoundary;
@@ -724,18 +753,26 @@ export default {
          return;
        }
       }
-      this.changeCropBox(cropperBox.width, cropperBox.height)
+      if (fixed){
+        let rate = fixedNumber[0]/fixedNumber[1]
+        this.changeCropBox(cropperBox.width, cropperBox.width/rate)
+      }else{
+        this.changeCropBox(cropperBox.width, cropperBox.height)
+      }
     },
 
     changeCropBox(w, h){
       const { cropperBox, cropperContainer } = this
-      if (!this.overImageBorder) {
-
-      }
+      cropperBox.width = w;
+      cropperBox.height = h;
+      // if (!this.overImageBorder) {
+      //
+      // }
       this.$nextTick(() => {
         setTimeout(()=>{
           cropperBox.x = (cropperContainer.width - cropperBox.width) / 2;
           cropperBox.y = (cropperContainer.height - cropperBox.height) / 2;
+          cropperBox.ready = true
         },50)
       })
     },
@@ -763,8 +800,6 @@ export default {
       cropperBox.cropX = nowX;
       cropperBox.cropY = nowY;
 
-
-
     },
 
     movingCropBox(e){
@@ -781,11 +816,28 @@ export default {
       }
 
       this.$nextTick(() => {
-        let cx, cy;
+        let cx, cy ;
         let fw = nowX - cropperBox.cropX;
         let fh = nowY - cropperBox.cropY;
 
+        if (fw <= 0 ) {
+          cx = 2
+        }else if(fw + cropperBox.width >= cropperContainer.width) {
+          cx = cropperContainer.width - cropperBox.width - 1
+        }else {
+          cx = fw
+        }
 
+        if (fh <= 0) {
+          cy = 2
+        }else if (fh + cropperBox.height >= cropperContainer.height){
+          cy = cropperContainer.height - cropperBox.height - 1
+        }else {
+          cy = fh
+        }
+
+        cropperBox.x = cx;
+        cropperBox.y = cy;
 
       })
     },
@@ -794,7 +846,50 @@ export default {
       e.preventDefault();
       window.removeEventListener("mousemove", this.movingCropBox);
       window.removeEventListener("mouseup", this.leaveCrop);
+    },
+
+    resizeCropBox(e, w, h, typeW, typeH){
+      const { cropperBox, fixed } = this
+      e.preventDefault();
+      window.addEventListener("mousemove", this.changeCropNow);
+      window.addEventListener("mouseup", this.changeCropEnd);
+      cropperBox.canChangeX = w;
+      cropperBox.canChangeY = h;
+      cropperBox.changeCropTypeX = typeW;
+      cropperBox.changeCropTypeY = typeH;
+      cropperBox.cropX = e.clientX ? e.clientX : e.touches[0].clientX;
+      cropperBox.cropY = e.clientY ? e.clientY : e.touches[0].clientY;
+      cropperBox.cropOldW = cropperBox.width;
+      cropperBox.cropOldH = cropperBox.height;
+      cropperBox.cropChangeX = cropperBox.x;
+      cropperBox.cropChangeY = cropperBox.y;
+      if (fixed){
+        if (cropperBox.canChangeX && cropperBox.canChangeY) {
+          cropperBox.canChangeY = 0;
+        }
+      }
+    },
+
+    changeCropNow(e){
+      e.preventDefault();
+      const { cropperContainer, cropperBox } = this
+      let nowX = e.clientX ? e.clientX : e.touches ? e.touches[0].clientX : 0,
+       nowY = e.clientY ? e.clientY : e.touches ? e.touches[0].clientY : 0;
+
+      let wrapperW = cropperContainer.width,
+        wrapperH = cropperContainer.height;
+
+      // 不能超过的坐标轴
+      let minX = 0;
+      let minY = 0;
+
+
+    },
+
+    changeCropEnd(e) {
+
     }
+
   }
 }
 </script>
