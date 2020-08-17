@@ -6,6 +6,7 @@
        theme="warm"
        image="http://192.168.38.1:8088/dev/8.png"
    ></vue-picture-cropper>
+<!--    <img src="./assets/8.png" alt="">-->
   </div>
 </template>
 

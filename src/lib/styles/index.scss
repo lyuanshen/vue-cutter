@@ -39,3 +39,13 @@
   display: block;
   text-align: left;
 }
+
+.cropper-move{
+  background: rgba(0,0,0,0.45);
+}
+
+.cropper-context{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
