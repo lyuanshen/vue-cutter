@@ -714,24 +714,11 @@ module.exports = function normalizeComponent (
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'app',
   data: function data() {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    };
+    return {};
   }
 });
 
@@ -740,13 +727,800 @@ module.exports = function normalizeComponent (
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__exif_js_min__ = __webpack_require__(20);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["a"] = ({
-    name: "vue-picture-cropper"
+  name: "vue-picture-cropper",
+  props: {
+    containerWidth: {
+      type: Number
+    },
+    containerHeight: {
+      type: Number
+    },
+    theme: {
+      type: String,
+      default: 'dark'
+    },
+    image: {
+      type: [String, Blob, null, File],
+      default: ''
+    },
+    mode: {
+      type: String,
+      default: 'contain'
+    },
+    // 可以压缩图片宽高  默认不超过200
+    maxImgSize: {
+      type: [Number, String],
+      default: 2000
+    },
+    outputType: {
+      type: String,
+      default: 'png'
+    },
+    original: {
+      type: Boolean,
+      default: false
+    },
+    canScale: {
+      type: Boolean,
+      default: true
+    },
+    // cropCanOverImageBorder: {
+    //   type: Boolean,
+    //   default: true
+    // },
+    canMoveImage: {
+      type: Boolean,
+      default: true
+    },
+    cropBoxBoundary: {
+      type: [String, Array, Number],
+      default: 'auto'
+    },
+    // 是否开启固定宽高比
+    fixed: {
+      type: Boolean,
+      default: false
+    },
+    // 宽高比 w/h
+    fixedNumber: {
+      type: Array,
+      default: function _default() {
+        return [1, 1];
+      }
+    },
+    // 固定大小 禁止改变截图框大小
+    fixedBox: {
+      type: Boolean,
+      default: false
+    },
+    canMoveCropBox: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data: function data() {
+    return {
+      themes: ['dark', 'warm', 'pink'],
+      modes: ['contain', 'cover', 'auto'],
+      cropperContainer: {
+        width: '',
+        height: ''
+      },
+      cropperBox: {
+        // 开启截图
+        crop: false,
+        // 正在截图
+        cropping: false,
+        // 裁剪框大小
+        width: '',
+        height: '',
+        x: 0,
+        y: 0,
+        cropX: 0,
+        cropY: 0
+
+      },
+      showImg: '',
+      // 图片加载
+      loading: true,
+      rotate: 0,
+      support: "",
+      // 图片缩放系数
+      imgZF: 0.2,
+      // 图片信息
+      imgZFStatus: '',
+      scaling: false,
+      scalingSet: '',
+      sourceImageData: {
+        width: '',
+        height: '',
+        //缩放倍数
+        scale: '',
+        //选装
+        rotate: '',
+        // 横坐标
+        x: '',
+        // 纵坐标
+        y: '',
+        orientation: 0
+      },
+      ImgMoveData: {
+        move: true,
+        x: '',
+        y: ''
+      }
+    };
+  },
+
+  computed: {
+    isIE: function isIE() {
+      var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      var isIE = !!window.ActiveXObject || 'ActiveXObject' in window; //判断是否IE浏览器
+      return isIE;
+    },
+    passive: function passive() {
+      return this.isIE ? null : {
+        passive: false
+      };
+    }
+  },
+  watch: {
+    showImg: function showImg(val) {
+      if (val === '' || val === null) {
+        return;
+      }
+      this.initCropBox();
+      this.reload();
+    },
+    cropBoxBoundary: function cropBoxBoundary(val) {
+      console.log(val);
+    }
+  },
+  mounted: function mounted() {
+    this.support = "onwheel" in document.createElement("div") ? "wheel" : document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll";
+    this.checkedImg();
+  },
+
+  methods: {
+    //checkout pic
+    checkedImg: function checkedImg() {
+      var _this = this;
+
+      if (this.image === null || this.image === '') {
+        this.image = '';
+        return;
+      }
+      this.loading = true;
+      this.sourceImageData.scale = 1;
+      this.rotate = 0;
+      var img = new Image();
+      img.onload = function () {
+        if (_this.image === '') {
+          // something will be do
+          return;
+        }
+        var sourceImageData = _this.sourceImageData;
+
+
+        var width = img.width;
+        var height = img.height;
+
+        __WEBPACK_IMPORTED_MODULE_0__exif_js_min__["a" /* default */].getData(img).then(function (data) {
+          sourceImageData.orientation = data.orientation || 1;
+          var max = _this.maxImgSize;
+          if (!_this.orientation && width < max && height < max) {
+            _this.showImg = _this.image;
+            return;
+          }
+
+          if (width > max) {
+            height = height / width * max;
+            width = max;
+          }
+
+          if (height > max) {
+            width = width / height * max;
+            height = max;
+          }
+          _this.checkOrientationImage(img, sourceImageData.orientation, width, height);
+        });
+      };
+      img.onerror = function () {
+        // something will be do
+        return;
+      };
+      // 判断如果不是base64图片 再添加crossOrigin属性，否则会导致iOS低版本(10.2)无法显示图片
+      if (this.image.substring(0, 4) !== "data") {
+        img.crossOrigin = "";
+      }
+      if (this.isIE) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          var url = URL.createObjectURL(this.response);
+          img.src = url;
+        };
+        xhr.open("GET", this.img, true);
+        xhr.responseType = "blob";
+        xhr.send();
+      } else {
+        img.src = this.image;
+      }
+    },
+    checkOrientationImage: function checkOrientationImage(img, orientation, width, height) {
+      var _this2 = this;
+
+      // If the chrome kernel version is 81 and safari is above 605, the image rotation will not be processed
+      // alert(navigator.userAgent)
+      if (this.getVersion('chrome')[0] >= 81) {
+        orientation = -1;
+      } else {
+        if (this.getVersion('safari')[0] >= 605) {
+          var safariVersion = this.getVersion('version');
+          if (safariVersion[0] > 13 && safariVersion[1] > 1) {
+            orientation = -1;
+          }
+        } else {
+          //  判断 ios 版本进行处理
+          // 针对 ios 版本大于 13.4的系统不做图片旋转
+          var isIos = navigator.userAgent.toLowerCase().match(/cpu iphone os (.*?) like mac os/);
+          if (isIos) {
+            var version = isIos[1];
+            version = version.split('_');
+            if (version[0] > 13 || version[0] >= 13 && version[1] >= 4) {
+              orientation = -1;
+            }
+          }
+        }
+      }
+
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
+      ctx.save();
+
+      switch (orientation) {
+        case 2:
+          canvas.width = width;
+          canvas.height = height;
+          // horizontal flip
+          ctx.translate(width, 0);
+          ctx.scale(-1, 1);
+          break;
+        case 3:
+          canvas.width = width;
+          canvas.height = height;
+          //180 graus
+          ctx.translate(width / 2, height / 2);
+          ctx.rotate(180 * Math.PI / 180);
+          ctx.translate(-width / 2, -height / 2);
+          break;
+        case 4:
+          canvas.width = width;
+          canvas.height = height;
+          // vertical flip
+          ctx.translate(0, height);
+          ctx.scale(1, -1);
+          break;
+        case 5:
+          // vertical flip + 90 rotate right
+          canvas.height = width;
+          canvas.width = height;
+          ctx.rotate(0.5 * Math.PI);
+          ctx.scale(1, -1);
+          break;
+        case 6:
+          canvas.width = height;
+          canvas.height = width;
+          //90 graus
+          ctx.translate(height / 2, width / 2);
+          ctx.rotate(90 * Math.PI / 180);
+          ctx.translate(-width / 2, -height / 2);
+          break;
+        case 7:
+          // horizontal flip + 90 rotate right
+          canvas.height = width;
+          canvas.width = height;
+          ctx.rotate(0.5 * Math.PI);
+          ctx.translate(width, -height);
+          ctx.scale(-1, 1);
+          break;
+        case 8:
+          canvas.height = width;
+          canvas.width = height;
+          //-90 graus
+          ctx.translate(height / 2, width / 2);
+          ctx.rotate(-90 * Math.PI / 180);
+          ctx.translate(-width / 2, -height / 2);
+          break;
+        default:
+          canvas.width = width;
+          canvas.height = height;
+      }
+
+      ctx.drawImage(img, 0, 0, width, height);
+      ctx.restore();
+      canvas.toBlob(function (blob) {
+        var data = URL.createObjectURL(blob);
+        URL.revokeObjectURL(_this2.imgs);
+        _this2.showImg = data;
+      }, "image/" + this.outputType, 1);
+    },
+    getVersion: function getVersion(name) {
+      var arr = navigator.userAgent.split(' ');
+      var chromeVersion = '';
+      var result = 0;
+      var reg = new RegExp(name, 'i');
+      for (var i = 0; i < arr.length; i++) {
+        if (reg.test(arr[i])) chromeVersion = arr[i];
+      }
+      if (chromeVersion) {
+        result = chromeVersion.split('/')[1].split('.');
+      } else {
+        result = ['0', '0', '0'];
+      }
+      return result;
+    },
+
+
+    //  reload picture layout function
+    reload: function reload() {
+      var _this3 = this;
+
+      var img = new Image();
+      img.src = this.showImg;
+      img.onload = function () {
+        var cropperContainer = _this3.cropperContainer,
+            sourceImageData = _this3.sourceImageData;
+
+
+        cropperContainer.width = parseFloat(window.getComputedStyle(_this3.$refs.cropper).width);
+        cropperContainer.height = parseFloat(window.getComputedStyle(_this3.$refs.cropper).height);
+
+        sourceImageData.width = img.width;
+        sourceImageData.height = img.height;
+
+        if (!_this3.original) {
+          sourceImageData.scale = _this3.dealMode();
+        } else {
+          sourceImageData.scale = 1;
+        }
+
+        _this3.$nextTick(function () {
+          sourceImageData.x = -(sourceImageData.width - sourceImageData.width * sourceImageData.scale) / 2 + (cropperContainer.width - sourceImageData.width * sourceImageData.scale) / 2;
+          sourceImageData.y = -(sourceImageData.height - sourceImageData.height * sourceImageData.scale) / 2 + (cropperContainer.height - sourceImageData.height * sourceImageData.scale) / 2;
+          _this3.loading = false;
+        });
+      };
+    },
+    dealMode: function dealMode() {
+      var mode = this.mode,
+          modes = this.modes,
+          sourceImageData = this.sourceImageData,
+          cropperContainer = this.cropperContainer;
+
+      var scale = 1;
+      var md = '';
+      var imgWidth = sourceImageData.width,
+          imgHeight = sourceImageData.height;
+      var contWidth = cropperContainer.width,
+          contHeight = cropperContainer.height;
+      md = modes.find(function (element) {
+        return element === mode;
+      });
+      if (typeof md === 'undefined') {
+        md = mode.split(' ');
+      }
+
+      switch (md) {
+        case 'contain':
+          if (imgWidth > contWidth) {
+            scale = contWidth / imgWidth;
+          }
+
+          if (imgHeight > contHeight) {
+            scale = contHeight / imgHeight;
+          }
+
+          break;
+        case 'cover':
+          // 扩展布局 默认填充满整个容器
+          // 图片宽度大于容器
+          scale = contWidth / imgWidth;
+          var h = imgHeight * scale;
+          if (h < contHeight) {
+            h = contHeight;
+            scale = h / imgHeight;
+          }
+          break;
+        default:
+          try {
+            var str = md[0];
+            if (str.search('px') !== -1) {
+              str.replace('px', '');
+              scale = parseFloat(str) / imgWidth;
+            }
+
+            if (str.search('%') !== -1) {
+              str = str.replace("%", "");
+              scale = parseFloat(str) / 100 * contWidth / imgWidth;
+            }
+          } catch (e) {
+            scale = 1;
+          }
+      }
+      return scale;
+    },
+    scaleImage: function scaleImage() {
+      if (this.canScale) {
+        window.addEventListener(this.support, this.changeSize, this.passive);
+      }
+    },
+    cancelScale: function cancelScale() {
+      if (this.canScale) {
+        window.removeEventListener(this.support, this.changeSize);
+      }
+    },
+    changeSize: function changeSize(e) {
+      var _this4 = this;
+
+      e.preventDefault();
+      var sourceImageData = this.sourceImageData,
+          imgZF = this.imgZF,
+          imgZFStatus = this.imgZFStatus;
+
+      var scale = sourceImageData.scale;
+      var change = e.deltaY || e.wheelDelta;
+      var isFirefox = navigator.userAgent.indexOf("Firefox");
+      change = isFirefox > 0 ? change * 30 : change;
+
+      if (this.isIE) {
+        change = -change;
+      }
+
+      var IZF = imgZF;
+      IZF = IZF / sourceImageData.width > IZF / sourceImageData.height ? IZF / sourceImageData.height : IZF / sourceImageData.width;
+
+      var num = IZF * change;
+
+      num < 0 ? scale += Math.abs(num) : scale > Math.abs(num) ? scale -= Math.abs(num) : scale;
+
+      var status = num < 0 ? "add" : "reduce";
+
+      if (status !== imgZFStatus) {
+        this.imgZFStatus = status;
+        this.imgZF = 0.2;
+      }
+
+      if (!this.scaling) {
+        this.scalingSet = setTimeout(function () {
+          _this4.scaling = false;
+          _this4.imgZF = _this4.imgZF += 0.01;
+        }, 50);
+      }
+
+      this.scaling = true;
+
+      if (!this.checkoutImageAxis(sourceImageData.x, sourceImageData.y, scale)) {
+        return false;
+      }
+      this.sourceImageData.scale = scale;
+    },
+    checkoutImageAxis: function checkoutImageAxis(x, y, scale) {
+      var goScale = true;
+      var overImageBorder = this.overImageBorder;
+
+      if (overImageBorder) {
+        var axis = this.getImageAxis(x, y, scale);
+        console.log(axis);
+      }
+      return goScale;
+    },
+    getImageAxis: function getImageAxis(x, y, scale) {
+      var sourceImageData = this.sourceImageData;
+
+      var obj = {
+        x1: 0,
+        x2: 0,
+        y1: 0,
+        y2: 0
+      };
+      var imgW = sourceImageData.width * sourceImageData.scale;
+      var imgH = sourceImageData.height * sourceImageData.scale;
+
+      switch (sourceImageData.rotate) {
+        case 0:
+          obj.x1 = x + sourceImageData.width * (1 - scale) / 2;
+          obj.x2 = obj.x1 + sourceImageData.width * scale;
+          obj.y1 = y + sourceImageData.height * (1 - scale) / 2;
+          obj.y2 = obj.y1 + sourceImageData.height * scale;
+          break;
+        case 1:
+        case -1:
+        case 3:
+        case -3:
+          obj.x1 = x + sourceImageData.width * (1 - scale) / 2 + (imgW - imgH) / 2;
+          obj.x2 = obj.x1 + sourceImageData.height * scale;
+          obj.y1 = y + sourceImageData.height * (1 - scale) / 2 + (imgW - imgH) / 2;
+          obj.y2 = obj.y1 + sourceImageData.width * scale;
+          break;
+        default:
+          obj.x1 = x + sourceImageData.width * (1 - scale) / 2;
+          obj.x2 = obj.x1 + sourceImageData.width * scale;
+          obj.y1 = y + sourceImageData.height * (1 - scale) / 2;
+          obj.y2 = obj.y1 + sourceImageData.height * scale;
+          break;
+      }
+      return obj;
+    },
+    moveImage: function moveImage(e) {
+      e.preventDefault();
+      var ImgMoveData = this.ImgMoveData,
+          canMoveImage = this.canMoveImage,
+          sourceImageData = this.sourceImageData,
+          cropperBox = this.cropperBox;
+
+      if (ImgMoveData.move && !cropperBox.crop) {
+        if (!canMoveImage) {
+          return;
+        } else {
+          if (ImgMoveData.move) {
+            ImgMoveData.x = (e.clientX ? e.clientX : e.touches[0].clientX) - sourceImageData.x;
+            ImgMoveData.y = (e.clientY ? e.clientY : e.touches[0].clientY) - sourceImageData.y;
+            if (e.touches) {} else {
+              window.addEventListener('mousemove', this.movingImg);
+              window.addEventListener('mouseup', this.stopMoveImg);
+            }
+          }
+        }
+      } else {}
+    },
+    movingImg: function movingImg(e) {
+      e.preventDefault();
+      if (e.touches && e.touches.length === 2) {
+        return;
+      }
+
+      var sourceImageData = this.sourceImageData,
+          ImgMoveData = this.ImgMoveData;
+
+
+      var nowX = e.clientX ? e.clientX : e.touches[0].clientX;
+      var nowY = e.clientY ? e.clientY : e.touches[0].clientY;
+
+      var changeX = void 0,
+          changeY = void 0;
+
+      changeX = nowX - ImgMoveData.x;
+      changeY = nowY - ImgMoveData.y;
+
+      this.$nextTick(function () {
+        sourceImageData.x = changeX;
+        sourceImageData.y = changeY;
+      });
+    },
+    stopMoveImg: function stopMoveImg(e) {
+      window.removeEventListener('mousemove', this.movingImg);
+    },
+
+
+    //初始化截图框
+    // type ： '10', '10px', '10%', '10px 10', 'auto' **
+    initCropBox: function initCropBox(bo) {
+      var showImg = this.showImg,
+          cropBoxBoundary = this.cropBoxBoundary,
+          cropperBox = this.cropperBox;
+
+      if (showImg === '' || showImg === null || typeof showImg === 'undefined') return;
+      cropperBox.cropping = true;
+      var cropBoxB = bo || cropBoxBoundary;
+      var ty = typeof cropBoxB === 'undefined' ? 'undefined' : _typeof(cropBoxB);
+      var boundary = [];
+      switch (ty) {
+        case "string":
+          boundary = cropBoxB.split(' ');
+          break;
+        case "object":
+          boundary = cropBoxB;
+          break;
+        case "number":
+          boundary.push(cropBoxB);
+          break;
+      }
+      if (boundary.length === 1) {
+        var b = boundary[0];
+        if (/\d/.test(b)) {
+          if (b.toString().search('px') !== -1) {
+            cropperBox.width = b;
+            cropperBox.height = b;
+          } else if (b.toString().search('%') !== -1) {
+            var cw = parseFloat(window.getComputedStyle(this.$refs.cropper).width);
+            if (cw > 100) {
+              this.initCropBox(['80%', '80%']);
+              return;
+            }
+            var bs = b.replace(/[^0-9]/ig, "");
+            cropperBox.width = cw * bs / 100;
+            cropperBox.height = cw * bs / 100;
+          }
+        } else {
+          if (b === 'auto') {
+            this.initCropBox(['50%', '50%']);
+            return;
+          }
+        }
+      } else if (boundary.length === 2) {
+        var w = boundary[0],
+            h = boundary[1];
+        var _cw = parseFloat(window.getComputedStyle(this.$refs.cropper).width),
+            ch = parseFloat(window.getComputedStyle(this.$refs.cropper).height);
+        if (w.toString().search('px') !== -1) {
+          w = w.replace(/[^0-9]/ig, "");
+          h = h.replace(/[^0-9]/ig, "");
+          if (w < _cw) {
+            cropperBox.width = w;
+          } else {
+            cropperBox.width = _cw - 10;
+          }
+          if (h < ch) {
+            cropperBox.height = h;
+          } else {
+            cropperBox.height = ch - 10;
+          }
+        } else if (w.toString().search('%') !== -1) {
+          w = w.replace(/[^0-9]/ig, "");
+          h = h.replace(/[^0-9]/ig, "");
+          if (w > 100 || h > 100) {
+            this.initCropBox('auto');
+            return;
+          }
+          cropperBox.width = _cw * w / 100;
+          cropperBox.height = ch * h / 100;
+        } else {
+          w = w.toString().replace(/[^0-9]/ig, "");
+          h = h.toString().replace(/[^0-9]/ig, "");
+          this.initCropBox([w + 'px', h + 'px']);
+          return;
+        }
+      }
+      this.changeCropBox(cropperBox.width, cropperBox.height);
+    },
+    changeCropBox: function changeCropBox(w, h) {
+      var cropperBox = this.cropperBox,
+          cropperContainer = this.cropperContainer;
+
+      if (!this.overImageBorder) {}
+      this.$nextTick(function () {
+        setTimeout(function () {
+          cropperBox.x = (cropperContainer.width - cropperBox.width) / 2;
+          cropperBox.y = (cropperContainer.height - cropperBox.height) / 2;
+        }, 50);
+      });
+    },
+    moveCrop: function moveCrop(e) {
+      var cropperBox = this.cropperBox,
+          canMoveCropBox = this.canMoveCropBox;
+
+      e.preventDefault();
+      if (!canMoveCropBox) {
+        return;
+      };
+
+      if (e.touches && e.touches.length === 2) {
+        return false;
+      }
+
+      window.addEventListener('mousemove', this.movingCropBox);
+      window.addEventListener('mouseup', this.leaveCrop);
+
+      var x = e.clientX ? e.clientX : e.touches[0].clientX;
+      var y = e.clientY ? e.clientY : e.touches[0].clientY;
+
+      var nowX = x - cropperBox.x,
+          nowY = y - cropperBox.y;
+
+      cropperBox.cropX = nowX;
+      cropperBox.cropY = nowY;
+    },
+    movingCropBox: function movingCropBox(e) {
+      var cropperBox = this.cropperBox,
+          cropperContainer = this.cropperContainer;
+
+      e.preventDefault();
+
+      var nowX = 0;
+      var nowY = 0;
+
+      if (e) {
+        e.preventDefault();
+        nowX = e.clientX ? e.clientX : e.touches[0].clientX;
+        nowY = e.clientY ? e.clientY : e.touches[0].clientY;
+      }
+
+      this.$nextTick(function () {
+        var cx = void 0,
+            cy = void 0;
+        var fw = nowX - cropperBox.cropX;
+        var fh = nowY - cropperBox.cropY;
+      });
+    },
+    leaveCrop: function leaveCrop(e) {
+      e.preventDefault();
+      window.removeEventListener("mousemove", this.movingCropBox);
+      window.removeEventListener("mouseup", this.leaveCrop);
+    }
+  }
 });
 
 /***/ }),
@@ -757,7 +1531,7 @@ module.exports = function normalizeComponent (
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_vue__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__(16);
 
 
 
@@ -13127,7 +13901,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\nh1, h2 {\n  font-weight: normal;\n}\nul {\n  list-style-type: none;\n  padding: 0;\n}\nli {\n  display: inline-block;\n  margin: 0 10px;\n}\na {\n  color: #42b983;\n}\n", ""]);
+exports.push([module.i, "\n#app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n", ""]);
 
 // exports
 
@@ -13174,101 +13948,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "app" } }, [
-    _c("img", { attrs: { src: __webpack_require__(16) } }),
-    _vm._v(" "),
-    _c("h1", [_vm._v(_vm._s(_vm.msg))]),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Essential Links")]),
-    _vm._v(" "),
-    _vm._m(0),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Ecosystem")]),
-    _vm._v(" "),
-    _vm._m(1)
-  ])
+  return _c(
+    "div",
+    { attrs: { id: "app" } },
+    [
+      _c("vue-picture-cropper", {
+        attrs: {
+          "container-width": 500,
+          "container-height": 400,
+          image:
+            "https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/master/src/assets/8.png"
+        }
+      })
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [
-        _c("a", { attrs: { href: "https://vuejs.org", target: "_blank" } }, [
-          _vm._v("LYUSSS Docs")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c(
-          "a",
-          { attrs: { href: "https://forum.vuejs.org", target: "_blank" } },
-          [_vm._v("Forum")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c(
-          "a",
-          { attrs: { href: "https://chat.vuejs.org", target: "_blank" } },
-          [_vm._v("Community Chat")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c(
-          "a",
-          { attrs: { href: "https://twitter.com/vuejs", target: "_blank" } },
-          [_vm._v("Twitter")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", [
-      _c("li", [
-        _c(
-          "a",
-          { attrs: { href: "http://router.vuejs.org/", target: "_blank" } },
-          [_vm._v("vue-router")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c(
-          "a",
-          { attrs: { href: "http://vuex.vuejs.org/", target: "_blank" } },
-          [_vm._v("vuex")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c(
-          "a",
-          { attrs: { href: "http://vue-loader.vuejs.org/", target: "_blank" } },
-          [_vm._v("vue-loader")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c(
-          "a",
-          {
-            attrs: {
-              href: "https://github.com/vuejs/awesome-vue",
-              target: "_blank"
-            }
-          },
-          [_vm._v("awesome-vue")]
-        )
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -13281,16 +13977,10 @@ if (false) {
 
 /***/ }),
 /* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "logo.png?82b9c7a5a3f405032b1db71a25f67021";
-
-/***/ }),
-/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_picture_cropper__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_picture_cropper__ = __webpack_require__(17);
 
 
 var install = function install(Vue) {
@@ -13302,12 +13992,10 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-  VuePictureCropper: __WEBPACK_IMPORTED_MODULE_0__vue_picture_cropper__["a" /* default */]
-});
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__vue_picture_cropper__["a" /* default */]);
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13317,7 +14005,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(19)
+  __webpack_require__(18)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
@@ -13363,23 +14051,23 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(20);
+var content = __webpack_require__(19);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("00212de0", content, false, {});
+var update = __webpack_require__(3)("3fb15b84", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c2b99a4\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vue-picture-cropper.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c2b99a4\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vue-picture-cropper.vue");
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c2b99a4\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vue-picture-cropper.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c2b99a4\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vue-picture-cropper.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -13389,7 +14077,7 @@ if(false) {
 }
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -13397,10 +14085,175 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.theme-dark[data-v-7c2b99a4] {\n  background: #6a684c;\n}\n.theme-warm[data-v-7c2b99a4] {\n  background: #f9de48;\n}\n.theme-pink[data-v-7c2b99a4] {\n  background: #ff8ba6;\n}\n.theme[data-v-7c2b99a4] {\n  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.5) 75%, rgba(255, 255, 255, 0.5)), linear-gradient(135deg, rgba(255, 255, 255, 0.5) 26%, transparent 26%, transparent 74%, rgba(255, 255, 255, 0.5) 74%, rgba(255, 255, 255, 0.5)), linear-gradient(45deg, rgba(255, 255, 255, 0) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0) 75%, rgba(255, 255, 255, 0)), linear-gradient(45deg, rgba(255, 255, 255, 0) 26%, transparent 26%, transparent 74%, rgba(255, 255, 255, 0) 74%, rgba(255, 255, 255, 0));\n  background-size: 20px 20px;\n  background-position: 0 0, 10px 10px;\n}\n.container[data-v-7c2b99a4] {\n  position: relative;\n  display: inline-block;\n}\n.cropper-container[data-v-7c2b99a4] {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  box-sizing: border-box;\n  top: 0;\n  left: 0;\n  overflow-y: hidden;\n  overflow-x: hidden;\n  cursor: move;\n  user-select: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  direction: ltr;\n  touch-action: none;\n  text-align: left;\n}\n.cropper-box-canvas[data-v-7c2b99a4],\n.cropper-drag-box[data-v-7c2b99a4],\n.cropper-view-box-dr[data-v-7c2b99a4],\n.cropper-box[data-v-7c2b99a4] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  user-select: none;\n}\n.cropper-box-canvas[data-v-7c2b99a4] {\n  display: block;\n  text-align: left;\n}\n.cropper-move[data-v-7c2b99a4] {\n  background: rgba(0, 0, 0, 0.23);\n}\n.cropper-context[data-v-7c2b99a4] {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.cropper-view-box[data-v-7c2b99a4] {\n  display: block;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  outline: 2px solid #39f;\n  outline-color: rgba(51, 153, 255, 0.75);\n  user-select: none;\n}\n.cropper-view-box img[data-v-7c2b99a4] {\n  user-select: none;\n  text-align: left;\n  max-width: none;\n  max-height: none;\n}\n.cropper-view-box-dr-bg[data-v-7c2b99a4] {\n  top: 0;\n  left: 0;\n  background-color: #fff;\n  opacity: 0.15;\n}\n", ""]);
 
 // exports
 
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var Exif = {};
+
+Exif.getData = function (img) {
+  return new Promise(function (reslove, reject) {
+    var obj = {};
+    getImageData(img).then(function (data) {
+      obj.arrayBuffer = data;
+      obj.orientation = getOrientation(data);
+      reslove(obj);
+    }).catch(function (error) {
+      reject(error);
+    });
+  });
+};
+
+// 这里的获取exif要将图片转ArrayBuffer对象，这里假设获取了图片的baes64
+// 步骤一
+// base64转ArrayBuffer对象
+function getImageData(img) {
+  var data = null;
+  return new Promise(function (reslove, reject) {
+    if (img.src) {
+      if (/^data\:/i.test(img.src)) {
+        // Data URI
+        data = base64ToArrayBuffer(img.src);
+        reslove(data);
+      } else if (/^blob\:/i.test(img.src)) {
+        // Object URL
+        var fileReader = new FileReader();
+        fileReader.onload = function (e) {
+          data = e.target.result;
+          reslove(data);
+        };
+        objectURLToBlob(img.src, function (blob) {
+          fileReader.readAsArrayBuffer(blob);
+        });
+      } else {
+        var http = new XMLHttpRequest();
+        http.onload = function () {
+          if (this.status == 200 || this.status === 0) {
+            data = http.response;
+            reslove(data);
+          } else {
+            throw "Could not load image";
+          }
+          http = null;
+        };
+        http.open("GET", img.src, true);
+        http.responseType = "arraybuffer";
+        http.send(null);
+      }
+    } else {
+      reject('img error');
+    }
+  });
+}
+
+function objectURLToBlob(url, callback) {
+  var http = new XMLHttpRequest();
+  http.open("GET", url, true);
+  http.responseType = "blob";
+  http.onload = function (e) {
+    if (this.status == 200 || this.status === 0) {
+      callback(this.response);
+    }
+  };
+  http.send();
+}
+
+function base64ToArrayBuffer(base64) {
+  base64 = base64.replace(/^data\:([^\;]+)\;base64,/gmi, '');
+  var binary = atob(base64);
+  var len = binary.length;
+  var buffer = new ArrayBuffer(len);
+  var view = new Uint8Array(buffer);
+  for (var i = 0; i < len; i++) {
+    view[i] = binary.charCodeAt(i);
+  }
+  return buffer;
+}
+// 步骤二，Unicode码转字符串
+// ArrayBuffer对象 Unicode码转字符串
+function getStringFromCharCode(dataView, start, length) {
+  var str = '';
+  var i;
+  for (i = start, length += start; i < length; i++) {
+    str += String.fromCharCode(dataView.getUint8(i));
+  }
+  return str;
+}
+
+// 步骤三，获取jpg图片的exif的角度（在ios体现最明显）
+function getOrientation(arrayBuffer) {
+  var dataView = new DataView(arrayBuffer);
+  var length = dataView.byteLength;
+  var orientation;
+  var exifIDCode;
+  var tiffOffset;
+  var firstIFDOffset;
+  var littleEndian;
+  var endianness;
+  var app1Start;
+  var ifdStart;
+  var offset;
+  var i;
+  // Only handle JPEG image (start by 0xFFD8)
+  if (dataView.getUint8(0) === 0xFF && dataView.getUint8(1) === 0xD8) {
+    offset = 2;
+    while (offset < length) {
+      if (dataView.getUint8(offset) === 0xFF && dataView.getUint8(offset + 1) === 0xE1) {
+        app1Start = offset;
+        break;
+      }
+      offset++;
+    }
+  }
+  if (app1Start) {
+    exifIDCode = app1Start + 4;
+    tiffOffset = app1Start + 10;
+    if (getStringFromCharCode(dataView, exifIDCode, 4) === 'Exif') {
+      endianness = dataView.getUint16(tiffOffset);
+      littleEndian = endianness === 0x4949;
+
+      if (littleEndian || endianness === 0x4D4D /* bigEndian */) {
+          if (dataView.getUint16(tiffOffset + 2, littleEndian) === 0x002A) {
+            firstIFDOffset = dataView.getUint32(tiffOffset + 4, littleEndian);
+
+            if (firstIFDOffset >= 0x00000008) {
+              ifdStart = tiffOffset + firstIFDOffset;
+            }
+          }
+        }
+    }
+  }
+  if (ifdStart) {
+    length = dataView.getUint16(ifdStart, littleEndian);
+
+    for (i = 0; i < length; i++) {
+      offset = ifdStart + i * 12 + 2;
+      if (dataView.getUint16(offset, littleEndian) === 0x0112 /* Orientation */) {
+
+          // 8 is the offset of the current tag's value
+          offset += 8;
+
+          // Get the original orientation value
+          orientation = dataView.getUint16(offset, littleEndian);
+
+          // Override the orientation with its default value for Safari (#120)
+          // if (IS_SAFARI_OR_UIWEBVIEW) {
+          //   dataView.setUint16(offset, 1, littleEndian);
+          // }
+          break;
+        }
+    }
+  }
+  return orientation;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Exif);
 
 /***/ }),
 /* 21 */
@@ -13411,7 +14264,132 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c(
+    "div",
+    {
+      ref: "cropper",
+      staticClass: "container",
+      style: {
+        width:
+          typeof _vm.containerWidth !== "undefined"
+            ? _vm.containerWidth + "px"
+            : _vm.containerHeight + "px",
+        height:
+          typeof _vm.containerHeight === "undefined"
+            ? _vm.containerWidth + "px"
+            : _vm.containerHeight + "px"
+      },
+      on: { mouseover: _vm.scaleImage, mouseout: _vm.cancelScale }
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "cropper-container theme",
+          class:
+            _vm.themes.indexOf(_vm.theme) !== -1
+              ? "theme-" + _vm.theme
+              : "theme-dark"
+        },
+        [
+          _vm.showImg
+            ? _c("div", { staticClass: "cropper-box" }, [
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.loading,
+                        expression: "!loading"
+                      }
+                    ],
+                    staticClass: "cropper-box-canvas",
+                    style: {
+                      width: _vm.sourceImageData.width + "px",
+                      height: _vm.sourceImageData.height + "px",
+                      transform:
+                        "scale(" +
+                        _vm.sourceImageData.scale +
+                        "," +
+                        _vm.sourceImageData.scale +
+                        ") " +
+                        "translate3d(" +
+                        _vm.sourceImageData.x / _vm.sourceImageData.scale +
+                        "px," +
+                        _vm.sourceImageData.y / _vm.sourceImageData.scale +
+                        "px," +
+                        "0)" +
+                        "rotateZ(" +
+                        _vm.sourceImageData.rotate * 90 +
+                        "deg)"
+                    }
+                  },
+                  [_c("img", { attrs: { src: _vm.showImg, alt: "" } })]
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "cropper-drag-box cropper-move",
+            on: { mousedown: _vm.moveImage }
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "cropper-context",
+              style: {
+                width: _vm.cropperBox.width + "px",
+                height: _vm.cropperBox.height + "px",
+                transform:
+                  "translate3d(" +
+                  _vm.cropperBox.x +
+                  "px," +
+                  _vm.cropperBox.y +
+                  "px," +
+                  "0)"
+              }
+            },
+            [
+              _c("span", { staticClass: "cropper-view-box" }, [
+                _c("img", {
+                  style: {
+                    width: _vm.sourceImageData.width,
+                    height: _vm.sourceImageData.height,
+                    transform:
+                      "scale(" +
+                      _vm.sourceImageData.scale +
+                      "," +
+                      _vm.sourceImageData.scale +
+                      ") " +
+                      "translate3d(" +
+                      (_vm.sourceImageData.x - _vm.cropperBox.x) /
+                        _vm.sourceImageData.scale +
+                      "px," +
+                      (_vm.sourceImageData.y - _vm.cropperBox.y) /
+                        _vm.sourceImageData.scale +
+                      "px," +
+                      "0)" +
+                      "rotateZ(" +
+                      _vm.sourceImageData.rotate * 90 +
+                      "deg)"
+                  },
+                  attrs: { src: _vm.showImg, alt: "" }
+                })
+              ]),
+              _vm._v(" "),
+              _c("span", {
+                staticClass: "cropper-view-box-dr cropper-view-box-dr-bg",
+                on: { mousedown: _vm.moveCrop }
+              })
+            ]
+          )
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
