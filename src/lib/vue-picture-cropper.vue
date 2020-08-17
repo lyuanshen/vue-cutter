@@ -35,10 +35,29 @@
       <div
         class="cropper-context"
         :style="{
-        width: cropperBox.width,
-        height: cropperBox.height,
+        width: cropperBox.width + 'px',
+        height: cropperBox.height + 'px',
+        'transform': 'translate3d('+ cropperBox.x + 'px,' + cropperBox.y + 'px,' + '0)'
         }"
       >
+        <span
+          class="cropper-view-box">
+          <img
+            :style="{
+            width: sourceImageData.width,
+            height: sourceImageData.height,
+            transform:'scale(' + sourceImageData.scale + ',' + sourceImageData.scale + ') '
+            + 'translate3d('+ (sourceImageData.x - cropperBox.x) / sourceImageData.scale  + 'px,'
+            + (sourceImageData.y - cropperBox.y) / sourceImageData.scale + 'px,' + '0)'
+						+ 'rotateZ('+ sourceImageData.rotate * 90 +'deg)'
+            }"
+            :src="showImg" alt="">
+        </span>
+
+        <span
+          @mousedown="moveCrop"
+          class="cropper-view-box-dr cropper-view-box-dr-bg">
+        </span>
 
       </div>
     </div>
@@ -86,10 +105,10 @@ export default {
       type: Boolean,
       default: true
     },
-    overImageBorder: {
-      type: Boolean,
-      default: true
-    },
+    // cropCanOverImageBorder: {
+    //   type: Boolean,
+    //   default: true
+    // },
     canMoveImage: {
       type: Boolean,
       default: true
@@ -97,7 +116,28 @@ export default {
     cropBoxBoundary: {
       type: [String, Array, Number],
       default: 'auto'
-    }
+    },
+    // 是否开启固定宽高比
+    fixed: {
+      type: Boolean,
+      default: false
+    },
+    // 宽高比 w/h
+    fixedNumber: {
+      type: Array,
+      default: () => {
+        return [1, 1];
+      }
+    },
+    // 固定大小 禁止改变截图框大小
+    fixedBox: {
+      type: Boolean,
+      default: false
+    },
+    canMoveCropBox:{
+      type: Boolean,
+      default: true
+    },
   },
   data() {
     return {
@@ -115,8 +155,11 @@ export default {
         // 裁剪框大小
         width: '',
         height: '',
-        x: '',
-        y: ''
+        x: 0,
+        y: 0,
+        cropX: 0,
+        cropY: 0
+
       },
       showImg: '',
       // 图片加载
@@ -634,7 +677,7 @@ export default {
           }else if (b.toString().search('%') !== -1){
             let cw = parseFloat(window.getComputedStyle(this.$refs.cropper).width);
             if (cw > 100) {
-              this.initCropBox(['50%', '50%'])
+              this.initCropBox(['80%', '80%'])
               return
             }
             let bs = b.replace(/[^0-9]/ig,"");
@@ -669,13 +712,88 @@ export default {
          w = w.replace(/[^0-9]/ig,"");
          h = h.replace(/[^0-9]/ig,"");
          if (w > 100 || h > 100){
-           this.initCropBox('auto')
+           this.initCropBox('auto');
            return
          }
          cropperBox.width = cw * w / 100;
          cropperBox.height = ch * h / 100;
+       }else{
+         w = w.toString().replace(/[^0-9]/ig,"");
+         h = h.toString().replace(/[^0-9]/ig,"");
+         this.initCropBox([w + 'px', h + 'px']);
+         return;
        }
       }
+      this.changeCropBox(cropperBox.width, cropperBox.height)
+    },
+
+    changeCropBox(w, h){
+      const { cropperBox, cropperContainer } = this
+      if (!this.overImageBorder) {
+
+      }
+      this.$nextTick(() => {
+        setTimeout(()=>{
+          cropperBox.x = (cropperContainer.width - cropperBox.width) / 2;
+          cropperBox.y = (cropperContainer.height - cropperBox.height) / 2;
+        },50)
+      })
+    },
+
+    moveCrop(e){
+      const { cropperBox, canMoveCropBox } = this
+      e.preventDefault();
+      if (!canMoveCropBox) {
+        return;
+      };
+
+      if (e.touches && e.touches.length === 2) {
+        return false;
+      }
+
+      window.addEventListener('mousemove',this.movingCropBox);
+      window.addEventListener('mouseup',this.leaveCrop)
+
+      let x = e.clientX ? e.clientX : e.touches[0].clientX;
+      let y = e.clientY ? e.clientY : e.touches[0].clientY;
+
+      let nowX = x - cropperBox.x,
+        nowY = y - cropperBox.y;
+
+      cropperBox.cropX = nowX;
+      cropperBox.cropY = nowY;
+
+
+
+    },
+
+    movingCropBox(e){
+      const  { cropperBox, cropperContainer } = this
+      e.preventDefault();
+
+      let nowX = 0;
+      let nowY = 0;
+
+      if (e) {
+        e.preventDefault();
+        nowX = e.clientX ? e.clientX : e.touches[0].clientX;
+        nowY = e.clientY ? e.clientY : e.touches[0].clientY;
+      }
+
+      this.$nextTick(() => {
+        let cx, cy;
+        let fw = nowX - cropperBox.cropX;
+        let fh = nowY - cropperBox.cropY;
+
+
+
+      })
+    },
+
+    leaveCrop(e) {
+      e.preventDefault();
+      window.removeEventListener("mousemove", this.movingCropBox);
+      window.removeEventListener("mouseup", this.leaveCrop);
     }
   }
 }

@@ -3,10 +3,8 @@
    <vue-picture-cropper
        :container-width="500"
        :container-height="400"
-       theme="warm"
-       image="http://192.168.38.1:8088/dev/8.png"
+       image="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/master/src/assets/8.png"
    ></vue-picture-cropper>
-<!--    <img src="./assets/8.png" alt="">-->
   </div>
 </template>
 
