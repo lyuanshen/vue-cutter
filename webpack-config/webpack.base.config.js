@@ -33,6 +33,13 @@ module.exports = {
         ],
       },
       {
+        test: /\.(ttf|woff)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 50000,
+        },
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
