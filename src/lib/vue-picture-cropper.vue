@@ -109,20 +109,25 @@
   export default {
     name: "vue-picture-cropper",
     props: {
+      // 容器宽度
       containerWidth: {
         type: Number
       },
+      // 容器高度
       containerHeight: {
         type: Number
       },
+      //容器背景主题
       theme: {
         type: String,
         default: 'dark'
       },
+      // 需裁剪的图片
       image: {
         type: [String, Blob, null, File],
         default: ''
       },
+      //图片布局模式
       mode: {
         type: String,
         default: 'contain'
@@ -132,6 +137,7 @@
         type: [Number, String],
         default: 2000
       },
+      //输出图片格式
       outputType: {
         type: String,
         default: 'png'
@@ -140,6 +146,7 @@
         type: Boolean,
         default: false
       },
+      //图片是否缩放
       canScale: {
         type: Boolean,
         default: true
@@ -148,10 +155,12 @@
       //   type: Boolean,
       //   default: true
       // },
+      //是否能移动图片
       canMoveImage: {
         type: Boolean,
         default: true
       },
+      //裁剪框宽高
       cropBoxBoundary: {
         type: [String, Array, Number],
         default: 'auto'
@@ -173,6 +182,7 @@
         type: Boolean,
         default: false
       },
+      //是否能移动裁剪框
       canMoveCropBox: {
         type: Boolean,
         default: true
@@ -209,17 +219,6 @@
           cropChangeX: '',
           cropChangeY: ''
         },
-        showImg: '',
-        // 图片加载
-        loading: true,
-        rotate: 0,
-        support: "",
-        // 图片缩放系数
-        imgZF: 0.2,
-        // 图片信息
-        imgZFStatus: '',
-        scaling: false,
-        scalingSet: '',
         sourceImageData: {
           width: '',
           height: '',
@@ -237,7 +236,17 @@
           move: true,
           x: '',
           y: ''
-        }
+        },
+        showImg: '',
+        // 图片加载
+        loading: true,
+        support: "",
+        // 图片缩放系数
+        imgZF: 0.2,
+        // 图片信息
+        imgZFStatus: '',
+        scaling: false,
+        scalingSet: '',
       }
     },
     computed: {
@@ -1023,8 +1032,56 @@
       changeCropEnd(e) {
         window.removeEventListener("mousemove", this.changeCropNow);
         window.removeEventListener("mouseup", this.changeCropEnd);
-      }
+      },
 
+      getCropAxis() {
+        const { cropperBox } = this
+        let obj = {
+          x1: 0,
+          x2: 0,
+          y1: 0,
+          y2: 0
+        };
+        obj.x1 = cropperBox.x;
+        obj.y1 = cropperBox.y;
+        obj.x2 = cropperBox.x + cropperBox.width;
+        obj.y2 = cropperBox.y + cropperBox.height;
+        return obj;
+      },
+
+      getCropInfo() {
+        const { cropperBox, sourceImageData, showImg } = this
+        let canvas = document.createElement("canvas");
+        let img = new Image();
+        let rotate = sourceImageData.rotate;
+        let trueWidth = sourceImageData.width;
+        let trueHeight = sourceImageData.height;
+        let cropOffsertX = sourceImageData.x;
+        let cropOffsertY = sourceImageData.y;
+        img.onload = () => {
+          if (cropperBox.width !== 0) {
+            let ctx = canvas.getContext("2d");
+            let dpr = 1;
+            let width = this.cropperBox.width * dpr;
+            let height = this.cropperBox.height * dpr;
+            let imgW = trueWidth * sourceImageData.scale * dpr;
+            let imgH = trueHeight * sourceImageData.scale * dpr;
+            // 图片x轴偏移
+            let dx =
+              (sourceImageData.x - cropOffsertX + (sourceImageData.width * (1 - sourceImageData.scale)) / 2) *
+              dpr;
+            // 图片y轴偏移
+            let dy =
+              (sourceImageData.y - cropOffsertY + (sourceImageData.height * (1 - sourceImageData.scale)) / 2) *
+              dpr;
+            setCanvasSize(width, height);
+          }
+        };
+        function setCanvasSize(width, height) {
+          canvas.width = Math.round(width);
+          canvas.height = Math.round(height);
+        }
+      },
     }
   }
 </script>
