@@ -1075,6 +1075,20 @@
               (sourceImageData.y - cropOffsertY + (sourceImageData.height * (1 - sourceImageData.scale)) / 2) *
               dpr;
             setCanvasSize(width, height);
+            ctx.save();
+
+            switch (rotate) {
+              case 0 :
+                setCanvasSize(width / sourceImageData.scale, height / sourceImageData.scale);
+                ctx.drawImage(
+                  img,
+                  dx /sourceImageData.scale,
+                  dy /sourceImageData.scale,
+                  imgW /sourceImageData.scale,
+                  imgH /sourceImageData.scale
+                );
+            }
+
           }
         };
         function setCanvasSize(width, height) {
