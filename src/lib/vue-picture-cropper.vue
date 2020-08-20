@@ -225,7 +225,7 @@
           //缩放倍数
           scale: '',
           //选装
-          rotate: '',
+          rotate: 0,
           // 横坐标
           x: '',
           // 纵坐标
@@ -1049,15 +1049,26 @@
         return obj;
       },
 
-      getCropInfo() {
+      //canvas获取为blob对象
+      getCropBlob(cb) {
+        this.getCropInfo(data => {
+          data.toBlob(
+            blob => cb(blob),
+            "image/" + this.outputType,
+            1
+          );
+        });
+      },
+
+      getCropInfo(cb) {
         const { cropperBox, sourceImageData, showImg } = this
         let canvas = document.createElement("canvas");
         let img = new Image();
         let rotate = sourceImageData.rotate;
         let trueWidth = sourceImageData.width;
         let trueHeight = sourceImageData.height;
-        let cropOffsertX = sourceImageData.x;
-        let cropOffsertY = sourceImageData.y;
+        let cropOffsertX = cropperBox.x;
+        let cropOffsertY = cropperBox.y;
         img.onload = () => {
           if (cropperBox.width !== 0) {
             let ctx = canvas.getContext("2d");
@@ -1088,9 +1099,15 @@
                   imgH /sourceImageData.scale
                 );
             }
-
+            ctx.restore();
           }
+          cb(canvas);
         };
+        var s = this.image.substring(0, 4);
+        if (s !== "data") {
+          img.crossOrigin = "Anonymous";
+        }
+        img.src = this.showImg
         function setCanvasSize(width, height) {
           canvas.width = Math.round(width);
           canvas.height = Math.round(height);

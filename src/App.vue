@@ -6,6 +6,7 @@
       :container-height="450"
       image="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/master/src/assets/8.png"
     ></vue-picture-cropper>
+    <img :src="img" alt="">
     <div style="width: 100%;margin-top: 38px">
       <el-button @click="getCropperAxis"
         type="primary">主要按钮</el-button>
@@ -17,12 +18,16 @@
   export default {
     name: 'app',
     data() {
-      return {}
+      return {
+        img: ''
+      }
     },
     methods: {
       getCropperAxis() {
-        let axis = this.$refs.cropper.getCropAxis()
-        console.log(axis)
+        let axis = this.$refs.cropper.getCropBlob((data) => {
+          let url = (window.URL || window.webkitURL).createObjectURL(data);
+          this.img = url;
+        })
       }
     }
   }
