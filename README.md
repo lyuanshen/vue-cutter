@@ -2,6 +2,10 @@
 
 > A Vue.js project
 
+## example
+
+> [example](https://lyuanshen.github.io/vue-pictrue-cropper/)
+
 ## Build Setup
 
 ``` bash
