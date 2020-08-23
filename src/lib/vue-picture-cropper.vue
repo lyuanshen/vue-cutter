@@ -15,6 +15,7 @@
       <div class="cropper-box" v-if="showImg">
         <div
           class="cropper-box-canvas"
+          ref="image"
           v-if="!loading"
           :style="{
             width: sourceImageData.width + 'px',
@@ -151,10 +152,10 @@
         type: Boolean,
         default: true
       },
-      // cropCanOverImageBorder: {
-      //   type: Boolean,
-      //   default: true
-      // },
+      cropCanOverImageBorder: {
+        type: Boolean,
+        default: true
+      },
       //是否能移动图片
       canMoveImage: {
         type: Boolean,
@@ -710,98 +711,88 @@
 
       //初始化截图框
       // type ： '10', '10px', '10%', '10px 10', 'auto' **
-      initCropBox(bo) {
-        const {showImg, cropBoxBoundary, cropperBox, fixed, fixedNumber} = this
-        if (fixed) {
-
-        }
-        if (showImg === '' || showImg === null || typeof showImg === 'undefined') return
-        cropperBox.cropping = true;
-        let cropBoxB = bo || cropBoxBoundary;
-        let ty = typeof cropBoxB;
-        let boundary = [];
-        switch (ty) {
-          case "string":
-            boundary = cropBoxB.split(' ');
-            break;
-          case "object":
-            boundary = cropBoxB;
-            break;
-          case "number":
-            boundary.push(cropBoxB);
-            break;
-        }
-        if (boundary.length === 1) {
-          let b = boundary[0];
-          if (/\d/.test(b)) {
-            if (b.toString().search('px') !== -1) {
-              cropperBox.width = b;
-              cropperBox.height = b;
-            } else if (b.toString().search('%') !== -1) {
-              let cw = parseFloat(window.getComputedStyle(this.$refs.cropper).width);
-              if (cw > 100) {
-                this.initCropBox(['80%', '80%'])
-                return
-              }
-              let bs = b.replace(/[^0-9]/ig, "");
-              cropperBox.width = cw * bs / 100;
-              cropperBox.height = cw * bs / 100;
-            }
-          } else {
-            if (b === 'auto') {
-              this.initCropBox(['50%', '50%'])
-              return
-            }
-          }
-        } else if (boundary.length === 2) {
-          let w = boundary[0],
-            h = boundary[1];
-          let cw = parseFloat(window.getComputedStyle(this.$refs.cropper).width),
-            ch = parseFloat(window.getComputedStyle(this.$refs.cropper).height);
-          if (w.toString().search('px') !== -1) {
-            w = w.replace(/[^0-9]/ig, "");
-            h = h.replace(/[^0-9]/ig, "");
-            if (w < cw) {
-              cropperBox.width = w
-            } else {
-              cropperBox.width = cw - 10
-            }
-            if (h < ch) {
-              cropperBox.height = h;
-            } else {
-              cropperBox.height = ch - 10
-            }
-          } else if (w.toString().search('%') !== -1) {
-            w = w.replace(/[^0-9]/ig, "");
-            h = h.replace(/[^0-9]/ig, "");
-            if (w > 100 || h > 100) {
-              this.initCropBox('auto');
-              return
-            }
-            cropperBox.width = cw * w / 100;
-            cropperBox.height = ch * h / 100;
-          } else {
-            w = w.toString().replace(/[^0-9]/ig, "");
-            h = h.toString().replace(/[^0-9]/ig, "");
-            this.initCropBox([w + 'px', h + 'px']);
+      initCropBox(boundary) {
+        const {showImg, cropBoxBoundary, fixed, fixedNumber} = this
+        if (showImg === '' || showImg === null || typeof showImg === 'undefined') return;
+        let cropBoxWidth = 0,
+          cropBoxHeight = 0;
+        let cbb = boundary || cropBoxBoundary;
+        let cbList = cbb.split(' ');
+        if (cbList.length === 1) {
+          if (cbList[0] === 'auto'){
+            this.initCropBox('50% 50%')
+            return;
+          }else if( cbList[0].search('px') !== -1
+          || cbList[0].search('%') !== -1){
+            this.initCropBox(cbList[0] + ' ' + cbList[0])
+            return;
+          }else if (/^\d{1,}$/.test(cbList[0])) {
+            this.initCropBox(cbList[0] + 'px ' + cbList[0] + 'px');
+            return;
+          }else {
+            console.error('参数: crop-box-boundary 不符合规范')
             return;
           }
+        }else if (cbList.length === 2) {
+          let w = cbList[0].replace(/[^0-9]/ig, ""),
+            h = cbList[1].replace(/[^0-9]/ig, "");
+
+          if (cbList[0].search('px') !== -1) {
+            cropBoxWidth = w;
+            cropBoxHeight = h;
+
+          }else if (cbList[0].search('%') !== -1) {
+            let cw = parseFloat(window.getComputedStyle(this.$refs.cropper).width),
+              ch = parseFloat(window.getComputedStyle(this.$refs.cropper).height);
+
+            if (w <= 100) {
+              cropBoxWidth = cw * w / 100;
+            }else {
+              cropBoxWidth = cw;
+            }
+            if (h <= 100) {
+              cropBoxHeight = ch * h / 100;
+            }else {
+              cropBoxHeight = ch;
+            }
+
+          }else if (/^\d{1,}$/.test(cbList[0]) && /^\d{1,}$/.test(cbList[1])){
+            this.initCropBox(cbList[0] + 'px ' + cbList[1] + 'px');
+            return;
+          }else {
+            console.error('参数: crop-box-boundary 不符合规范')
+            return;
+          }
+        }else {
+          console.error('参数: crop-box-boundary 不符合规范')
+          return;
         }
-        if (fixed) {
-          let rate = fixedNumber[0] / fixedNumber[1]
-          this.changeCropBox(cropperBox.width, cropperBox.width / rate)
-        } else {
-          this.changeCropBox(cropperBox.width, cropperBox.height)
+
+        if (fixed){
+          let rate = fixedNumber[0]/fixedNumber[1];
+          cropBoxHeight = cropBoxWidth / rate;
         }
+
+        this.changeCropBox(cropBoxWidth,cropBoxHeight);
       },
 
       changeCropBox(w, h) {
-        const {cropperBox, cropperContainer} = this
-        cropperBox.width = w;
-        cropperBox.height = h;
-        // if (!this.overImageBorder) {
-        //
-        // }
+        const {cropperBox, cropperContainer, cropCanOverImageBorder, sourceImageData, fixed, fixedNumber} = this
+        if (!cropCanOverImageBorder){
+          setTimeout( () => {
+            if (w > sourceImageData.width) {
+              w = sourceImageData.width
+            }
+            if (h > sourceImageData.height){
+              h = sourceImageData.height
+            }
+            if (fixed) {
+              let rate = fixedNumber[0]/fixedNumber[1];
+            }
+            cropperBox.width = w;
+            cropperBox.height = h;
+          },50)
+        }
         this.$nextTick(() => {
           setTimeout(() => {
             cropperBox.x = (cropperContainer.width - cropperBox.width) / 2;

@@ -4,6 +4,8 @@
       ref="cropper"
       :container-width="600"
       :container-height="450"
+      :fixed="true"
+      :crop-can-over-image-border="false"
       image="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/master/src/assets/8.png"
     ></vue-picture-cropper>
     <img :src="img" alt="">
