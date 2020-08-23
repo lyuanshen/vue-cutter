@@ -10,8 +10,8 @@
   >
     <div
       class="cropper-container theme"
-      :class="themes.indexOf(theme) !== -1 ? 'theme-' + theme : 'theme-dark'"
     >
+      <span class="cropper-container-bg" :class="themes.indexOf(theme) !== -1 ? 'theme-' + theme : 'theme-dark'"></span>
       <div class="cropper-box" v-if="showImg">
         <div
           class="cropper-box-canvas"
@@ -191,7 +191,7 @@
     },
     data() {
       return {
-        themes: ['dark', 'warm', 'pink'],
+        themes: ['dark', 'warm', 'pink', 'test'],
         modes: ['contain', 'cover', 'auto'],
         cropperContainer: {
           width: '',

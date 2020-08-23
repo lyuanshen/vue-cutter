@@ -3,26 +3,27 @@ $theme-high: rgba(255, 255, 255, 0.5);
 $theme-low: rgba(255, 255, 255, 0);
 
 .theme-dark{
-    background: #6a684c;
+    background: rgba(42, 43, 42, 0.65);
 }
 
 .theme-warm{
-    background: #f9f13d;
+    background: rgba(249, 192, 78, 0.65);
 }
 
 .theme-pink{
-    background: #ff8ba6;
+  background: rgba(255, 139, 165, 0.50);
 }
 
-
 .theme{
-  background-image: linear-gradient(135deg, $theme-high 25%,transparent 25%, transparent 75%, $theme-high 75%, $theme-high),
-  linear-gradient(135deg, $theme-high 26%,transparent 26%,transparent 74%, $theme-high 74%, $theme-high),
-  linear-gradient(45deg, $theme-low 25%, transparent 25%, transparent 75%, $theme-low 75%, $theme-low),
-  linear-gradient(45deg, $theme-low 26%, transparent 26%, transparent 74%, $theme-low 74%, $theme-low);
-  background-size:20px 20px;
-  background-position:0 0, 10px 10px;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC") !important;
 }
 
 .cropper-view-box-bg{
+}
+.cropper-container-bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
