@@ -5,6 +5,7 @@
       :container-width="600"
       :container-height="450"
       :fixed="true"
+      :fixed-number="[5, 1]"
       :crop-can-over-image-border="false"
       image="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/master/src/assets/8.png"
     ></vue-picture-cropper>
