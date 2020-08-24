@@ -2,25 +2,55 @@
   <img width="200" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/e375dd0f615562bb9209fd5a04ab8e9521c351d9/src/assets/logo2.svg">
 </p>
 
-# vue-pictrue-cropper
+<p align="center">
+  <a href="https://github.com/vuejs/vue">
+      <img src="https://img.shields.io/badge/vue-2.5.17-brightgreen.svg" alt="vue">
+   </a>
+   <a href="#">
+      <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+   </a>
+   <a href="#">
+      <img src="https://img.shields.io/badge/releases-1.0.2-ff69b4.svg" alt="license">
+   </a>
+</p>
 
-> A Vue.js project
+## 简介
 
-## example
+基于`vue`和`javascript`开发的一款图片剪裁处理工具  
+优点：**原生、轻量、使用简单、功能全面、扩展性强**  
+目前功能：**缩放、翻折、旋转、边缘校验、矩形剪裁**  
+关于缩放：鼠标（鼠标滚轮缩放）、触屏（双指缩放）
 
-> [example](https://lyuanshen.github.io/vue-pictrue-cropper/)
+## 在线预览
 
-## Build Setup
+> [demo : https://lyuanshen.github.io/vue-pictrue-cropper](https://lyuanshen.github.io/vue-pictrue-cropper/)
 
-``` bash
-# install dependencies
-npm install
+## 使用方法
+### 安装 
+[![NPM](https://nodei.co/npm/vue-picture-cropper.png?downloadRank=true)](https://nodei.co/npm/vue-picture-cropper/)
 
-# serve with hot reload at localhost:8080
-npm run dev
 
-# build for production with minification
-npm run build
+```
+npm install --save vue-picture-cropper
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### 用法
+
+```js
+// main.js里面使用
+import vuePictureCropper from 'vue-picture-cropper'
+Vue.use(vuePictureCropper)
+
+// 组件内使用
+import { VuePictureCropper } from 'vue-picture-cropper'
+components: { VuePictureCropper }
+```
+
+```vue
+<vue-picture-cropper
+   ref="cropper"
+   :container-width="option.width"
+   :container-height="option.height"
+   :outputType="option.type">
+</vue-picture-cropper>
+```
