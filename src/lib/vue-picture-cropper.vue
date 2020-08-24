@@ -169,7 +169,7 @@
             },
             //裁剪框宽高
             cropBoxBoundary: {
-                type: [String, Array, Number],
+                type: [String, Number],
                 default: 'auto'
             },
             // 是否开启固定宽高比
