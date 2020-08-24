@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="200" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/c3d29b471152f2e3a703708d9938bac319348433/src/assets/logo.svg">
+  <img width="200" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/e375dd0f615562bb9209fd5a04ab8e9521c351d9/src/assets/logo2.svg">
 </p>
 
 # vue-pictrue-cropper
