@@ -1,9 +1,15 @@
 {
-  "presets": [
-    ["env", { "modules": false }],
-    "stage-3"
-  ],
-  "plugins": [
-    "transform-runtime"
-  ]
+    "presets": [
+        [
+            "env",
+            {
+                "modules": "commonjs"
+            }
+        ],
+        "stage-3"
+    ],
+    "plugins": [
+        "transform-runtime",
+        "add-module-exports"
+    ]
 }

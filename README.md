@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="320" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/c3d29b471152f2e3a703708d9938bac319348433/src/assets/logo.svg">
+</p>
+
 # vue-pictrue-cropper
 
 > A Vue.js project
