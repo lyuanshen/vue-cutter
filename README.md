@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="200" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/e375dd0f615562bb9209fd5a04ab8e9521c351d9/src/assets/logo2.svg">
+  <img width="200" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/a2319bbac4f56274e90fe1f0cc22a84e91b00667/src/assets/logo2.svg">
 </p>
 
 <p align="center">
