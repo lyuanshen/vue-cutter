@@ -1,22 +1,22 @@
-<svg width="1188" height="1000" xmlns="http://www.w3.org/2000/svg">
+<svg width="1588" height="1100" xmlns="http://www.w3.org/2000/svg">
  <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
 
  <g>
   <title>background</title>
-  <rect x="-1" y="-1" width="1190" height="1002" id="canvas_background" fill="none"/>
-  <g id="canvasGrid" display="none">
-   <rect id="svg_1" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  <rect fill="none" id="canvas_background" height="1102" width="1590" y="-1" x="-1"/>
+  <g display="none" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" id="svg_1"/>
   </g>
  </g>
  <g>
   <title>Layer 1</title>
-  <rect stroke="#ff56aa" id="svg_2" height="350" width="357" y="216.691187" x="414.249202" fill-opacity="null" stroke-width="38" fill="none"/>
-  <line stroke-linecap="null" stroke-linejoin="null" id="svg_3" y2="712.170486" x2="413.900751" y1="485.586915" x1="413.942367" fill-opacity="null" stroke-width="38" stroke="#ff56aa" fill="none"/>
-  <line transform="rotate(90 800.38720703125,216.20863342285165) " stroke-linecap="null" stroke-linejoin="null" id="svg_4" y2="329.500459" x2="800.368268" y1="102.916888" x1="800.409884" fill-opacity="null" stroke-width="38" stroke="#ff56aa" fill="none"/>
-  <line transform="rotate(90 385.9559020996093,567.1160278320314) " stroke-linecap="null" stroke-linejoin="null" id="svg_5" y2="680.408014" x2="385.935768" y1="453.824443" x1="385.977384" fill-opacity="null" stroke-width="38" stroke="#ff56aa" fill="none"/>
-  <line stroke-linecap="null" stroke-linejoin="null" id="svg_6" y2="297.737986" x2="770.864822" y1="71.154415" x1="770.906438" fill-opacity="null" stroke-width="38" stroke="#ff56aa" fill="none"/>
-  <text font-weight="bold" stroke="#00a1ff" transform="matrix(17.936110171387064,0,0,19.884821465574543,-4386.377327909057,-4312.026685377771) " xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="24" id="svg_7" y="244.182991" x="270.477404" stroke-opacity="null" stroke-width="0" fill="#00bfbf">V</text>
-  <text stroke="#ff56aa" transform="matrix(11.612123489379883,0,0,4.974902629852295,-2788.335446834564,-3293.579475954175) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_10" y="850.381317" x="262.764479" fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#000000"/>
-  <text font-style="italic" font-weight="bold" stroke="#ff56aa" transform="matrix(3.775735563715694,0,0,7.670945956214364,-436.70706455393156,-5950.5379676052935) " xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="24" id="svg_11" y="893.39465" x="135.664941" stroke-width="0" fill="#ff56aa">VUE PICTURE CROPPER</text>
+  <rect fill="none" stroke-width="38" fill-opacity="null" x="617.697404" y="220.139462" width="357" height="350" id="svg_2" stroke="#ff56aa"/>
+  <line fill="none" stroke="#ff56aa" stroke-width="38" fill-opacity="null" x1="617.390569" y1="489.03519" x2="617.348953" y2="715.618761" id="svg_3" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#ff56aa" stroke-width="38" fill-opacity="null" x1="1003.858086" y1="106.365163" x2="1003.81647" y2="332.948734" id="svg_4" stroke-linejoin="null" stroke-linecap="null" transform="rotate(90 1003.8370361328125,219.65690612792977) "/>
+  <line fill="none" stroke="#ff56aa" stroke-width="38" fill-opacity="null" x1="589.425586" y1="457.272718" x2="589.38397" y2="683.856289" id="svg_5" stroke-linejoin="null" stroke-linecap="null" transform="rotate(90 589.4046630859375,570.5643310546876) "/>
+  <line fill="none" stroke="#ff56aa" stroke-width="38" fill-opacity="null" x1="974.35464" y1="74.60269" x2="974.313024" y2="301.186261" id="svg_6" stroke-linejoin="null" stroke-linecap="null"/>
+  <text fill="#00bfbf" stroke-width="0" stroke-opacity="null" x="281.820343" y="244.356403" id="svg_7" font-size="24" font-family="'Courier New', Courier, monospace" text-anchor="start" xml:space="preserve" transform="matrix(17.936110171387064,0,0,19.884821465574543,-4386.377327909057,-4312.026685377771) " stroke="#00a1ff" font-weight="bold">V</text>
+  <text fill="#000000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="262.764479" y="850.381317" id="svg_10" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" transform="matrix(11.612123489379883,0,0,4.974902629852295,-2788.335446834564,-3293.579475954175) " stroke="#ff56aa"/>
+  <text fill="#ff56aa" stroke-width="0" x="138.646979" y="895.596186" id="svg_11" font-size="24" font-family="'Courier New', Courier, monospace" text-anchor="start" xml:space="preserve" transform="matrix(5.695070391919101,0,0,12.530432344906833,-781.4488996006172,-10188.480066833483) " stroke="#ff56aa" font-weight="bold" font-style="normal">VUE PICTURE CROPPER</text>
  </g>
 </svg>
