@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="200" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/a2319bbac4f56274e90fe1f0cc22a84e91b00667/src/assets/logo2.svg">
+  <img width="266" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/a2319bbac4f56274e90fe1f0cc22a84e91b00667/src/assets/logo2.svg">
 </p>
 
 <p align="center">
@@ -48,7 +48,6 @@ components: { VuePictureCropper }
 
 ```vue
 <vue-picture-cropper
-   ref="cropper"
    :container-width="option.width"
    :container-height="option.height"
    :outputType="option.type">
@@ -56,22 +55,149 @@ components: { VuePictureCropper }
 ```
 
 ### 属性
-| 参数                     | 说明             | 类型                 | 可选值                                                  | 默认值                  |
-|:----------------------:|:--------------:|:------------------:|:----------------------------------------------------:|:--------------------:|
-| image                  | 裁剪图片的地址        | String             | url 地址 \|\| base64 \|\| blob                         | 空                    |
-| containerWidth         | 插件容器的宽度        | Number             | 0~max                                                | 0                    |
-| containerHeight        | 插件容器的高度        | Number             | 0~max                                                | 0                    |
-| theme                  | 容器背景主题         | String             | dark \|\| warm \|\| pink                             | dark                 |
-| mode                   | 图片默认渲染方式       | String             | contain , cover, 100px, 100% auto                    | contain              |
-| maxImgSize             | 限制图片最大宽度和高度    | Number             | 0~max                                                | 2000                 |
-| outputType             | 裁剪生成图片的格式      | String             | jpeg \|\| png \|\| webp                              | jpg \(jpg 需要传入jpeg\) |
-| original               | 上传图片按照原始比例渲染   | Boolean            | true \| false                                        | false                |
-| canScale               | 图片是否允许滚轮缩放     | Boolean            | true \| false                                        | true                 |
-| canMoveImage           | 是否能移动图片        | Boolean            | true \| false                                        | true                 |
-| cropBoxBoundary        | 裁剪框宽高          | String \|\| Number | auto \|\| 200 \|\| 200px \|\| 200px 200px \|\| 50% 等 | auto \(容器宽高的50%\)    |
-| fixed                  | 是否开启固定宽高比      | Boolean            | true \| false                                        | false                |
-| fixedNumber            | 插件框宽高比         | Array              | \[1, 1\] \|\| other                                  | 空 （默认容器的宽高比）         |
-| fixedBox               | 固定大小 禁止改变截图框大小 | Boolean            | true \| false                                        | false                |
-| canMoveCropBox         | 是否能移动裁剪框       | Boolean            | true \| false                                        | true                 |
-| cropCanOverImageBorder | 截图框是否被限制在图片里面  | Boolean            | true \| false                                        | false                |
+<table>
+    <tr>
+        <td>参数</td>
+        <td>说明</td>
+        <td>类型</td>
+        <td>可选值</td>
+        <td>默认值</td>
+    </tr>
+    <tr>
+        <td>image</td>
+        <td>裁剪图片的地址</td>
+        <td>String</td>
+        <td>url 地址 || base64 || blob</td>
+        <td>空</td>
+    </tr>
+    <tr>
+        <td>containerWidth</td>
+        <td>插件容器的宽度</td>
+        <td>Number</td>
+        <td>0~max</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>containerHeight</td>
+        <td>插件容器的高度</td>
+        <td>Number</td>
+        <td>0~max</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>theme</td>
+        <td>容器背景主题</td>
+        <td>String</td>
+        <td>dark || warm || pink</td>
+        <td>dark</td>
+    </tr>
+    <tr>
+        <td>mode</td>
+        <td>图片默认渲染方式</td>
+        <td>String</td>
+        <td>contain , cover, 100px, 100% auto</td>
+        <td>contain</td>
+    </tr>
+    <tr>
+        <td>maxImgSize</td>
+        <td>限制图片最大宽度和高度</td>
+        <td>Number</td>
+        <td>0~max</td>
+        <td>2000</td>
+    </tr>
+    <tr>
+        <td>outputType</td>
+        <td>裁剪生成图片的格式</td>
+        <td>String</td>
+        <td>jpeg || png || webp</td>
+        <td>jpg (jpg 需要传入jpeg)</td>
+    </tr>
+    <tr>
+        <td>original</td>
+        <td>上传图片按照原始比例渲染</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>false</td>
+    </tr>
+    <tr>
+        <td>canScale</td>
+        <td>图片是否允许滚轮缩放</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>true</td>
+    </tr>
+    <tr>
+        <td>canMoveImage</td>
+        <td>是否能移动图片</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>true</td>
+    </tr>
+    <tr>
+        <td>cropBoxBoundary</td>
+        <td>裁剪框宽高</td>
+        <td>String || Number</td>
+        <td>auto || 200 || 200px || 200px 200px || 50% 等</td>
+        <td>auto (容器宽高的50%)</td>
+    </tr>
+    <tr>
+        <td>fixed</td>
+        <td>是否开启固定宽高比</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>false</td>
+    </tr>
+    <tr>
+        <td>fixedNumber</td>
+        <td>插件框宽高比</td>
+        <td>Array</td>
+        <td>[1, 1] || other</td>
+        <td>空 （默认容器的宽高比）</td>
+    </tr>
+    <tr>
+        <td>fixedBox</td>
+        <td>固定大小 禁止改变截图框大小</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>false</td>
+    </tr>
+    <tr>
+        <td>canMoveCropBox</td>
+        <td>是否能移动裁剪框</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>true</td>
+    </tr>
+    <tr>
+        <td>cropCanOverImageBorder</td>
+        <td>截图框是否被限制在图片里面</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>false</td>
+    </tr>
+</table>
 
+### 内置方法
+##### 通过 `ref` 和 `$refs` 调用
+
+```vue
+// 在标签上添加 ref= "cropper"
+<vue-picture-cropper
+    ref="cropper"
+>
+</vue-picture-cropper>
+```
+
+<table>
+    <tr>
+        <td>方法</td>
+        <td>说明</td>
+    </tr>
+    <tr>
+        <td>this.$refs.cropper.addImage()</td>
+        <td>添加将要裁剪的图片</td>
+    </tr>
+</table>
+
+### License
+###### Released under the MIT License.
