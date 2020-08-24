@@ -158,3 +158,9 @@
   left: -4px;
   cursor: w-resize;
 }
+.addImage{
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  z-index: -10;
+}

@@ -11,6 +11,11 @@
     <div
       class="cropper-container theme"
     >
+      <input type="file"
+             class="addImage"
+             id="addFile"
+             @change="addImageChange"
+             ref="add">
       <span class="cropper-container-bg" :class="themes.indexOf(theme) !== -1 ? 'theme-' + theme : 'theme-dark'"></span>
       <div class="cropper-box" v-if="showImg">
         <div
@@ -63,40 +68,40 @@
 
         <div class="fixedBox" v-if="!fixedBox && showImg">
           <span class="f fht"
-                @mousedown="resizeCropBox($event, false, true, 0, 1)"
+                @mousedown="resizeCropBox($event, false, true, 0, 1,22)"
           ></span>
           <span
-            @mousedown="resizeCropBox($event, true, false, 2, 0)"
+            @mousedown="resizeCropBox($event, true, false, 2, 0,2)"
             class="f fvr"></span>
           <span
-            @mousedown="resizeCropBox($event, false, true, 0, 2)"
+            @mousedown="resizeCropBox($event, false, true, 0, 2,3)"
             class="f fhb"></span>
           <span
-            @mousedown="resizeCropBox($event, true, false, 1, 0)"
+            @mousedown="resizeCropBox($event, true, false, 1, 0,4)"
             class="f fvl"></span>
           <span
-            @mousedown="resizeCropBox($event, true, true, 1, 1)"
+            @mousedown="resizeCropBox($event, true, true, 1, 1,1)"
             class="f dot dot-1"></span>
           <span
-            @mousedown="resizeCropBox($event, false, true, 0, 1)"
+            @mousedown="resizeCropBox($event, false, true, 0, 1,6)"
             class="f dot dot-2"></span>
           <span
-            @mousedown="resizeCropBox($event, true, true, 2, 1)"
+            @mousedown="resizeCropBox($event, true, true, 2, 1,3)"
             class="f dot dot-3"></span>
           <span
-            @mousedown="resizeCropBox($event, true, false, 2, 0)"
+            @mousedown="resizeCropBox($event, true, false, 2, 0,8)"
             class="f dot dot-4"></span>
           <span
-            @mousedown="resizeCropBox($event, true, true, 2, 2)"
+            @mousedown="resizeCropBox($event, true, true, 2, 2,1)"
             class="f dot dot-5"></span>
           <span
-            @mousedown="resizeCropBox($event, false, true, 0, 2)"
+            @mousedown="resizeCropBox($event, false, true, 0, 2,10)"
             class="f dot dot-6"></span>
           <span
-            @mousedown="resizeCropBox($event, true, true, 1, 2)"
+            @mousedown="resizeCropBox($event, true, true, 1, 2,3)"
             class="f dot dot-7"></span>
           <span
-            @mousedown="resizeCropBox($event, true, false, 1, 0)"
+            @mousedown="resizeCropBox($event, true, false, 1, 0,12)"
             class="f dot dot-8"></span>
         </div>
       </div>
@@ -173,10 +178,7 @@
       },
       // 宽高比 w/h
       fixedNumber: {
-        type: Array,
-        default: () => {
-          return [1, 1];
-        }
+        type: Array
       },
       // 固定大小 禁止改变截图框大小
       fixedBox: {
@@ -218,7 +220,8 @@
           cropOldW: '',
           cropOldH: '',
           cropChangeX: '',
-          cropChangeY: ''
+          cropChangeY: '',
+          dot: 0
         },
         sourceImageData: {
           width: '',
@@ -231,7 +234,8 @@
           x: '',
           // 纵坐标
           y: '',
-          orientation: 0
+          orientation: 0,
+          rate: 0,
         },
         ImgMoveData: {
           move: true,
@@ -263,16 +267,19 @@
       }
     },
     watch: {
-      showImg(val) {
+      async showImg(val) {
         if (val === '' || val === null) {
           return
         }
-        this.reload()
+        await this.reload();
         this.initCropBox()
       },
       cropBoxBoundary(val) {
         console.log(val)
       }
+    },
+    beforeMount() {
+      this.initApp();
     },
     mounted() {
       this.support =
@@ -284,10 +291,37 @@
       this.checkedImg()
     },
     methods: {
+
+      initApp (){
+        this.$nextTick(() => {
+          const { cropperContainer } = this
+          cropperContainer.width = parseFloat(window.getComputedStyle(this.$refs.cropper).width);
+          cropperContainer.height = parseFloat(window.getComputedStyle(this.$refs.cropper).height);
+        })
+      },
+
+      getVersion(name) {
+        var arr = navigator.userAgent.split(' ');
+        var chromeVersion = '';
+        let result = 0;
+        const reg = new RegExp(name, 'i');
+        for (var i = 0; i < arr.length; i++) {
+          if (reg.test(arr[i]))
+            chromeVersion = arr[i]
+        }
+        if (chromeVersion) {
+          result = chromeVersion.split('/')[1].split('.');
+        } else {
+          result = ['0', '0', '0'];
+        }
+        return result
+      },
+
       //checkout pic
-      checkedImg() {
-        if (this.image === null || this.image === '') {
-          this.image = '';
+      checkedImg(Img) {
+        let image = Img || this.image
+        if (image === null || image === '') {
+          image = '';
           return
         }
         this.loading = true;
@@ -309,7 +343,7 @@
             sourceImageData.orientation = data.orientation || 1;
             let max = this.maxImgSize;
             if (!this.orientation && (width < max) && (height < max)) {
-              this.showImg = this.image;
+              this.showImg = image;
               return;
             }
 
@@ -343,7 +377,7 @@
           xhr.responseType = "blob";
           xhr.send();
         } else {
-          img.src = this.image;
+          img.src = image;
         }
       },
 
@@ -448,33 +482,12 @@
 
       },
 
-      getVersion(name) {
-        var arr = navigator.userAgent.split(' ');
-        var chromeVersion = '';
-        let result = 0;
-        const reg = new RegExp(name, 'i');
-        for (var i = 0; i < arr.length; i++) {
-          if (reg.test(arr[i]))
-            chromeVersion = arr[i]
-        }
-        if (chromeVersion) {
-          result = chromeVersion.split('/')[1].split('.');
-        } else {
-          result = ['0', '0', '0'];
-        }
-        return result
-      },
-
       //  reload picture layout function
-      reload() {
+      reload()  {
         let img = new Image();
         img.src = this.showImg;
         img.onload = () => {
           const {cropperContainer, sourceImageData} = this;
-
-          cropperContainer.width = parseFloat(window.getComputedStyle(this.$refs.cropper).width);
-          cropperContainer.height = parseFloat(window.getComputedStyle(this.$refs.cropper).height);
-
           sourceImageData.width = img.width;
           sourceImageData.height = img.height;
 
@@ -491,7 +504,8 @@
               (cropperContainer.height - sourceImageData.height * sourceImageData.scale) / 2;
             this.loading = false;
           })
-        }
+        };
+        return;
       },
 
       dealMode() {
@@ -712,28 +726,28 @@
       //初始化截图框
       // type ： '10', '10px', '10%', '10px 10', 'auto' **
       initCropBox(boundary) {
-        const {showImg, cropBoxBoundary} = this
+        const {showImg, cropBoxBoundary, cropperContainer} = this
         if (showImg === '' || showImg === null || typeof showImg === 'undefined') return;
         let cropBoxWidth = 0,
           cropBoxHeight = 0;
         let cbb = boundary || cropBoxBoundary;
         let cbList = cbb.split(' ');
         if (cbList.length === 1) {
-          if (cbList[0] === 'auto'){
+          if (cbList[0] === 'auto') {
             this.initCropBox('50% 50%')
             return;
-          }else if( cbList[0].search('px') !== -1
-          || cbList[0].search('%') !== -1){
+          } else if (cbList[0].search('px') !== -1
+            || cbList[0].search('%') !== -1) {
             this.initCropBox(cbList[0] + ' ' + cbList[0])
             return;
-          }else if (/^\d{1,}$/.test(cbList[0])) {
+          } else if (/^\d{1,}$/.test(cbList[0])) {
             this.initCropBox(cbList[0] + 'px ' + cbList[0] + 'px');
             return;
-          }else {
+          } else {
             console.error('参数: crop-box-boundary 不符合规范')
             return;
           }
-        }else if (cbList.length === 2) {
+        } else if (cbList.length === 2) {
           let w = cbList[0].replace(/[^0-9]/ig, ""),
             h = cbList[1].replace(/[^0-9]/ig, "");
 
@@ -741,63 +755,67 @@
             cropBoxWidth = w;
             cropBoxHeight = h;
 
-          }else if (cbList[0].search('%') !== -1) {
-            let cw = parseFloat(window.getComputedStyle(this.$refs.cropper).width),
-              ch = parseFloat(window.getComputedStyle(this.$refs.cropper).height);
+          } else if (cbList[0].search('%') !== -1) {
+            let cw = cropperContainer.width,
+              ch = cropperContainer.height;
 
             if (w <= 100) {
               cropBoxWidth = cw * w / 100;
-            }else {
+            } else {
               cropBoxWidth = cw;
             }
             if (h <= 100) {
               cropBoxHeight = ch * h / 100;
-            }else {
+            } else {
               cropBoxHeight = ch;
             }
 
-          }else if (/^\d{1,}$/.test(cbList[0]) && /^\d{1,}$/.test(cbList[1])){
+          } else if (/^\d{1,}$/.test(cbList[0]) && /^\d{1,}$/.test(cbList[1])) {
             this.initCropBox(cbList[0] + 'px ' + cbList[1] + 'px');
             return;
-          }else {
+          } else {
             console.error('参数: crop-box-boundary 不符合规范')
             return;
           }
-        }else {
+        } else {
           console.error('参数: crop-box-boundary 不符合规范')
           return;
         }
 
-        this.changeCropBox(cropBoxWidth,cropBoxHeight);
+        this.changeCropBox(cropBoxWidth, cropBoxHeight);
       },
 
       changeCropBox(w, h) {
-        const {cropperBox, cropperContainer,
+        const {
+          cropperBox, cropperContainer,
           cropCanOverImageBorder, sourceImageData,
-          fixed, fixedNumber} = this
+          fixed, fixedNumber
+        } = this;
 
-        setTimeout(() => {
-          let rate = fixed ? fixedNumber[0]/fixedNumber[1] : w / h
-          if (!cropCanOverImageBorder) {
-            h = w / rate;
-            if (w > sourceImageData.width) {
-              w = sourceImageData.width
-              h = w /rate;
-            }
-            if (h > sourceImageData.height) {
-              h = sourceImageData.height;
-              w = h * rate;
-            }
-          }
-          cropperBox.width = w;
-          cropperBox.height = h;
-        },50);
         this.$nextTick(() => {
           setTimeout(() => {
+            let rate = fixed ?
+              typeof fixedNumber === 'undefined' ? cropperContainer.width / cropperContainer.height : fixedNumber[0] / fixedNumber[1]
+              : w / h
+            sourceImageData.rate = rate;
+            if (!cropCanOverImageBorder) {
+              h = w / rate;
+              if (w > sourceImageData.width) {
+                w = sourceImageData.width
+                h = w / rate;
+              }
+              if (h > sourceImageData.height) {
+                h = sourceImageData.height;
+                w = h * rate;
+              }
+            }
+            cropperBox.width = w;
+            cropperBox.height = w / rate
+
             cropperBox.x = (cropperContainer.width - cropperBox.width) / 2;
             cropperBox.y = (cropperContainer.height - cropperBox.height) / 2;
             cropperBox.ready = true
-          }, 50)
+          },50)
         })
       },
 
@@ -873,9 +891,10 @@
         window.removeEventListener("mouseup", this.leaveCrop);
       },
 
-      resizeCropBox(e, w, h, typeW, typeH) {
+      resizeCropBox(e, w, h, typeW, typeH, dot) {
         const {cropperBox, fixed} = this
         e.preventDefault();
+        cropperBox.dot = dot;
         window.addEventListener("mousemove", this.changeCropNow);
         window.addEventListener("mouseup", this.changeCropEnd);
         cropperBox.canChangeX = w;
@@ -898,7 +917,7 @@
 
       changeCropNow(e) {
         e.preventDefault();
-        const {cropperContainer, cropperBox, fixed} = this
+        const {cropperContainer, cropperBox, fixed, sourceImageData} = this
         let nowX = e.clientX ? e.clientX : e.touches ? e.touches[0].clientX : 0,
           nowY = e.clientY ? e.clientY : e.touches ? e.touches[0].clientY : 0;
 
@@ -914,26 +933,24 @@
           var fw = nowX - cropperBox.cropX
           var fh = nowY - cropperBox.cropY;
 
-         // 有缺陷
-         if (fixed){
-           let absFw = '',
-             absFh = '';
-           if (fw < 0) {
-             absFw = '-';
-           }else {
-             absFw = '+';
-           }
-           if (fh < 0) {
-             absFh = '-';
-           }else {
-             absFh = '+';
-           }
-           if (fw === 0) {
-             fw = parseFloat(absFh + Math.abs(fh))
-           }else {
-             fh = parseFloat( Math.abs(fw))
-           }
-         }
+          if (fixed) {
+            switch (cropperBox.dot) {
+              case 1 :
+                if (fw > fh) {
+                  fh = fw / sourceImageData.rate
+                } else {
+                  fw = fh * sourceImageData.rate
+                }
+                break;
+              case 3:
+                if (Math.abs(fw) > Math.abs(fh)) {
+                  fh = - fw / sourceImageData.rate
+                }else {
+                  fw = - fh *sourceImageData.rate
+                }
+            }
+          }
+
 
           if (cropperBox.canChangeX) {
             if (cropperBox.changeCropTypeX === 1) {
@@ -995,7 +1012,7 @@
                     : wrapperH - cropperBox.cropOldH - cropperBox.cropChangeY;
                 cropperBox.y = cropperBox.cropChangeY + cropperBox.cropOldH;
               }
-            }else if (cropperBox.changeCropTypeY === 2){
+            } else if (cropperBox.changeCropTypeY === 2) {
               if (cropperBox.cropOldH + fh > 0) {
                 cropperBox.height =
                   cropperBox.cropOldH + fh + cropperBox.y <= wrapperH
@@ -1025,7 +1042,7 @@
       },
 
       getCropAxis() {
-        const { cropperBox } = this
+        const {cropperBox} = this
         let obj = {
           x1: 0,
           x2: 0,
@@ -1051,7 +1068,7 @@
       },
 
       getCropInfo(cb) {
-        const { cropperBox, sourceImageData, showImg } = this
+        const {cropperBox, sourceImageData, showImg} = this
         let canvas = document.createElement("canvas");
         let img = new Image();
         let rotate = sourceImageData.rotate;
@@ -1083,10 +1100,10 @@
                 setCanvasSize(width / sourceImageData.scale, height / sourceImageData.scale);
                 ctx.drawImage(
                   img,
-                  dx /sourceImageData.scale,
-                  dy /sourceImageData.scale,
-                  imgW /sourceImageData.scale,
-                  imgH /sourceImageData.scale
+                  dx / sourceImageData.scale,
+                  dy / sourceImageData.scale,
+                  imgW / sourceImageData.scale,
+                  imgH / sourceImageData.scale
                 );
             }
             ctx.restore();
@@ -1098,11 +1115,28 @@
           img.crossOrigin = "Anonymous";
         }
         img.src = this.showImg
+
         function setCanvasSize(width, height) {
           canvas.width = Math.round(width);
           canvas.height = Math.round(height);
         }
       },
+
+      addImage() {
+        let el = this.$refs.add
+        el.click()
+      },
+
+      addImageChange() {
+        let el = this.$refs.add;
+        if (el.value === '' || el.value === null) return
+        let file = el.files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.checkedImg(reader.result)
+        }
+      }
     }
   }
 </script>
