@@ -3,8 +3,8 @@
         <vue-picture-cropper
             ref="cropper"
             :container-width="600"
-            theme="warm"
-            :cropCanOverImageBorder="false"
+            image="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3995073927,3598178723&fm=26&gp=0.jpg"
+            :crop-can-over-image-border="false"
             :container-height="450"
         ></vue-picture-cropper>
         <img :src="img" alt="">
