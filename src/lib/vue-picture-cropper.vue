@@ -626,11 +626,33 @@
       },
 
       checkoutImageAxis(x, y, scale) {
+        const {cropCanOverImageBorder, sourceImageData} = this;
+        x = x || sourceImageData.x;
+        y = y || sourceImageData.y;
+        scale = scale || sourceImageData.scale;
+
         let goScale = true;
-        const {overImageBorder} = this;
-        if (overImageBorder) {
+        if (!cropCanOverImageBorder) {
           let axis = this.getImageAxis(x, y, scale);
-          console.log(axis)
+          let cropAxis = this.getCropAxis();
+          if (axis.x1 >= cropAxis.x1) {
+            goScale = false;
+          }
+
+          // 右边横坐标
+          if (axis.x2 <= cropAxis.x2) {
+            goScale = false;
+          }
+
+          // 纵坐标上面
+          if (axis.y1 >= cropAxis.y1) {
+            goScale = false;
+          }
+
+          // 纵坐标下面
+          if (axis.y2 <= cropAxis.y2) {
+            goScale = false;
+          }
         }
         return goScale;
       },
@@ -705,7 +727,7 @@
           return
         }
 
-        const {sourceImageData, ImgMoveData} = this
+        const {sourceImageData, ImgMoveData, cropCanOverImageBorder, cropperBox} = this
 
         let nowX = e.clientX ? e.clientX : e.touches[0].clientX;
         let nowY = e.clientY ? e.clientY : e.touches[0].clientY;
@@ -716,8 +738,46 @@
         changeY = nowY - ImgMoveData.y;
 
         this.$nextTick(() => {
+          if (!cropCanOverImageBorder) {
+            let axis = this.getImageAxis(changeX, changeY, sourceImageData.scale);
+            let cAxis = this.getCropAxis();
+            let imgW = sourceImageData.width * sourceImageData.scale;
+            let imgH = sourceImageData.height * sourceImageData.scale;
+            let maxLeft, maxTop, maxRight, maxBottom;
+            switch (sourceImageData.rotate) {
+              case 1 :
+                maxLeft = cropperBox.x - (sourceImageData.width * (1 - sourceImageData.scale)) / 2 +
+                  (imgW - imgH) / 2;
+                maxTop = cropperBox.y - (sourceImageData.height * (1 - sourceImageData.scale)) / 2 +
+                  (imgH - imgW) / 2;
+                maxRight =maxLeft - imgW + cropperBox.width;
+                maxBottom = maxTop - imgH + cropperBox.height;
+                break;
+              default:
+                maxLeft = cropperBox.x - (sourceImageData.width * (1 - sourceImageData.scale)) / 2;
+                maxTop = cropperBox.y - (sourceImageData.height * (1 - sourceImageData.scale)) / 2;
+                maxRight = maxLeft - imgW + cropperBox.width;
+                maxBottom = maxTop - imgH + cropperBox.height;
+            }
+
+
+            if (axis.x1 >= cAxis.x1) {
+              changeX = maxLeft;
+            }
+            if(axis.x2 <= cAxis.x2) {
+              changeX = maxRight;
+            }
+            if (axis.y1 >= cAxis.y1) {
+              changeY = maxTop;
+            }
+            if (axis.y2 <= cAxis.y2) {
+              changeY = maxBottom;
+            }
+          }
+
           sourceImageData.x = changeX;
           sourceImageData.y = changeY;
+
         })
 
       },
@@ -849,8 +909,10 @@
       },
 
       movingCropBox(e) {
-        const {cropperBox, cropperContainer, sourceImageData,
-          cropCanOverImageBorder } = this
+        const {
+          cropperBox, cropperContainer, sourceImageData,
+          cropCanOverImageBorder
+        } = this
         e.preventDefault();
 
         let nowX = 0;
@@ -945,7 +1007,7 @@
 
       changeCropNow(e) {
         e.preventDefault();
-        const {cropperContainer, cropperBox, fixed, sourceImageData} = this
+        const {cropperContainer, cropperBox, fixed, sourceImageData, cropCanOverImageBorder} = this
         let nowX = e.clientX ? e.clientX : e.touches ? e.touches[0].clientX : 0,
           nowY = e.clientY ? e.clientY : e.touches ? e.touches[0].clientY : 0;
         let wrapperW = cropperContainer.width,
@@ -953,9 +1015,27 @@
         // 不能超过的坐标轴
         let minX = 0;
         let minY = 0;
+
+        if (!cropCanOverImageBorder) {
+          let axis = this.getImageAxis();
+          let imgW = axis.x2;
+          let imgH = axis.y2;
+          minX = axis.x1 > 0 ? axis.x1 : 0;
+          minY = axis.y1 > 0 ? axis.y1 : 0;
+
+          if (wrapperW > imgW) {
+            wrapperW = imgW;
+          }
+
+          if (wrapperH > imgH) {
+            wrapperH = imgH;
+          }
+        }
+
         this.$nextTick(() => {
           var fw = nowX - cropperBox.cropX
           var fh = nowY - cropperBox.cropY;
+
           if (fixed) {
             switch (cropperBox.dot) {
               case 1 :
@@ -973,6 +1053,7 @@
                 }
             }
           }
+
           if (cropperBox.canChangeX) {
             if (cropperBox.changeCropTypeX === 1) {
               if (cropperBox.cropOldW - fw > 0) {
@@ -1053,6 +1134,28 @@
               }
             }
           }
+
+          if (cropperBox.canChangeX && fixed) {
+            let fixedHeight = cropperBox.width / sourceImageData.rate
+            if (fixedHeight + cropperBox.y > wrapperH) {
+              cropperBox.height = wrapperH - cropperBox.y;
+              cropperBox.width = cropperBox.height * sourceImageData.rate
+            }else {
+              cropperBox.height = fixedHeight;
+            }
+          }
+
+          if (cropperBox.canChangeY && fixed) {
+            var fixedWidth = cropperBox.height * sourceImageData.rate;
+            if (fixedWidth + cropperBox.x > wrapperW){
+              cropperBox.width = wrapperW - cropperBox.x;
+              cropperBox.height = cropperBox.width / sourceImageData.rate;
+            }else {
+              cropperBox.width = fixedWidth;
+            }
+          }
+
+
         })
       },
 
@@ -1073,28 +1176,6 @@
         obj.y1 = cropperBox.y;
         obj.x2 = cropperBox.x + cropperBox.width;
         obj.y2 = cropperBox.y + cropperBox.height;
-        return obj;
-      },
-
-      getImageAxis(x, y, scale){
-        const { sourceImageData } = this;
-        x = x || sourceImageData.x;
-        y = y || sourceImageData.y;
-        scale = scale || sourceImageData.scale;
-        let obj = {
-          x1: 0,
-          x2: 0,
-          y1: 0,
-          y2: 0
-        };
-        let imgWidth = sourceImageData.width * sourceImageData.scale;
-        let imgHeight = sourceImageData.height * sourceImageData.scale;
-
-        obj.x1 = x + (sourceImageData.width * (1 - scale)) / 2;
-        obj.x2 = obj.x1 + sourceImageData.width * scale;
-        obj.y1 = y + (sourceImageData.height * (1 - scale)) / 2;
-        obj.y2 = obj.y1 + sourceImageData.height * scale;
-
         return obj;
       },
 
