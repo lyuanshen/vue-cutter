@@ -197,6 +197,10 @@ components: { VuePictureCropper }
         <td>this.$refs.cropper.addImage()</td>
         <td>添加将要裁剪的图片</td>
     </tr>
+     <tr>
+        <td>this.$refs.cropper.getCropBlob(function)</td>
+        <td>获取 Blob 格式的图片</td>
+     </tr>
 </table>
 
 ### License
