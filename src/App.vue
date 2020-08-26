@@ -4,7 +4,7 @@
             ref="cropper"
             :container-width="600"
             :container-height="450"
-            image="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3995073927,3598178723&fm=26&gp=0.jpg"
+            image="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3995073927,3598178723&fm=26&gp=0.jpg"git subtree push --prefix=dist origin gh-pages
         ></vue-picture-cropper>
         <img :src="img" alt="">
         <div style="width: 100%;margin-top: 38px">
