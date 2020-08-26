@@ -3,15 +3,13 @@
         <vue-picture-cropper
             ref="cropper"
             :container-width="600"
-            :fixed="true"
-            image="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3995073927,3598178723&fm=26&gp=0.jpg"
-            :crop-can-over-image-border="false"
             :container-height="450"
+            image="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3995073927,3598178723&fm=26&gp=0.jpg"
         ></vue-picture-cropper>
         <img :src="img" alt="">
         <div style="width: 100%;margin-top: 38px">
             <el-button @click="getCropperAxis"
-                       type="primary">主要按钮
+                       type="primary">裁剪
             </el-button>
             <el-button @click="addImage"
                        type="primary">addImage
