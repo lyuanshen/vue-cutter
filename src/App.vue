@@ -1,4 +1,5 @@
 <template>
+<!--  开发测试-->
     <div id="app">
         <vue-picture-cropper
             ref="cropper"

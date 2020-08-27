@@ -1,54 +1,55 @@
 {
-    "name": "vue-picture-cropper",
-    "description": "A simple picture clipping plugin for Vue.js",
-    "version": "1.0.2",
-    "author": "LYuanshen <707978562@qq.com>",
-    "license": "MIT",
-    "main": "/dist/index.js",
-    "keywords": [
-        "vue",
-        "cropper",
-        "vue-cropper",
-        "vue-component",
-        "vue-cropper-component",
-        "vue-image-cropper",
-        "vue-image-cropper-component",
-        "picture-cropper",
-        "vue-picture-cropper"
-    ],
-    "scripts": {
-        "dev": "cross-env NODE_ENV=dev webpack-dev-server --open --hot --config webpack.config.js",
-        "build:example": "cross-env NODE_ENV=example webpack --progress --hide-modules --config webpack.config.js",
-        "build:prod": "cross-env NODE_ENV=prod webpack --progress --hide-modules --config webpack.config.js",
-        "test": "cross-env NODE_ENV=test webpack-dev-server --open --hot --config webpack.config.js"
-    },
-    "dependencies": {
-        "babel-plugin-add-module-exports": "^1.0.2",
-        "element-ui": "^2.13.2",
-        "url-loader": "^4.1.0",
-        "vue": "^2.5.17"
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions",
-        "not ie <= 8"
-    ],
-    "devDependencies": {
-        "babel-core": "^6.26.0",
-        "babel-loader": "^7.1.2",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-env": "^1.6.0",
-        "babel-preset-stage-3": "^6.24.1",
-        "cross-env": "^5.0.5",
-        "css-loader": "^0.28.7",
-        "file-loader": "^1.1.4",
-        "html-webpack-plugin": "^3.2.0",
-        "node-sass": "^4.5.3",
-        "sass-loader": "^6.0.6",
-        "vue-loader": "^15.4.2",
-        "vue-template-compiler": "^2.6.12",
-        "webpack": "^3.6.0",
-        "webpack-dev-server": "^2.9.1",
-        "webpack-merge": "^5.1.1"
-    }
+  "name": "vue-picture-cropper",
+  "description": "A simple picture clipping plugin for Vue.js",
+  "version": "1.0.2",
+  "author": "LYuanshen <707978562@qq.com>",
+  "license": "MIT",
+  "main": "/dist/index.js",
+  "keywords": [
+    "vue",
+    "cropper",
+    "vue-cropper",
+    "vue-component",
+    "vue-cropper-component",
+    "vue-image-cropper",
+    "vue-image-cropper-component",
+    "picture-cropper",
+    "vue-picture-cropper"
+  ],
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev webpack-dev-server --open --hot --config webpack.config.js",
+    "build:example": "cross-env NODE_ENV=example webpack --progress --hide-modules --config webpack.config.js",
+    "build:prod": "cross-env NODE_ENV=prod webpack --progress --hide-modules --config webpack.config.js",
+    "test": "cross-env NODE_ENV=test webpack-dev-server --open --hot --config webpack.config.js",
+    "github-page:dev": "cross-env NODE_ENV=github-dev webpack-dev-server --open --hot --config webpack.config.js"
+  },
+  "dependencies": {
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "url-loader": "^4.1.0",
+    "vue": "^2.5.17"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "cross-env": "^5.0.5",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.4",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "vue-loader": "^15.4.2",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1",
+    "webpack-merge": "^5.1.1",
+    "element-ui": "^2.13.2"
+  }
 }
