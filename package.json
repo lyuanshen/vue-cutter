@@ -1,20 +1,21 @@
 {
   "name": "vue-cutter",
   "description": "A simple picture clipping plugin for Vue.js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "LYuanshen <707978562@qq.com>",
   "license": "MIT",
   "main": "/dist/index.js",
   "keywords": [
     "vue",
     "cropper",
+    "cutter",
     "vue-cropper",
-    "vue-component",
-    "vue-cropper-component",
+    "vue-cutter",
+    "vue-cutter-component",
     "vue-image-cropper",
-    "vue-image-cropper-component",
-    "picture-cropper",
-    "vue-picture-cropper"
+    "vue-image-cutter",
+    "picture-cutter",
+    "vue-picture-cutter"
   ],
   "scripts": {
     "dev": "cross-env NODE_ENV=dev webpack-dev-server --open --hot --config webpack.config.js",

@@ -1,8 +1,8 @@
 <template>
     <div>
-        <vue-picture-cropper
+        <vue-cutter
             :container-height="200"
-        ></vue-picture-cropper>
+        ></vue-cutter>
     </div>
 </template>
 

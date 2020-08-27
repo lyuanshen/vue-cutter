@@ -418,10 +418,10 @@ module.exports.f = function (C) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_script_lang_js___ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_script_lang_js____default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_script_lang_js___);
-/* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_script_lang_js___) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_script_lang_js___[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_script_lang_js____default.a); 
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_script_lang_js___ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_script_lang_js____default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_script_lang_js___);
+/* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_script_lang_js___) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_script_lang_js___[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_script_lang_js____default.a); 
 
 /***/ }),
 /* 23 */
@@ -431,7 +431,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = __webpack_require__(43);
@@ -449,1009 +449,1132 @@ var _exifJsMin2 = _interopRequireDefault(_exifJsMin);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    name: "vue-picture-cropper",
-    props: {
-        // 容器宽度
-        containerWidth: {
-            type: Number
-        },
-        // 容器高度
-        containerHeight: {
-            type: Number
-        },
-        //容器背景主题
-        theme: {
-            type: String,
-            default: 'dark'
-        },
-        // 需裁剪的图片
-        image: {
-            type: [String, Blob, null, File],
-            default: ''
-        },
-        //图片布局模式
-        mode: {
-            type: String,
-            default: 'contain'
-        },
-        // 可以压缩图片宽高  默认不超过200
-        maxImgSize: {
-            type: [Number, String],
-            default: 2000
-        },
-        //输出图片格式
-        outputType: {
-            type: String,
-            default: 'png'
-        },
-        original: {
-            type: Boolean,
-            default: false
-        },
-        //图片是否缩放
-        canScale: {
-            type: Boolean,
-            default: true
-        },
-        cropCanOverImageBorder: {
-            type: Boolean,
-            default: true
-        },
-        //是否能移动图片
-        canMoveImage: {
-            type: Boolean,
-            default: true
-        },
-        //裁剪框宽高
-        cropBoxBoundary: {
-            type: [String, Array, Number],
-            default: 'auto'
-        },
-        // 是否开启固定宽高比
-        fixed: {
-            type: Boolean,
-            default: false
-        },
-        // 宽高比 w/h
-        fixedNumber: {
-            type: Array
-        },
-        // 固定大小 禁止改变截图框大小
-        fixedBox: {
-            type: Boolean,
-            default: false
-        },
-        //是否能移动裁剪框
-        canMoveCropBox: {
-            type: Boolean,
-            default: true
-        }
+  name: "vue-cutter",
+  props: {
+    // 容器宽度
+    containerWidth: {
+      type: Number
     },
-    data: function data() {
-        return {
-            themes: ['dark', 'warm', 'pink', 'test'],
-            modes: ['contain', 'cover', 'auto'],
-            cropperContainer: {
-                width: '',
-                height: ''
-            },
-            cropperBox: {
-                ready: false,
-                // 开启截图
-                crop: false,
-                // 正在截图
-                cropping: false,
-                // 裁剪框大小
-                width: '',
-                height: '',
-                //裁剪框坐标
-                x: 0,
-                y: 0,
-                cropX: 0,
-                cropY: 0,
-                canChangeX: '',
-                canChangeY: '',
-                changeCropTypeX: '',
-                changeCropTypeY: '',
-                cropOldW: '',
-                cropOldH: '',
-                cropChangeX: '',
-                cropChangeY: '',
-                dot: 0
-            },
-            sourceImageData: {
-                width: '',
-                height: '',
-                //缩放倍数
-                scale: '',
-                //选装
-                rotate: 0,
-                // 横坐标
-                x: '',
-                // 纵坐标
-                y: '',
-                orientation: 0,
-                rate: 0
-            },
-            ImgMoveData: {
-                move: true,
-                x: '',
-                y: ''
-            },
-            showImg: '',
-            // 图片加载
-            loading: true,
-            support: "",
-            // 图片缩放系数
-            imgZF: 0.2,
-            // 图片信息
-            imgZFStatus: '',
-            scaling: false,
-            scalingSet: ''
-        };
+    // 容器高度
+    containerHeight: {
+      type: Number
     },
-
-    computed: {
-        isIE: function isIE() {
-            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-            var isIE = !!window.ActiveXObject || 'ActiveXObject' in window; //判断是否IE浏览器
-            return isIE;
-        },
-        passive: function passive() {
-            return this.isIE ? null : {
-                passive: false
-            };
-        }
+    //容器背景主题
+    theme: {
+      type: String,
+      default: 'dark'
     },
-    watch: {
-        showImg: function showImg(val) {
-            var _this = this;
-
-            return (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                if (!(val === '' || val === null)) {
-                                    _context.next = 2;
-                                    break;
-                                }
-
-                                return _context.abrupt('return');
-
-                            case 2:
-                                _context.next = 4;
-                                return _this.reload();
-
-                            case 4:
-                                _this.initCropBox();
-
-                            case 5:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, _this);
-            }))();
-        },
-        cropBoxBoundary: function cropBoxBoundary(val) {
-            console.log(val);
-        }
+    // 需裁剪的图片
+    image: {
+      type: [String, Blob, null, File],
+      default: ''
     },
-    beforeMount: function beforeMount() {
-        this.initApp();
+    //图片布局模式
+    mode: {
+      type: String,
+      default: 'contain'
     },
-    mounted: function mounted() {
-        this.support = "onwheel" in document.createElement("div") ? "wheel" : document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll";
-        this.checkedImg();
+    // 可以压缩图片宽高  默认不超过200
+    maxImgSize: {
+      type: [Number, String],
+      default: 2000
     },
-
-    methods: {
-        initApp: function initApp() {
-            var _this2 = this;
-
-            this.$nextTick(function () {
-                var cropperContainer = _this2.cropperContainer;
-
-                cropperContainer.width = parseFloat(window.getComputedStyle(_this2.$refs.cropper).width);
-                cropperContainer.height = parseFloat(window.getComputedStyle(_this2.$refs.cropper).height);
-            });
-        },
-        getVersion: function getVersion(name) {
-            var arr = navigator.userAgent.split(' ');
-            var chromeVersion = '';
-            var result = 0;
-            var reg = new RegExp(name, 'i');
-            for (var i = 0; i < arr.length; i++) {
-                if (reg.test(arr[i])) chromeVersion = arr[i];
-            }
-            if (chromeVersion) {
-                result = chromeVersion.split('/')[1].split('.');
-            } else {
-                result = ['0', '0', '0'];
-            }
-            return result;
-        },
-
-
-        //checkout pic
-        checkedImg: function checkedImg(Img) {
-            var _this3 = this;
-
-            var image = Img || this.image;
-            if (image === null || image === '') {
-                image = '';
-                return;
-            }
-
-            this.loading = true;
-            this.sourceImageData.scale = 1;
-            this.rotate = 0;
-            var img = new Image();
-            img.onload = function () {
-                if (image === '') {
-                    // something will be do
-                    return;
-                }
-                var sourceImageData = _this3.sourceImageData;
-
-
-                var width = img.width;
-                var height = img.height;
-
-                _exifJsMin2.default.getData(img).then(function (data) {
-
-                    sourceImageData.orientation = data.orientation || 1;
-                    var max = _this3.maxImgSize;
-                    if (!_this3.orientation && width < max && height < max) {
-                        _this3.showImg = image;
-                        return;
-                    }
-
-                    if (width > max) {
-                        height = height / width * max;
-                        width = max;
-                    }
-
-                    if (height > max) {
-                        width = width / height * max;
-                        height = max;
-                    }
-                    _this3.checkOrientationImage(img, sourceImageData.orientation, width, height);
-                });
-            };
-            img.onerror = function () {
-                // something will be do
-                return;
-            };
-            // 判断如果不是base64图片 再添加crossOrigin属性，否则会导致iOS低版本(10.2)无法显示图片
-            if (this.image.substring(0, 4) !== "data") {
-                img.crossOrigin = "";
-            }
-            if (this.isIE) {
-                var xhr = new XMLHttpRequest();
-                xhr.onload = function () {
-                    var url = URL.createObjectURL(this.response);
-                    img.src = url;
-                };
-                xhr.open("GET", this.img, true);
-                xhr.responseType = "blob";
-                xhr.send();
-            } else {
-                img.src = image;
-            }
-        },
-        checkOrientationImage: function checkOrientationImage(img, orientation, width, height) {
-            var _this4 = this;
-
-            // If the chrome kernel version is 81 and safari is above 605, the image rotation will not be processed
-            // alert(navigator.userAgent)
-            if (this.getVersion('chrome')[0] >= 81) {
-                orientation = -1;
-            } else {
-                if (this.getVersion('safari')[0] >= 605) {
-                    var safariVersion = this.getVersion('version');
-                    if (safariVersion[0] > 13 && safariVersion[1] > 1) {
-                        orientation = -1;
-                    }
-                } else {
-                    //  判断 ios 版本进行处理
-                    // 针对 ios 版本大于 13.4的系统不做图片旋转
-                    var isIos = navigator.userAgent.toLowerCase().match(/cpu iphone os (.*?) like mac os/);
-                    if (isIos) {
-                        var version = isIos[1];
-                        version = version.split('_');
-                        if (version[0] > 13 || version[0] >= 13 && version[1] >= 4) {
-                            orientation = -1;
-                        }
-                    }
-                }
-            }
-
-            var canvas = document.createElement("canvas");
-            var ctx = canvas.getContext("2d");
-            ctx.save();
-
-            switch (orientation) {
-                case 2:
-                    canvas.width = width;
-                    canvas.height = height;
-                    // horizontal flip
-                    ctx.translate(width, 0);
-                    ctx.scale(-1, 1);
-                    break;
-                case 3:
-                    canvas.width = width;
-                    canvas.height = height;
-                    //180 graus
-                    ctx.translate(width / 2, height / 2);
-                    ctx.rotate(180 * Math.PI / 180);
-                    ctx.translate(-width / 2, -height / 2);
-                    break;
-                case 4:
-                    canvas.width = width;
-                    canvas.height = height;
-                    // vertical flip
-                    ctx.translate(0, height);
-                    ctx.scale(1, -1);
-                    break;
-                case 5:
-                    // vertical flip + 90 rotate right
-                    canvas.height = width;
-                    canvas.width = height;
-                    ctx.rotate(0.5 * Math.PI);
-                    ctx.scale(1, -1);
-                    break;
-                case 6:
-                    canvas.width = height;
-                    canvas.height = width;
-                    //90 graus
-                    ctx.translate(height / 2, width / 2);
-                    ctx.rotate(90 * Math.PI / 180);
-                    ctx.translate(-width / 2, -height / 2);
-                    break;
-                case 7:
-                    // horizontal flip + 90 rotate right
-                    canvas.height = width;
-                    canvas.width = height;
-                    ctx.rotate(0.5 * Math.PI);
-                    ctx.translate(width, -height);
-                    ctx.scale(-1, 1);
-                    break;
-                case 8:
-                    canvas.height = width;
-                    canvas.width = height;
-                    //-90 graus
-                    ctx.translate(height / 2, width / 2);
-                    ctx.rotate(-90 * Math.PI / 180);
-                    ctx.translate(-width / 2, -height / 2);
-                    break;
-                default:
-                    canvas.width = width;
-                    canvas.height = height;
-            }
-
-            ctx.drawImage(img, 0, 0, width, height);
-            ctx.restore();
-            canvas.toBlob(function (blob) {
-                var data = URL.createObjectURL(blob);
-                URL.revokeObjectURL(_this4.imgs);
-                _this4.showImg = data;
-            }, "image/" + this.outputType, 1);
-        },
-
-
-        //  reload picture layout function
-        reload: function reload() {
-            var _this5 = this;
-
-            var img = new Image();
-            img.src = this.showImg;
-            img.onload = function () {
-                var cropperContainer = _this5.cropperContainer,
-                    sourceImageData = _this5.sourceImageData;
-
-                sourceImageData.width = img.width;
-                sourceImageData.height = img.height;
-
-                if (!_this5.original) {
-                    sourceImageData.scale = _this5.dealMode();
-                } else {
-                    sourceImageData.scale = 1;
-                }
-
-                _this5.$nextTick(function () {
-                    sourceImageData.x = -(sourceImageData.width - sourceImageData.width * sourceImageData.scale) / 2 + (cropperContainer.width - sourceImageData.width * sourceImageData.scale) / 2;
-                    sourceImageData.y = -(sourceImageData.height - sourceImageData.height * sourceImageData.scale) / 2 + (cropperContainer.height - sourceImageData.height * sourceImageData.scale) / 2;
-                    _this5.loading = false;
-                });
-            };
-            return;
-        },
-        dealMode: function dealMode() {
-            var mode = this.mode,
-                modes = this.modes,
-                sourceImageData = this.sourceImageData,
-                cropperContainer = this.cropperContainer;
-
-            var scale = 1;
-            var md = '';
-            var imgWidth = sourceImageData.width,
-                imgHeight = sourceImageData.height;
-            var contWidth = cropperContainer.width,
-                contHeight = cropperContainer.height;
-            md = modes.find(function (element) {
-                return element === mode;
-            });
-            if (typeof md === 'undefined') {
-                md = mode.split(' ');
-            }
-
-            switch (md) {
-                case 'contain':
-                    if (imgWidth > contWidth) {
-                        scale = contWidth / imgWidth;
-                    }
-
-                    if (imgHeight > contHeight) {
-                        scale = contHeight / imgHeight;
-                    }
-
-                    break;
-                case 'cover':
-                    // 扩展布局 默认填充满整个容器
-                    // 图片宽度大于容器
-                    scale = contWidth / imgWidth;
-                    var h = imgHeight * scale;
-                    if (h < contHeight) {
-                        h = contHeight;
-                        scale = h / imgHeight;
-                    }
-                    break;
-                default:
-                    try {
-                        var str = md[0];
-                        if (str.search('px') !== -1) {
-                            str.replace('px', '');
-                            scale = parseFloat(str) / imgWidth;
-                        }
-
-                        if (str.search('%') !== -1) {
-                            str = str.replace("%", "");
-                            scale = parseFloat(str) / 100 * contWidth / imgWidth;
-                        }
-                    } catch (e) {
-                        scale = 1;
-                    }
-            }
-            return scale;
-        },
-        scaleImage: function scaleImage() {
-            if (this.canScale) {
-                window.addEventListener(this.support, this.changeSize, this.passive);
-            }
-        },
-        cancelScale: function cancelScale() {
-            if (this.canScale) {
-                window.removeEventListener(this.support, this.changeSize);
-            }
-        },
-        changeSize: function changeSize(e) {
-            var _this6 = this;
-
-            e.preventDefault();
-            var sourceImageData = this.sourceImageData,
-                imgZF = this.imgZF,
-                imgZFStatus = this.imgZFStatus;
-
-            var scale = sourceImageData.scale;
-            var change = e.deltaY || e.wheelDelta;
-            var isFirefox = navigator.userAgent.indexOf("Firefox");
-            change = isFirefox > 0 ? change * 30 : change;
-
-            if (this.isIE) {
-                change = -change;
-            }
-
-            var IZF = imgZF;
-            IZF = IZF / sourceImageData.width > IZF / sourceImageData.height ? IZF / sourceImageData.height : IZF / sourceImageData.width;
-
-            var num = IZF * change;
-
-            num < 0 ? scale += Math.abs(num) : scale > Math.abs(num) ? scale -= Math.abs(num) : scale;
-
-            var status = num < 0 ? "add" : "reduce";
-
-            if (status !== imgZFStatus) {
-                this.imgZFStatus = status;
-                this.imgZF = 0.2;
-            }
-
-            if (!this.scaling) {
-                this.scalingSet = setTimeout(function () {
-                    _this6.scaling = false;
-                    _this6.imgZF = _this6.imgZF += 0.01;
-                }, 50);
-            }
-
-            this.scaling = true;
-
-            if (!this.checkoutImageAxis(sourceImageData.x, sourceImageData.y, scale)) {
-                return false;
-            }
-            this.sourceImageData.scale = scale;
-        },
-        checkoutImageAxis: function checkoutImageAxis(x, y, scale) {
-            var goScale = true;
-            var overImageBorder = this.overImageBorder;
-
-            if (overImageBorder) {
-                var axis = this.getImageAxis(x, y, scale);
-                console.log(axis);
-            }
-            return goScale;
-        },
-        getImageAxis: function getImageAxis(x, y, scale) {
-            var sourceImageData = this.sourceImageData;
-
-            x = x || sourceImageData.x;
-            y = y || sourceImageData.y;
-            scale = scale || sourceImageData.scale;
-            var obj = {
-                x1: 0,
-                x2: 0,
-                y1: 0,
-                y2: 0
-            };
-            var imgW = sourceImageData.width * sourceImageData.scale;
-            var imgH = sourceImageData.height * sourceImageData.scale;
-
-            switch (sourceImageData.rotate) {
-                case 0:
-                    obj.x1 = x + sourceImageData.width * (1 - scale) / 2;
-                    obj.x2 = obj.x1 + sourceImageData.width * scale;
-                    obj.y1 = y + sourceImageData.height * (1 - scale) / 2;
-                    obj.y2 = obj.y1 + sourceImageData.height * scale;
-                    break;
-                case 1:
-                case -1:
-                case 3:
-                case -3:
-                    obj.x1 = x + sourceImageData.width * (1 - scale) / 2 + (imgW - imgH) / 2;
-                    obj.x2 = obj.x1 + sourceImageData.height * scale;
-                    obj.y1 = y + sourceImageData.height * (1 - scale) / 2 + (imgW - imgH) / 2;
-                    obj.y2 = obj.y1 + sourceImageData.width * scale;
-                    break;
-                default:
-                    obj.x1 = x + sourceImageData.width * (1 - scale) / 2;
-                    obj.x2 = obj.x1 + sourceImageData.width * scale;
-                    obj.y1 = y + sourceImageData.height * (1 - scale) / 2;
-                    obj.y2 = obj.y1 + sourceImageData.height * scale;
-                    break;
-            }
-            return obj;
-        },
-        moveImage: function moveImage(e) {
-            e.preventDefault();
-            var ImgMoveData = this.ImgMoveData,
-                canMoveImage = this.canMoveImage,
-                sourceImageData = this.sourceImageData,
-                cropperBox = this.cropperBox;
-
-            if (ImgMoveData.move && !cropperBox.crop) {
-                if (!canMoveImage) {
-                    return;
-                } else {
-                    if (ImgMoveData.move) {
-                        ImgMoveData.x = (e.clientX ? e.clientX : e.touches[0].clientX) - sourceImageData.x;
-                        ImgMoveData.y = (e.clientY ? e.clientY : e.touches[0].clientY) - sourceImageData.y;
-                        if (e.touches) {} else {
-                            window.addEventListener('mousemove', this.movingImg);
-                            window.addEventListener('mouseup', this.stopMoveImg);
-                        }
-                    }
-                }
-            } else {}
-        },
-        movingImg: function movingImg(e) {
-            e.preventDefault();
-            if (e.touches && e.touches.length === 2) {
-                return;
-            }
-
-            var sourceImageData = this.sourceImageData,
-                ImgMoveData = this.ImgMoveData;
-
-
-            var nowX = e.clientX ? e.clientX : e.touches[0].clientX;
-            var nowY = e.clientY ? e.clientY : e.touches[0].clientY;
-
-            var changeX = void 0,
-                changeY = void 0;
-
-            changeX = nowX - ImgMoveData.x;
-            changeY = nowY - ImgMoveData.y;
-
-            this.$nextTick(function () {
-                sourceImageData.x = changeX;
-                sourceImageData.y = changeY;
-            });
-        },
-        stopMoveImg: function stopMoveImg(e) {
-            window.removeEventListener('mousemove', this.movingImg);
-        },
-
-
-        //初始化截图框
-        // type ： '10', '10px', '10%', '10px 10', 'auto' **
-        initCropBox: function initCropBox(boundary) {
-            var showImg = this.showImg,
-                cropBoxBoundary = this.cropBoxBoundary,
-                cropperContainer = this.cropperContainer;
-
-            if (showImg === '' || showImg === null || typeof showImg === 'undefined') return;
-            var cropBoxWidth = 0,
-                cropBoxHeight = 0;
-            var cbb = boundary || cropBoxBoundary;
-            var cbList = cbb.split(' ');
-            if (cbList.length === 1) {
-                if (cbList[0] === 'auto') {
-                    this.initCropBox('50% 50%');
-                    return;
-                } else if (cbList[0].search('px') !== -1 || cbList[0].search('%') !== -1) {
-                    this.initCropBox(cbList[0] + ' ' + cbList[0]);
-                    return;
-                } else if (/^\d{1,}$/.test(cbList[0])) {
-                    this.initCropBox(cbList[0] + 'px ' + cbList[0] + 'px');
-                    return;
-                } else {
-                    console.error('参数: crop-box-boundary 不符合规范');
-                    return;
-                }
-            } else if (cbList.length === 2) {
-                var w = cbList[0].replace(/[^0-9]/ig, ""),
-                    h = cbList[1].replace(/[^0-9]/ig, "");
-
-                if (cbList[0].search('px') !== -1) {
-                    cropBoxWidth = w;
-                    cropBoxHeight = h;
-                } else if (cbList[0].search('%') !== -1) {
-                    var cw = cropperContainer.width,
-                        ch = cropperContainer.height;
-
-                    if (w <= 100) {
-                        cropBoxWidth = cw * w / 100;
-                    } else {
-                        cropBoxWidth = cw;
-                    }
-                    if (h <= 100) {
-                        cropBoxHeight = ch * h / 100;
-                    } else {
-                        cropBoxHeight = ch;
-                    }
-                } else if (/^\d{1,}$/.test(cbList[0]) && /^\d{1,}$/.test(cbList[1])) {
-                    this.initCropBox(cbList[0] + 'px ' + cbList[1] + 'px');
-                    return;
-                } else {
-                    console.error('参数: crop-box-boundary 不符合规范');
-                    return;
-                }
-            } else {
-                console.error('参数: crop-box-boundary 不符合规范');
-                return;
-            }
-
-            this.changeCropBox(cropBoxWidth, cropBoxHeight);
-        },
-        changeCropBox: function changeCropBox(w, h) {
-            var cropperBox = this.cropperBox,
-                cropperContainer = this.cropperContainer,
-                cropCanOverImageBorder = this.cropCanOverImageBorder,
-                sourceImageData = this.sourceImageData,
-                fixed = this.fixed,
-                fixedNumber = this.fixedNumber;
-
-
-            this.$nextTick(function () {
-                setTimeout(function () {
-                    var rate = fixed ? typeof fixedNumber === 'undefined' ? cropperContainer.width / cropperContainer.height : fixedNumber[0] / fixedNumber[1] : w / h;
-                    sourceImageData.rate = rate;
-                    if (!cropCanOverImageBorder) {
-                        h = w / rate;
-                        if (w > sourceImageData.width) {
-                            w = sourceImageData.width;
-                            h = w / rate;
-                        }
-                        if (h > sourceImageData.height) {
-                            h = sourceImageData.height;
-                            w = h * rate;
-                        }
-                    }
-                    cropperBox.width = w;
-                    cropperBox.height = w / rate;
-
-                    cropperBox.x = (cropperContainer.width - cropperBox.width) / 2;
-                    cropperBox.y = (cropperContainer.height - cropperBox.height) / 2;
-                    cropperBox.ready = true;
-                }, 50);
-            });
-        },
-        moveCrop: function moveCrop(e) {
-            var cropperBox = this.cropperBox,
-                canMoveCropBox = this.canMoveCropBox;
-
-            e.preventDefault();
-            if (!canMoveCropBox) {
-                return;
-            }
-            ;
-
-            if (e.touches && e.touches.length === 2) {
-                return false;
-            }
-
-            window.addEventListener('mousemove', this.movingCropBox);
-            window.addEventListener('mouseup', this.leaveCrop);
-
-            var x = e.clientX ? e.clientX : e.touches[0].clientX;
-            var y = e.clientY ? e.clientY : e.touches[0].clientY;
-
-            var nowX = x - cropperBox.x,
-                nowY = y - cropperBox.y;
-
-            cropperBox.cropX = nowX;
-            cropperBox.cropY = nowY;
-        },
-        movingCropBox: function movingCropBox(e) {
-            var cropperBox = this.cropperBox,
-                cropperContainer = this.cropperContainer;
-
-            e.preventDefault();
-
-            var nowX = 0;
-            var nowY = 0;
-
-            if (e) {
-                e.preventDefault();
-                nowX = e.clientX ? e.clientX : e.touches[0].clientX;
-                nowY = e.clientY ? e.clientY : e.touches[0].clientY;
-            }
-
-            this.$nextTick(function () {
-                var cx = void 0,
-                    cy = void 0;
-                var fw = nowX - cropperBox.cropX;
-                var fh = nowY - cropperBox.cropY;
-
-                if (fw <= 0) {
-                    cx = 2;
-                } else if (fw + cropperBox.width >= cropperContainer.width) {
-                    cx = cropperContainer.width - cropperBox.width - 1;
-                } else {
-                    cx = fw;
-                }
-
-                if (fh <= 0) {
-                    cy = 2;
-                } else if (fh + cropperBox.height >= cropperContainer.height) {
-                    cy = cropperContainer.height - cropperBox.height - 1;
-                } else {
-                    cy = fh;
-                }
-
-                cropperBox.x = cx;
-                cropperBox.y = cy;
-            });
-        },
-        leaveCrop: function leaveCrop(e) {
-            e.preventDefault();
-            window.removeEventListener("mousemove", this.movingCropBox);
-            window.removeEventListener("mouseup", this.leaveCrop);
-        },
-        resizeCropBox: function resizeCropBox(e, w, h, typeW, typeH, dot) {
-            var cropperBox = this.cropperBox,
-                fixed = this.fixed;
-
-            e.preventDefault();
-            cropperBox.dot = dot;
-            window.addEventListener("mousemove", this.changeCropNow);
-            window.addEventListener("mouseup", this.changeCropEnd);
-            cropperBox.canChangeX = w;
-            cropperBox.canChangeY = h;
-            cropperBox.changeCropTypeX = typeW;
-            cropperBox.changeCropTypeY = typeH;
-            cropperBox.cropX = e.clientX ? e.clientX : e.touches[0].clientX;
-            cropperBox.cropY = e.clientY ? e.clientY : e.touches[0].clientY;
-            cropperBox.cropOldW = cropperBox.width;
-            cropperBox.cropOldH = cropperBox.height;
-            cropperBox.cropChangeX = cropperBox.x;
-            cropperBox.cropChangeY = cropperBox.y;
-            if (fixed) {
-                if (!(cropperBox.canChangeX && cropperBox.canChangeY)) {
-                    cropperBox.canChangeY = 0;
-                    cropperBox.canChangeX = 0;
-                }
-            }
-        },
-        changeCropNow: function changeCropNow(e) {
-            var _this7 = this;
-
-            e.preventDefault();
-            var cropperContainer = this.cropperContainer,
-                cropperBox = this.cropperBox,
-                fixed = this.fixed,
-                sourceImageData = this.sourceImageData;
-
-            var nowX = e.clientX ? e.clientX : e.touches ? e.touches[0].clientX : 0,
-                nowY = e.clientY ? e.clientY : e.touches ? e.touches[0].clientY : 0;
-
-            var wrapperW = cropperContainer.width,
-                wrapperH = cropperContainer.height;
-
-            // 不能超过的坐标轴
-            var minX = 0;
-            var minY = 0;
-
-            this.$nextTick(function () {
-                var fw = nowX - cropperBox.cropX;
-                var fh = nowY - cropperBox.cropY;
-
-                if (fixed) {
-                    switch (cropperBox.dot) {
-                        case 1:
-                            if (fw > fh) {
-                                fh = fw / sourceImageData.rate;
-                            } else {
-                                fw = fh * sourceImageData.rate;
-                            }
-                            break;
-                        case 3:
-                            if (Math.abs(fw) > Math.abs(fh)) {
-                                fh = -fw / sourceImageData.rate;
-                            } else {
-                                fw = -fh * sourceImageData.rate;
-                            }
-                    }
-                }
-
-                if (cropperBox.canChangeX) {
-                    if (cropperBox.changeCropTypeX === 1) {
-                        if (cropperBox.cropOldW - fw > 0) {
-                            cropperBox.width = wrapperW - cropperBox.cropChangeX - fw <= wrapperW - minX ? cropperBox.cropOldW - fw : cropperBox.cropOldW + cropperBox.cropChangeX - minX;
-                            cropperBox.x = wrapperW - cropperBox.cropChangeX - fw <= wrapperW - minX ? cropperBox.cropChangeX + fw : minX;
-                        } else {
-                            _this7.cropW = Math.abs(fw) + _this7.cropChangeX <= wrapperW ? Math.abs(fw) - _this7.cropOldW : wrapperW - _this7.cropOldW - _this7.cropChangeX;
-                            _this7.cropOffsertX = _this7.cropChangeX + _this7.cropOldW;
-                        }
-                    } else if (cropperBox.changeCropTypeX === 2) {
-                        if (cropperBox.cropOldW + fw > 0) {
-                            cropperBox.width = cropperBox.cropOldW + fw + cropperBox.x <= wrapperW ? cropperBox.cropOldW + fw : wrapperW - cropperBox.x;
-                            cropperBox.x = cropperBox.cropChangeX;
-                        } else {
-                            cropperBox.width = wrapperW - cropperBox.cropChangeX + Math.abs(fw + cropperBox.cropOldW) <= wrapperW - minX ? Math.abs(fw + cropperBox.cropOldW) : cropperBox.cropChangeX - minX;
-                            cropperBox.x = wrapperW - cropperBox.cropChangeX + Math.abs(fw + cropperBox.cropOldW) <= wrapperW - minX ? cropperBox.cropChangeX - Math.abs(fw + cropperBox.cropOldW) : minX;
-                        }
-                    }
-                }
-
-                if (cropperBox.canChangeY) {
-                    if (cropperBox.changeCropTypeY === 1) {
-                        if (cropperBox.cropOldH - fh > 0) {
-                            cropperBox.height = wrapperH - cropperBox.cropChangeY - fh <= wrapperH - minY ? cropperBox.cropOldH - fh : cropperBox.cropOldH + cropperBox.cropChangeY - minY;
-                            cropperBox.y = wrapperH - cropperBox.cropChangeY - fh <= wrapperH - minY ? cropperBox.cropChangeY + fh : minY;
-                        } else {
-                            cropperBox.height = Math.abs(fh) + cropperBox.cropChangeY <= wrapperH ? Math.abs(fh) - cropperBox.cropOldH : wrapperH - cropperBox.cropOldH - cropperBox.cropChangeY;
-                            cropperBox.y = cropperBox.cropChangeY + cropperBox.cropOldH;
-                        }
-                    } else if (cropperBox.changeCropTypeY === 2) {
-                        if (cropperBox.cropOldH + fh > 0) {
-                            cropperBox.height = cropperBox.cropOldH + fh + cropperBox.y <= wrapperH ? cropperBox.cropOldH + fh : wrapperH - cropperBox.y;
-                            cropperBox.y = cropperBox.cropChangeY;
-                        } else {
-                            cropperBox.height = wrapperH - cropperBox.cropChangeY + Math.abs(fh + cropperBox.cropOldH) <= wrapperH - minY ? Math.abs(fh + cropperBox.cropOldH) : cropperBox.cropChangeY - minY;
-                            cropperBox.y = wrapperH - cropperBox.cropChangeY + Math.abs(fh + cropperBox.cropOldH) <= wrapperH - minY ? cropperBox.cropChangeY - Math.abs(fh + cropperBox.cropOldH) : minY;
-                        }
-                    }
-                }
-            });
-        },
-        changeCropEnd: function changeCropEnd(e) {
-            window.removeEventListener("mousemove", this.changeCropNow);
-            window.removeEventListener("mouseup", this.changeCropEnd);
-        },
-        getCropAxis: function getCropAxis() {
-            var cropperBox = this.cropperBox;
-
-            var obj = {
-                x1: 0,
-                x2: 0,
-                y1: 0,
-                y2: 0
-            };
-            obj.x1 = cropperBox.x;
-            obj.y1 = cropperBox.y;
-            obj.x2 = cropperBox.x + cropperBox.width;
-            obj.y2 = cropperBox.y + cropperBox.height;
-            return obj;
-        },
-
-
-        //canvas获取为blob对象
-        getCropBlob: function getCropBlob(cb) {
-            var _this8 = this;
-
-            this.getCropInfo(function (data) {
-                data.toBlob(function (blob) {
-                    return cb(blob);
-                }, "image/" + _this8.outputType, 1);
-            });
-        },
-        getCropInfo: function getCropInfo(cb) {
-            var _this9 = this;
-
-            var cropperBox = this.cropperBox,
-                sourceImageData = this.sourceImageData,
-                showImg = this.showImg;
-
-            var canvas = document.createElement("canvas");
-            var img = new Image();
-            var rotate = sourceImageData.rotate;
-            var trueWidth = sourceImageData.width;
-            var trueHeight = sourceImageData.height;
-            var cropOffsertX = cropperBox.x;
-            var cropOffsertY = cropperBox.y;
-            img.onload = function () {
-                if (cropperBox.width !== 0) {
-                    var ctx = canvas.getContext("2d");
-                    var dpr = 1;
-                    var width = _this9.cropperBox.width * dpr;
-                    var height = _this9.cropperBox.height * dpr;
-                    var imgW = trueWidth * sourceImageData.scale * dpr;
-                    var imgH = trueHeight * sourceImageData.scale * dpr;
-                    // 图片x轴偏移
-                    var dx = (sourceImageData.x - cropOffsertX + sourceImageData.width * (1 - sourceImageData.scale) / 2) * dpr;
-                    // 图片y轴偏移
-                    var dy = (sourceImageData.y - cropOffsertY + sourceImageData.height * (1 - sourceImageData.scale) / 2) * dpr;
-                    setCanvasSize(width, height);
-                    ctx.save();
-
-                    switch (rotate) {
-                        case 0:
-                            setCanvasSize(width / sourceImageData.scale, height / sourceImageData.scale);
-                            ctx.drawImage(img, dx / sourceImageData.scale, dy / sourceImageData.scale, imgW / sourceImageData.scale, imgH / sourceImageData.scale);
-                    }
-                    ctx.restore();
-                }
-                cb(canvas);
-            };
-            var s = this.image.substring(0, 4);
-            if (s !== "data") {
-                img.crossOrigin = "Anonymous";
-            }
-            img.src = this.showImg;
-
-            function setCanvasSize(width, height) {
-                canvas.width = Math.round(width);
-                canvas.height = Math.round(height);
-            }
-        },
-        addImage: function addImage() {
-            var el = this.$refs.add;
-            el.click();
-        },
-        addImageChange: function addImageChange() {
-            var _this10 = this;
-
-            var el = this.$refs.add;
-            if (el.value === '' || el.value === null) return;
-            var file = el.files[0];
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function () {
-                _this10.checkedImg(reader.result);
-            };
-        }
+    //输出图片格式
+    outputType: {
+      type: String,
+      default: 'png'
+    },
+    original: {
+      type: Boolean,
+      default: false
+    },
+    //图片是否缩放
+    canScale: {
+      type: Boolean,
+      default: true
+    },
+    cropCanOverImageBorder: {
+      type: Boolean,
+      default: true
+    },
+    //是否能移动图片
+    canMoveImage: {
+      type: Boolean,
+      default: true
+    },
+    //裁剪框宽高
+    cropBoxBoundary: {
+      type: [String, Number],
+      default: 'auto'
+    },
+    // 是否开启固定宽高比
+    fixed: {
+      type: Boolean,
+      default: false
+    },
+    // 宽高比 w/h
+    fixedNumber: {
+      type: Array
+    },
+    // 固定大小 禁止改变截图框大小
+    fixedBox: {
+      type: Boolean,
+      default: false
+    },
+    //是否能移动裁剪框
+    canMoveCropBox: {
+      type: Boolean,
+      default: true
     }
+  },
+  data: function data() {
+    return {
+      themes: ['dark', 'warm', 'pink', 'test'],
+      modes: ['contain', 'cover', 'auto'],
+      cropperContainer: {
+        width: '',
+        height: ''
+      },
+      cropperBox: {
+        ready: false,
+        // 开启截图
+        crop: false,
+        // 正在截图
+        cropping: false,
+        // 裁剪框大小
+        width: '',
+        height: '',
+        //裁剪框坐标
+        x: 0,
+        y: 0,
+        cropX: 0,
+        cropY: 0,
+        canChangeX: '',
+        canChangeY: '',
+        changeCropTypeX: '',
+        changeCropTypeY: '',
+        cropOldW: '',
+        cropOldH: '',
+        cropChangeX: '',
+        cropChangeY: '',
+        dot: 0
+      },
+      sourceImageData: {
+        width: '',
+        height: '',
+        //缩放倍数
+        scale: '',
+        //选装
+        rotate: 0,
+        // 横坐标
+        x: '',
+        // 纵坐标
+        y: '',
+        orientation: 0,
+        rate: 0
+      },
+      ImgMoveData: {
+        move: true,
+        x: '',
+        y: ''
+      },
+      showImg: '',
+      // 图片加载
+      loading: true,
+      support: "",
+      // 图片缩放系数
+      imgZF: 0.2,
+      // 图片信息
+      imgZFStatus: '',
+      scaling: false,
+      scalingSet: ''
+    };
+  },
+
+  computed: {
+    isIE: function isIE() {
+      var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      var isIE = !!window.ActiveXObject || 'ActiveXObject' in window; //判断是否IE浏览器
+      return isIE;
+    },
+    passive: function passive() {
+      return this.isIE ? null : {
+        passive: false
+      };
+    }
+  },
+  watch: {
+    showImg: function showImg(val) {
+      var _this = this;
+
+      return (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(val === '' || val === null)) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt('return');
+
+              case 2:
+                _context.next = 4;
+                return _this.reload();
+
+              case 4:
+                _this.initCropBox();
+
+              case 5:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, _this);
+      }))();
+    },
+    cropBoxBoundary: function cropBoxBoundary(val) {
+      console.log(val);
+    }
+  },
+  beforeMount: function beforeMount() {
+    this.initApp();
+  },
+  mounted: function mounted() {
+    this.support = "onwheel" in document.createElement("div") ? "wheel" : document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll";
+    this.checkedImg();
+  },
+
+  methods: {
+    initApp: function initApp() {
+      var _this2 = this;
+
+      this.$nextTick(function () {
+        var cropperContainer = _this2.cropperContainer;
+
+        cropperContainer.width = parseFloat(window.getComputedStyle(_this2.$refs.cropper).width);
+        cropperContainer.height = parseFloat(window.getComputedStyle(_this2.$refs.cropper).height);
+      });
+    },
+    getVersion: function getVersion(name) {
+      var arr = navigator.userAgent.split(' ');
+      var chromeVersion = '';
+      var result = 0;
+      var reg = new RegExp(name, 'i');
+      for (var i = 0; i < arr.length; i++) {
+        if (reg.test(arr[i])) chromeVersion = arr[i];
+      }
+      if (chromeVersion) {
+        result = chromeVersion.split('/')[1].split('.');
+      } else {
+        result = ['0', '0', '0'];
+      }
+      return result;
+    },
+
+
+    //checkout pic
+    checkedImg: function checkedImg(Img) {
+      var _this3 = this;
+
+      var image = Img || this.image;
+      if (image === null || image === '') {
+        image = '';
+        return;
+      }
+
+      this.loading = true;
+      this.sourceImageData.scale = 1;
+      this.rotate = 0;
+      var img = new Image();
+      img.onload = function () {
+        if (image === '') {
+          // something will be do
+          return;
+        }
+        var sourceImageData = _this3.sourceImageData;
+
+
+        var width = img.width;
+        var height = img.height;
+
+        _exifJsMin2.default.getData(img).then(function (data) {
+
+          sourceImageData.orientation = data.orientation || 1;
+          var max = _this3.maxImgSize;
+          if (!_this3.orientation && width < max && height < max) {
+            _this3.showImg = image;
+            return;
+          }
+
+          if (width > max) {
+            height = height / width * max;
+            width = max;
+          }
+
+          if (height > max) {
+            width = width / height * max;
+            height = max;
+          }
+          _this3.checkOrientationImage(img, sourceImageData.orientation, width, height);
+        });
+      };
+      img.onerror = function () {
+        // something will be do
+        return;
+      };
+      // 判断如果不是base64图片 再添加crossOrigin属性，否则会导致iOS低版本(10.2)无法显示图片
+      if (this.image.substring(0, 4) !== "data") {
+        img.crossOrigin = "";
+      }
+      if (this.isIE) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          var url = URL.createObjectURL(this.response);
+          img.src = url;
+        };
+        xhr.open("GET", this.img, true);
+        xhr.responseType = "blob";
+        xhr.send();
+      } else {
+        img.src = image;
+      }
+    },
+    checkOrientationImage: function checkOrientationImage(img, orientation, width, height) {
+      var _this4 = this;
+
+      // If the chrome kernel version is 81 and safari is above 605, the image rotation will not be processed
+      // alert(navigator.userAgent)
+      if (this.getVersion('chrome')[0] >= 81) {
+        orientation = -1;
+      } else {
+        if (this.getVersion('safari')[0] >= 605) {
+          var safariVersion = this.getVersion('version');
+          if (safariVersion[0] > 13 && safariVersion[1] > 1) {
+            orientation = -1;
+          }
+        } else {
+          //  判断 ios 版本进行处理
+          // 针对 ios 版本大于 13.4的系统不做图片旋转
+          var isIos = navigator.userAgent.toLowerCase().match(/cpu iphone os (.*?) like mac os/);
+          if (isIos) {
+            var version = isIos[1];
+            version = version.split('_');
+            if (version[0] > 13 || version[0] >= 13 && version[1] >= 4) {
+              orientation = -1;
+            }
+          }
+        }
+      }
+
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
+      ctx.save();
+
+      switch (orientation) {
+        case 2:
+          canvas.width = width;
+          canvas.height = height;
+          // horizontal flip
+          ctx.translate(width, 0);
+          ctx.scale(-1, 1);
+          break;
+        case 3:
+          canvas.width = width;
+          canvas.height = height;
+          //180 graus
+          ctx.translate(width / 2, height / 2);
+          ctx.rotate(180 * Math.PI / 180);
+          ctx.translate(-width / 2, -height / 2);
+          break;
+        case 4:
+          canvas.width = width;
+          canvas.height = height;
+          // vertical flip
+          ctx.translate(0, height);
+          ctx.scale(1, -1);
+          break;
+        case 5:
+          // vertical flip + 90 rotate right
+          canvas.height = width;
+          canvas.width = height;
+          ctx.rotate(0.5 * Math.PI);
+          ctx.scale(1, -1);
+          break;
+        case 6:
+          canvas.width = height;
+          canvas.height = width;
+          //90 graus
+          ctx.translate(height / 2, width / 2);
+          ctx.rotate(90 * Math.PI / 180);
+          ctx.translate(-width / 2, -height / 2);
+          break;
+        case 7:
+          // horizontal flip + 90 rotate right
+          canvas.height = width;
+          canvas.width = height;
+          ctx.rotate(0.5 * Math.PI);
+          ctx.translate(width, -height);
+          ctx.scale(-1, 1);
+          break;
+        case 8:
+          canvas.height = width;
+          canvas.width = height;
+          //-90 graus
+          ctx.translate(height / 2, width / 2);
+          ctx.rotate(-90 * Math.PI / 180);
+          ctx.translate(-width / 2, -height / 2);
+          break;
+        default:
+          canvas.width = width;
+          canvas.height = height;
+      }
+
+      ctx.drawImage(img, 0, 0, width, height);
+      ctx.restore();
+      canvas.toBlob(function (blob) {
+        var data = URL.createObjectURL(blob);
+        URL.revokeObjectURL(_this4.imgs);
+        _this4.showImg = data;
+      }, "image/" + this.outputType, 1);
+    },
+
+
+    //  reload picture layout function
+    reload: function reload() {
+      var _this5 = this;
+
+      var img = new Image();
+      img.src = this.showImg;
+      img.onload = function () {
+        var cropperContainer = _this5.cropperContainer,
+            sourceImageData = _this5.sourceImageData;
+
+        sourceImageData.width = img.width;
+        sourceImageData.height = img.height;
+
+        if (!_this5.original) {
+          sourceImageData.scale = _this5.dealMode();
+        } else {
+          sourceImageData.scale = 1;
+        }
+
+        _this5.$nextTick(function () {
+          sourceImageData.x = -(sourceImageData.width - sourceImageData.width * sourceImageData.scale) / 2 + (cropperContainer.width - sourceImageData.width * sourceImageData.scale) / 2;
+          sourceImageData.y = -(sourceImageData.height - sourceImageData.height * sourceImageData.scale) / 2 + (cropperContainer.height - sourceImageData.height * sourceImageData.scale) / 2;
+          _this5.loading = false;
+        });
+      };
+      return;
+    },
+    dealMode: function dealMode() {
+      var mode = this.mode,
+          modes = this.modes,
+          sourceImageData = this.sourceImageData,
+          cropperContainer = this.cropperContainer;
+
+      var scale = 1;
+      var md = '';
+      var imgWidth = sourceImageData.width,
+          imgHeight = sourceImageData.height;
+      var contWidth = cropperContainer.width,
+          contHeight = cropperContainer.height;
+      md = modes.find(function (element) {
+        return element === mode;
+      });
+      if (typeof md === 'undefined') {
+        md = mode.split(' ');
+      }
+
+      switch (md) {
+        case 'contain':
+          if (imgWidth > contWidth) {
+            scale = contWidth / imgWidth;
+          }
+
+          if (imgHeight > contHeight) {
+            scale = contHeight / imgHeight;
+          }
+
+          break;
+        case 'cover':
+          // 扩展布局 默认填充满整个容器
+          // 图片宽度大于容器
+          scale = contWidth / imgWidth;
+          var h = imgHeight * scale;
+          if (h < contHeight) {
+            h = contHeight;
+            scale = h / imgHeight;
+          }
+          break;
+        default:
+          try {
+            var str = md[0];
+            if (str.search('px') !== -1) {
+              str.replace('px', '');
+              scale = parseFloat(str) / imgWidth;
+            }
+
+            if (str.search('%') !== -1) {
+              str = str.replace("%", "");
+              scale = parseFloat(str) / 100 * contWidth / imgWidth;
+            }
+          } catch (e) {
+            scale = 1;
+          }
+      }
+      return scale;
+    },
+    scaleImage: function scaleImage() {
+      if (this.canScale) {
+        window.addEventListener(this.support, this.changeSize, this.passive);
+      }
+    },
+    cancelScale: function cancelScale() {
+      if (this.canScale) {
+        window.removeEventListener(this.support, this.changeSize);
+      }
+    },
+    changeSize: function changeSize(e) {
+      var _this6 = this;
+
+      e.preventDefault();
+      var sourceImageData = this.sourceImageData,
+          imgZF = this.imgZF,
+          imgZFStatus = this.imgZFStatus;
+
+      var scale = sourceImageData.scale;
+      var change = e.deltaY || e.wheelDelta;
+      var isFirefox = navigator.userAgent.indexOf("Firefox");
+      change = isFirefox > 0 ? change * 30 : change;
+
+      if (this.isIE) {
+        change = -change;
+      }
+
+      var IZF = imgZF;
+      IZF = IZF / sourceImageData.width > IZF / sourceImageData.height ? IZF / sourceImageData.height : IZF / sourceImageData.width;
+
+      var num = IZF * change;
+
+      num < 0 ? scale += Math.abs(num) : scale > Math.abs(num) ? scale -= Math.abs(num) : scale;
+
+      var status = num < 0 ? "add" : "reduce";
+
+      if (status !== imgZFStatus) {
+        this.imgZFStatus = status;
+        this.imgZF = 0.2;
+      }
+
+      if (!this.scaling) {
+        this.scalingSet = setTimeout(function () {
+          _this6.scaling = false;
+          _this6.imgZF = _this6.imgZF += 0.01;
+        }, 50);
+      }
+
+      this.scaling = true;
+
+      if (!this.checkoutImageAxis(sourceImageData.x, sourceImageData.y, scale)) {
+        return false;
+      }
+      this.sourceImageData.scale = scale;
+    },
+    checkoutImageAxis: function checkoutImageAxis(x, y, scale) {
+      var cropCanOverImageBorder = this.cropCanOverImageBorder,
+          sourceImageData = this.sourceImageData;
+
+      x = x || sourceImageData.x;
+      y = y || sourceImageData.y;
+      scale = scale || sourceImageData.scale;
+
+      var goScale = true;
+      if (!cropCanOverImageBorder) {
+        var axis = this.getImageAxis(x, y, scale);
+        var cropAxis = this.getCropAxis();
+        if (axis.x1 >= cropAxis.x1) {
+          goScale = false;
+        }
+
+        // 右边横坐标
+        if (axis.x2 <= cropAxis.x2) {
+          goScale = false;
+        }
+
+        // 纵坐标上面
+        if (axis.y1 >= cropAxis.y1) {
+          goScale = false;
+        }
+
+        // 纵坐标下面
+        if (axis.y2 <= cropAxis.y2) {
+          goScale = false;
+        }
+      }
+      return goScale;
+    },
+    getImageAxis: function getImageAxis(x, y, scale) {
+      var sourceImageData = this.sourceImageData;
+
+      x = x || sourceImageData.x;
+      y = y || sourceImageData.y;
+      scale = scale || sourceImageData.scale;
+      var obj = {
+        x1: 0,
+        x2: 0,
+        y1: 0,
+        y2: 0
+      };
+      var imgW = sourceImageData.width * sourceImageData.scale;
+      var imgH = sourceImageData.height * sourceImageData.scale;
+
+      switch (sourceImageData.rotate) {
+        case 0:
+          obj.x1 = x + sourceImageData.width * (1 - scale) / 2;
+          obj.x2 = obj.x1 + sourceImageData.width * scale;
+          obj.y1 = y + sourceImageData.height * (1 - scale) / 2;
+          obj.y2 = obj.y1 + sourceImageData.height * scale;
+          break;
+        case 1:
+        case -1:
+        case 3:
+        case -3:
+          obj.x1 = x + sourceImageData.width * (1 - scale) / 2 + (imgW - imgH) / 2;
+          obj.x2 = obj.x1 + sourceImageData.height * scale;
+          obj.y1 = y + sourceImageData.height * (1 - scale) / 2 + (imgW - imgH) / 2;
+          obj.y2 = obj.y1 + sourceImageData.width * scale;
+          break;
+        default:
+          obj.x1 = x + sourceImageData.width * (1 - scale) / 2;
+          obj.x2 = obj.x1 + sourceImageData.width * scale;
+          obj.y1 = y + sourceImageData.height * (1 - scale) / 2;
+          obj.y2 = obj.y1 + sourceImageData.height * scale;
+          break;
+      }
+      return obj;
+    },
+    moveImage: function moveImage(e) {
+      e.preventDefault();
+      var ImgMoveData = this.ImgMoveData,
+          canMoveImage = this.canMoveImage,
+          sourceImageData = this.sourceImageData,
+          cropperBox = this.cropperBox;
+
+      if (ImgMoveData.move && !cropperBox.crop) {
+        if (!canMoveImage) {
+          return;
+        } else {
+          if (ImgMoveData.move) {
+            ImgMoveData.x = (e.clientX ? e.clientX : e.touches[0].clientX) - sourceImageData.x;
+            ImgMoveData.y = (e.clientY ? e.clientY : e.touches[0].clientY) - sourceImageData.y;
+            if (e.touches) {} else {
+              window.addEventListener('mousemove', this.movingImg);
+              window.addEventListener('mouseup', this.stopMoveImg);
+            }
+          }
+        }
+      } else {}
+    },
+    movingImg: function movingImg(e) {
+      var _this7 = this;
+
+      e.preventDefault();
+      if (e.touches && e.touches.length === 2) {
+        return;
+      }
+
+      var sourceImageData = this.sourceImageData,
+          ImgMoveData = this.ImgMoveData,
+          cropCanOverImageBorder = this.cropCanOverImageBorder,
+          cropperBox = this.cropperBox;
+
+
+      var nowX = e.clientX ? e.clientX : e.touches[0].clientX;
+      var nowY = e.clientY ? e.clientY : e.touches[0].clientY;
+
+      var changeX = void 0,
+          changeY = void 0;
+
+      changeX = nowX - ImgMoveData.x;
+      changeY = nowY - ImgMoveData.y;
+
+      this.$nextTick(function () {
+        if (!cropCanOverImageBorder) {
+          var axis = _this7.getImageAxis(changeX, changeY, sourceImageData.scale);
+          var cAxis = _this7.getCropAxis();
+          var imgW = sourceImageData.width * sourceImageData.scale;
+          var imgH = sourceImageData.height * sourceImageData.scale;
+          var maxLeft = void 0,
+              maxTop = void 0,
+              maxRight = void 0,
+              maxBottom = void 0;
+          switch (sourceImageData.rotate) {
+            case 1:
+              maxLeft = cropperBox.x - sourceImageData.width * (1 - sourceImageData.scale) / 2 + (imgW - imgH) / 2;
+              maxTop = cropperBox.y - sourceImageData.height * (1 - sourceImageData.scale) / 2 + (imgH - imgW) / 2;
+              maxRight = maxLeft - imgW + cropperBox.width;
+              maxBottom = maxTop - imgH + cropperBox.height;
+              break;
+            default:
+              maxLeft = cropperBox.x - sourceImageData.width * (1 - sourceImageData.scale) / 2;
+              maxTop = cropperBox.y - sourceImageData.height * (1 - sourceImageData.scale) / 2;
+              maxRight = maxLeft - imgW + cropperBox.width;
+              maxBottom = maxTop - imgH + cropperBox.height;
+          }
+
+          if (axis.x1 >= cAxis.x1) {
+            changeX = maxLeft;
+          }
+          if (axis.x2 <= cAxis.x2) {
+            changeX = maxRight;
+          }
+          if (axis.y1 >= cAxis.y1) {
+            changeY = maxTop;
+          }
+          if (axis.y2 <= cAxis.y2) {
+            changeY = maxBottom;
+          }
+        }
+
+        sourceImageData.x = changeX;
+        sourceImageData.y = changeY;
+      });
+    },
+    stopMoveImg: function stopMoveImg(e) {
+      window.removeEventListener('mousemove', this.movingImg);
+    },
+
+
+    //初始化截图框
+    // type ： '10', '10px', '10%', '10px 10', 'auto' **
+    initCropBox: function initCropBox(boundary) {
+      var showImg = this.showImg,
+          cropBoxBoundary = this.cropBoxBoundary,
+          cropperContainer = this.cropperContainer;
+
+      if (showImg === '' || showImg === null || typeof showImg === 'undefined') return;
+      var cropBoxWidth = 0,
+          cropBoxHeight = 0;
+      var cbb = boundary || cropBoxBoundary;
+      var cbList = cbb.split(' ');
+      if (cbList.length === 1) {
+        if (cbList[0] === 'auto') {
+          this.initCropBox('50% 50%');
+          return;
+        } else if (cbList[0].search('px') !== -1 || cbList[0].search('%') !== -1) {
+          this.initCropBox(cbList[0] + ' ' + cbList[0]);
+          return;
+        } else if (/^\d{1,}$/.test(cbList[0])) {
+          this.initCropBox(cbList[0] + 'px ' + cbList[0] + 'px');
+          return;
+        } else {
+          console.error('参数: crop-box-boundary 不符合规范');
+          return;
+        }
+      } else if (cbList.length === 2) {
+        var w = cbList[0].replace(/[^0-9]/ig, ""),
+            h = cbList[1].replace(/[^0-9]/ig, "");
+
+        if (cbList[0].search('px') !== -1) {
+          cropBoxWidth = w;
+          cropBoxHeight = h;
+        } else if (cbList[0].search('%') !== -1) {
+          var cw = cropperContainer.width,
+              ch = cropperContainer.height;
+
+          if (w <= 100) {
+            cropBoxWidth = cw * w / 100;
+          } else {
+            cropBoxWidth = cw;
+          }
+          if (h <= 100) {
+            cropBoxHeight = ch * h / 100;
+          } else {
+            cropBoxHeight = ch;
+          }
+        } else if (/^\d{1,}$/.test(cbList[0]) && /^\d{1,}$/.test(cbList[1])) {
+          this.initCropBox(cbList[0] + 'px ' + cbList[1] + 'px');
+          return;
+        } else {
+          console.error('参数: crop-box-boundary 不符合规范');
+          return;
+        }
+      } else {
+        console.error('参数: crop-box-boundary 不符合规范');
+        return;
+      }
+
+      this.changeCropBox(cropBoxWidth, cropBoxHeight);
+    },
+    changeCropBox: function changeCropBox(w, h) {
+      var cropperBox = this.cropperBox,
+          cropperContainer = this.cropperContainer,
+          cropCanOverImageBorder = this.cropCanOverImageBorder,
+          sourceImageData = this.sourceImageData,
+          fixed = this.fixed,
+          fixedNumber = this.fixedNumber;
+
+
+      this.$nextTick(function () {
+        setTimeout(function () {
+          var rate = fixed ? typeof fixedNumber === 'undefined' ? cropperContainer.width / cropperContainer.height : fixedNumber[0] / fixedNumber[1] : w / h;
+          sourceImageData.rate = rate;
+          if (!cropCanOverImageBorder) {
+            h = w / rate;
+            if (w > sourceImageData.width) {
+              w = sourceImageData.width;
+              h = w / rate;
+            }
+            if (h > sourceImageData.height) {
+              h = sourceImageData.height;
+              w = h * rate;
+            }
+          }
+          cropperBox.width = w;
+          cropperBox.height = w / rate;
+
+          cropperBox.x = (cropperContainer.width - cropperBox.width) / 2;
+          cropperBox.y = (cropperContainer.height - cropperBox.height) / 2;
+          cropperBox.ready = true;
+        }, 50);
+      });
+    },
+    moveCrop: function moveCrop(e) {
+      var cropperBox = this.cropperBox,
+          canMoveCropBox = this.canMoveCropBox;
+
+      e.preventDefault();
+      if (!canMoveCropBox) {
+        return;
+      }
+      ;
+
+      if (e.touches && e.touches.length === 2) {
+        return false;
+      }
+
+      window.addEventListener('mousemove', this.movingCropBox);
+      window.addEventListener('mouseup', this.leaveCrop);
+
+      var x = e.clientX ? e.clientX : e.touches[0].clientX;
+      var y = e.clientY ? e.clientY : e.touches[0].clientY;
+
+      var nowX = x - cropperBox.x,
+          nowY = y - cropperBox.y;
+
+      cropperBox.cropX = nowX;
+      cropperBox.cropY = nowY;
+    },
+    movingCropBox: function movingCropBox(e) {
+      var _this8 = this;
+
+      var cropperBox = this.cropperBox,
+          cropperContainer = this.cropperContainer,
+          sourceImageData = this.sourceImageData,
+          cropCanOverImageBorder = this.cropCanOverImageBorder;
+
+      e.preventDefault();
+
+      var nowX = 0;
+      var nowY = 0;
+
+      if (e) {
+        e.preventDefault();
+        nowX = e.clientX ? e.clientX : e.touches[0].clientX;
+        nowY = e.clientY ? e.clientY : e.touches[0].clientY;
+      }
+
+      this.$nextTick(function () {
+        var cx = void 0,
+            cy = void 0;
+        var fw = nowX - cropperBox.cropX;
+        var fh = nowY - cropperBox.cropY;
+
+        if (fw <= 0) {
+          cx = 2;
+        } else if (fw + cropperBox.width >= cropperContainer.width) {
+          cx = cropperContainer.width - cropperBox.width - 1;
+        } else {
+          cx = fw;
+        }
+
+        if (fh <= 0) {
+          cy = 2;
+        } else if (fh + cropperBox.height >= cropperContainer.height) {
+          cy = cropperContainer.height - cropperBox.height - 1;
+        } else {
+          cy = fh;
+        }
+
+        if (!cropCanOverImageBorder) {
+
+          var axis = _this8.getImageAxis();
+
+          if (cx < axis.x1) {
+            cx = axis.x1;
+          }
+
+          if (cx + cropperBox.width > axis.x2) {
+            cx = axis.x2 - cropperBox.width;
+          }
+
+          if (cy < axis.y1) {
+            cy = axis.y1;
+          }
+
+          if (cy + cropperBox.height > axis.y2) {
+            cy = axis.y2 - cropperBox.height;
+          }
+        }
+
+        cropperBox.x = cx;
+        cropperBox.y = cy;
+      });
+    },
+    leaveCrop: function leaveCrop(e) {
+      e.preventDefault();
+      window.removeEventListener("mousemove", this.movingCropBox);
+      window.removeEventListener("mouseup", this.leaveCrop);
+    },
+    resizeCropBox: function resizeCropBox(e, w, h, typeW, typeH, dot) {
+      var cropperBox = this.cropperBox,
+          fixed = this.fixed;
+
+      e.preventDefault();
+      cropperBox.dot = dot;
+      window.addEventListener("mousemove", this.changeCropNow);
+      window.addEventListener("mouseup", this.changeCropEnd);
+      cropperBox.canChangeX = w;
+      cropperBox.canChangeY = h;
+      cropperBox.changeCropTypeX = typeW;
+      cropperBox.changeCropTypeY = typeH;
+      cropperBox.cropX = e.clientX ? e.clientX : e.touches[0].clientX;
+      cropperBox.cropY = e.clientY ? e.clientY : e.touches[0].clientY;
+      cropperBox.cropOldW = cropperBox.width;
+      cropperBox.cropOldH = cropperBox.height;
+      cropperBox.cropChangeX = cropperBox.x;
+      cropperBox.cropChangeY = cropperBox.y;
+      if (fixed) {
+        if (!(cropperBox.canChangeX && cropperBox.canChangeY)) {
+          cropperBox.canChangeY = 0;
+          cropperBox.canChangeX = 0;
+        }
+      }
+    },
+    changeCropNow: function changeCropNow(e) {
+      var _this9 = this;
+
+      e.preventDefault();
+      var cropperContainer = this.cropperContainer,
+          cropperBox = this.cropperBox,
+          fixed = this.fixed,
+          sourceImageData = this.sourceImageData,
+          cropCanOverImageBorder = this.cropCanOverImageBorder;
+
+      var nowX = e.clientX ? e.clientX : e.touches ? e.touches[0].clientX : 0,
+          nowY = e.clientY ? e.clientY : e.touches ? e.touches[0].clientY : 0;
+      var wrapperW = cropperContainer.width,
+          wrapperH = cropperContainer.height;
+      // 不能超过的坐标轴
+      var minX = 0;
+      var minY = 0;
+
+      if (!cropCanOverImageBorder) {
+        var axis = this.getImageAxis();
+        var imgW = axis.x2;
+        var imgH = axis.y2;
+        minX = axis.x1 > 0 ? axis.x1 : 0;
+        minY = axis.y1 > 0 ? axis.y1 : 0;
+
+        if (wrapperW > imgW) {
+          wrapperW = imgW;
+        }
+
+        if (wrapperH > imgH) {
+          wrapperH = imgH;
+        }
+      }
+
+      this.$nextTick(function () {
+        var fw = nowX - cropperBox.cropX;
+        var fh = nowY - cropperBox.cropY;
+
+        if (fixed) {
+          switch (cropperBox.dot) {
+            case 1:
+              if (fw > fh) {
+                fh = fw / sourceImageData.rate;
+              } else {
+                fw = fh * sourceImageData.rate;
+              }
+              break;
+            case 3:
+              if (Math.abs(fw) > Math.abs(fh)) {
+                fh = -fw / sourceImageData.rate;
+              } else {
+                fw = -fh * sourceImageData.rate;
+              }
+          }
+        }
+
+        if (cropperBox.canChangeX) {
+          if (cropperBox.changeCropTypeX === 1) {
+            if (cropperBox.cropOldW - fw > 0) {
+              cropperBox.width = wrapperW - cropperBox.cropChangeX - fw <= wrapperW - minX ? cropperBox.cropOldW - fw : cropperBox.cropOldW + cropperBox.cropChangeX - minX;
+              cropperBox.x = wrapperW - cropperBox.cropChangeX - fw <= wrapperW - minX ? cropperBox.cropChangeX + fw : minX;
+            } else {
+              _this9.cropW = Math.abs(fw) + _this9.cropChangeX <= wrapperW ? Math.abs(fw) - _this9.cropOldW : wrapperW - _this9.cropOldW - _this9.cropChangeX;
+              _this9.cropOffsertX = _this9.cropChangeX + _this9.cropOldW;
+            }
+          } else if (cropperBox.changeCropTypeX === 2) {
+            if (cropperBox.cropOldW + fw > 0) {
+              cropperBox.width = cropperBox.cropOldW + fw + cropperBox.x <= wrapperW ? cropperBox.cropOldW + fw : wrapperW - cropperBox.x;
+              cropperBox.x = cropperBox.cropChangeX;
+            } else {
+              cropperBox.width = wrapperW - cropperBox.cropChangeX + Math.abs(fw + cropperBox.cropOldW) <= wrapperW - minX ? Math.abs(fw + cropperBox.cropOldW) : cropperBox.cropChangeX - minX;
+              cropperBox.x = wrapperW - cropperBox.cropChangeX + Math.abs(fw + cropperBox.cropOldW) <= wrapperW - minX ? cropperBox.cropChangeX - Math.abs(fw + cropperBox.cropOldW) : minX;
+            }
+          }
+        }
+        if (cropperBox.canChangeY) {
+          if (cropperBox.changeCropTypeY === 1) {
+            if (cropperBox.cropOldH - fh > 0) {
+              cropperBox.height = wrapperH - cropperBox.cropChangeY - fh <= wrapperH - minY ? cropperBox.cropOldH - fh : cropperBox.cropOldH + cropperBox.cropChangeY - minY;
+              cropperBox.y = wrapperH - cropperBox.cropChangeY - fh <= wrapperH - minY ? cropperBox.cropChangeY + fh : minY;
+            } else {
+              cropperBox.height = Math.abs(fh) + cropperBox.cropChangeY <= wrapperH ? Math.abs(fh) - cropperBox.cropOldH : wrapperH - cropperBox.cropOldH - cropperBox.cropChangeY;
+              cropperBox.y = cropperBox.cropChangeY + cropperBox.cropOldH;
+            }
+          } else if (cropperBox.changeCropTypeY === 2) {
+            if (cropperBox.cropOldH + fh > 0) {
+              cropperBox.height = cropperBox.cropOldH + fh + cropperBox.y <= wrapperH ? cropperBox.cropOldH + fh : wrapperH - cropperBox.y;
+              cropperBox.y = cropperBox.cropChangeY;
+            } else {
+              cropperBox.height = wrapperH - cropperBox.cropChangeY + Math.abs(fh + cropperBox.cropOldH) <= wrapperH - minY ? Math.abs(fh + cropperBox.cropOldH) : cropperBox.cropChangeY - minY;
+              cropperBox.y = wrapperH - cropperBox.cropChangeY + Math.abs(fh + cropperBox.cropOldH) <= wrapperH - minY ? cropperBox.cropChangeY - Math.abs(fh + cropperBox.cropOldH) : minY;
+            }
+          }
+        }
+
+        if (cropperBox.canChangeX && fixed) {
+          var fixedHeight = cropperBox.width / sourceImageData.rate;
+          if (fixedHeight + cropperBox.y > wrapperH) {
+            cropperBox.height = wrapperH - cropperBox.y;
+            cropperBox.width = cropperBox.height * sourceImageData.rate;
+          } else {
+            cropperBox.height = fixedHeight;
+          }
+        }
+
+        if (cropperBox.canChangeY && fixed) {
+          var fixedWidth = cropperBox.height * sourceImageData.rate;
+          if (fixedWidth + cropperBox.x > wrapperW) {
+            cropperBox.width = wrapperW - cropperBox.x;
+            cropperBox.height = cropperBox.width / sourceImageData.rate;
+          } else {
+            cropperBox.width = fixedWidth;
+          }
+        }
+      });
+    },
+    changeCropEnd: function changeCropEnd(e) {
+      window.removeEventListener("mousemove", this.changeCropNow);
+      window.removeEventListener("mouseup", this.changeCropEnd);
+    },
+    getCropAxis: function getCropAxis() {
+      var cropperBox = this.cropperBox;
+
+      var obj = {
+        x1: 0,
+        x2: 0,
+        y1: 0,
+        y2: 0
+      };
+      obj.x1 = cropperBox.x;
+      obj.y1 = cropperBox.y;
+      obj.x2 = cropperBox.x + cropperBox.width;
+      obj.y2 = cropperBox.y + cropperBox.height;
+      return obj;
+    },
+
+
+    //canvas获取为blob对象
+    getCropBlob: function getCropBlob(cb) {
+      var _this10 = this;
+
+      this.getCropInfo(function (data) {
+        data.toBlob(function (blob) {
+          return cb(blob);
+        }, "image/" + _this10.outputType, 1);
+      });
+    },
+    getCropInfo: function getCropInfo(cb) {
+      var _this11 = this;
+
+      var cropperBox = this.cropperBox,
+          sourceImageData = this.sourceImageData,
+          showImg = this.showImg;
+
+      var canvas = document.createElement("canvas");
+      var img = new Image();
+      var rotate = sourceImageData.rotate;
+      var trueWidth = sourceImageData.width;
+      var trueHeight = sourceImageData.height;
+      var cropOffsertX = cropperBox.x;
+      var cropOffsertY = cropperBox.y;
+      img.onload = function () {
+        if (cropperBox.width !== 0) {
+          var ctx = canvas.getContext("2d");
+          var dpr = 1;
+          var width = _this11.cropperBox.width * dpr;
+          var height = _this11.cropperBox.height * dpr;
+          var imgW = trueWidth * sourceImageData.scale * dpr;
+          var imgH = trueHeight * sourceImageData.scale * dpr;
+          // 图片x轴偏移
+          var dx = (sourceImageData.x - cropOffsertX + sourceImageData.width * (1 - sourceImageData.scale) / 2) * dpr;
+          // 图片y轴偏移
+          var dy = (sourceImageData.y - cropOffsertY + sourceImageData.height * (1 - sourceImageData.scale) / 2) * dpr;
+          setCanvasSize(width, height);
+          ctx.save();
+
+          switch (rotate) {
+            case 0:
+              setCanvasSize(width / sourceImageData.scale, height / sourceImageData.scale);
+              ctx.drawImage(img, dx / sourceImageData.scale, dy / sourceImageData.scale, imgW / sourceImageData.scale, imgH / sourceImageData.scale);
+          }
+          ctx.restore();
+        }
+        cb(canvas);
+      };
+      var s = this.image.substring(0, 4);
+      if (s !== "data") {
+        img.crossOrigin = "Anonymous";
+      }
+      img.src = this.showImg;
+
+      function setCanvasSize(width, height) {
+        canvas.width = Math.round(width);
+        canvas.height = Math.round(height);
+      }
+    },
+    addImage: function addImage() {
+      var el = this.$refs.add;
+      el.click();
+    },
+    addImageChange: function addImageChange() {
+      var _this12 = this;
+
+      var el = this.$refs.add;
+      if (el.value === '' || el.value === null) return;
+      var file = el.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        _this12.checkedImg(reader.result);
+      };
+    }
+  }
 }; //
 //
 //
@@ -1912,13 +2035,13 @@ if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = __webpack_require__(86).default
-var update = add("8e12bd00", content, false, {});
+var update = add("27c5f5de", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./vue-picture-cropper.vue?vue&type=style&index=0&id=7c2b99a4&scoped=true&lang=sass&", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./vue-picture-cropper.vue?vue&type=style&index=0&id=7c2b99a4&scoped=true&lang=sass&");
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./vue-cutter.vue?vue&type=style&index=0&id=c4df5aae&scoped=true&lang=sass&", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./vue-cutter.vue?vue&type=style&index=0&id=c4df5aae&scoped=true&lang=sass&");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -1935,31 +2058,31 @@ if(false) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.VuePictureCropper = undefined;
+exports.VueCutter = undefined;
 
-var _vuePictureCropper = __webpack_require__(40);
+var _vueCutter = __webpack_require__(40);
 
-var _vuePictureCropper2 = _interopRequireDefault(_vuePictureCropper);
+var _vueCutter2 = _interopRequireDefault(_vueCutter);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var install = function install(Vue) {
-    Vue.component(_vuePictureCropper2.default.name, _vuePictureCropper2.default);
+  Vue.component(_vueCutter2.default.name, _vueCutter2.default);
 };
 
 /* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {
-    install(window.Vue);
+  install(window.Vue);
 }
 
-exports.VuePictureCropper = _vuePictureCropper2.default;
+exports.VueCutter = _vueCutter2.default;
 exports.default = {
-    version: '1.0.1',
-    VuePictureCropper: _vuePictureCropper2.default,
-    install: install,
-    vuePictureCropper: _vuePictureCropper2.default
+  version: '1.0.2',
+  VueCutter: _vueCutter2.default,
+  install: install,
+  vueCutter: _vueCutter2.default
 };
 
 /***/ }),
@@ -1968,10 +2091,10 @@ exports.default = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_picture_cropper_vue_vue_type_template_id_7c2b99a4_scoped_true___ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_picture_cropper_vue_vue_type_script_lang_js___ = __webpack_require__(22);
-/* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_1__vue_picture_cropper_vue_vue_type_script_lang_js___) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_1__vue_picture_cropper_vue_vue_type_script_lang_js___[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__vue_picture_cropper_vue_vue_type_style_index_0_id_7c2b99a4_scoped_true_lang_sass___ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_cutter_vue_vue_type_template_id_c4df5aae_scoped_true___ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_cutter_vue_vue_type_script_lang_js___ = __webpack_require__(22);
+/* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_1__vue_cutter_vue_vue_type_script_lang_js___) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_1__vue_cutter_vue_vue_type_script_lang_js___[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__vue_cutter_vue_vue_type_style_index_0_id_c4df5aae_scoped_true_lang_sass___ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__node_modules_vue_loader_lib_runtime_componentNormalizer_js__ = __webpack_require__(88);
 
 
@@ -1982,36 +2105,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* normalize component */
 
 var component = Object(__WEBPACK_IMPORTED_MODULE_3__node_modules_vue_loader_lib_runtime_componentNormalizer_js__["a" /* default */])(
-  __WEBPACK_IMPORTED_MODULE_1__vue_picture_cropper_vue_vue_type_script_lang_js___["default"],
-  __WEBPACK_IMPORTED_MODULE_0__vue_picture_cropper_vue_vue_type_template_id_7c2b99a4_scoped_true___["a" /* render */],
-  __WEBPACK_IMPORTED_MODULE_0__vue_picture_cropper_vue_vue_type_template_id_7c2b99a4_scoped_true___["b" /* staticRenderFns */],
+  __WEBPACK_IMPORTED_MODULE_1__vue_cutter_vue_vue_type_script_lang_js___["default"],
+  __WEBPACK_IMPORTED_MODULE_0__vue_cutter_vue_vue_type_template_id_c4df5aae_scoped_true___["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_0__vue_cutter_vue_vue_type_template_id_c4df5aae_scoped_true___["b" /* staticRenderFns */],
   false,
   null,
-  "7c2b99a4",
+  "c4df5aae",
   null
   
 )
 
 /* hot reload */
 if (false) {
-  var api = require("F:\\project\\vue-pictrue-cropper\\node_modules\\vue-hot-reload-api\\dist\\index.js")
+  var api = require("F:\\project\\vue-cutter\\node_modules\\vue-hot-reload-api\\dist\\index.js")
   api.install(require('vue'))
   if (api.compatible) {
     module.hot.accept()
-    if (!api.isRecorded('7c2b99a4')) {
-      api.createRecord('7c2b99a4', component.options)
+    if (!api.isRecorded('c4df5aae')) {
+      api.createRecord('c4df5aae', component.options)
     } else {
-      api.reload('7c2b99a4', component.options)
+      api.reload('c4df5aae', component.options)
     }
-    module.hot.accept("./vue-picture-cropper.vue?vue&type=template&id=7c2b99a4&scoped=true&", function () {
-      api.rerender('7c2b99a4', {
+    module.hot.accept("./vue-cutter.vue?vue&type=template&id=c4df5aae&scoped=true&", function () {
+      api.rerender('c4df5aae', {
         render: render,
         staticRenderFns: staticRenderFns
       })
     })
   }
 }
-component.options.__file = "src/lib/vue-picture-cropper.vue"
+component.options.__file = "src/lib/vue-cutter.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
@@ -2019,9 +2142,9 @@ component.options.__file = "src/lib/vue-picture-cropper.vue"
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_template_id_7c2b99a4_scoped_true___ = __webpack_require__(42);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_template_id_7c2b99a4_scoped_true___["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_template_id_7c2b99a4_scoped_true___["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_template_id_c4df5aae_scoped_true___ = __webpack_require__(42);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_template_id_c4df5aae_scoped_true___["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_template_id_c4df5aae_scoped_true___["b"]; });
 
 
 /***/ }),
@@ -4279,10 +4402,10 @@ module.exports = exports.default;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_indentedSyntax_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_style_index_0_id_7c2b99a4_scoped_true_lang_sass___ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_indentedSyntax_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_style_index_0_id_7c2b99a4_scoped_true_lang_sass____default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_indentedSyntax_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_style_index_0_id_7c2b99a4_scoped_true_lang_sass___);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_indentedSyntax_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_style_index_0_id_c4df5aae_scoped_true_lang_sass___ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_indentedSyntax_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_style_index_0_id_c4df5aae_scoped_true_lang_sass____default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_indentedSyntax_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_style_index_0_id_c4df5aae_scoped_true_lang_sass___);
 /* unused harmony reexport namespace */
- /* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0__node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_indentedSyntax_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_picture_cropper_vue_vue_type_style_index_0_id_7c2b99a4_scoped_true_lang_sass____default.a); 
+ /* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0__node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_indentedSyntax_node_modules_vue_loader_lib_index_js_vue_loader_options_vue_cutter_vue_vue_type_style_index_0_id_c4df5aae_scoped_true_lang_sass____default.a); 
 
 /***/ }),
 /* 84 */
@@ -4293,7 +4416,7 @@ exports = module.exports = __webpack_require__(85)(false);
 
 
 // module
-exports.push([module.i, ".theme-dark[data-v-7c2b99a4] {\n  background: rgba(42, 43, 42, 0.65);\n}\n.theme-warm[data-v-7c2b99a4] {\n  background: rgba(249, 192, 78, 0.65);\n}\n.theme-pink[data-v-7c2b99a4] {\n  background: rgba(255, 139, 165, 0.5);\n}\n.theme[data-v-7c2b99a4] {\n  background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC\") !important;\n}\n.cropper-container-bg[data-v-7c2b99a4] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.container[data-v-7c2b99a4] {\n  position: relative;\n  display: inline-block;\n}\n.cropper-container[data-v-7c2b99a4] {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  box-sizing: border-box;\n  top: 0;\n  left: 0;\n  overflow-y: hidden;\n  overflow-x: hidden;\n  cursor: move;\n  user-select: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  direction: ltr;\n  touch-action: none;\n  text-align: left;\n}\n.cropper-box-canvas[data-v-7c2b99a4],\n.cropper-drag-box[data-v-7c2b99a4],\n.cropper-view-box-dr[data-v-7c2b99a4],\n.cropper-box[data-v-7c2b99a4] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  user-select: none;\n}\n.cropper-box-canvas[data-v-7c2b99a4] {\n  display: block;\n  text-align: left;\n}\n.cropper-move[data-v-7c2b99a4] {\n  background: rgba(0, 0, 0, 0.1);\n}\n.cropper-context[data-v-7c2b99a4] {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.cropper-view-box[data-v-7c2b99a4] {\n  display: block;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  outline: 2px solid #39f;\n  outline-color: rgba(51, 153, 255, 0.75);\n  user-select: none;\n}\n.cropper-view-box img[data-v-7c2b99a4] {\n  user-select: none;\n  text-align: left;\n  max-width: none;\n  max-height: none;\n}\n.cropper-view-box-dr-bg[data-v-7c2b99a4] {\n  top: 0;\n  left: 0;\n  background-color: #fff;\n  opacity: 0.2;\n}\n.fixedBox[data-v-7c2b99a4] {\n  display: inline-block;\n}\n.f[data-v-7c2b99a4] {\n  display: inline-block;\n  position: absolute;\n}\n.fht[data-v-7c2b99a4] {\n  top: -1px;\n  left: 0;\n  width: 100%;\n  height: 2px;\n  cursor: n-resize;\n}\n.fhb[data-v-7c2b99a4] {\n  bottom: -1px;\n  left: 0;\n  width: 100%;\n  height: 2px;\n  cursor: s-resize;\n}\n.fvl[data-v-7c2b99a4] {\n  height: 100%;\n  width: 2px;\n  left: -1px;\n  top: 0;\n  cursor: w-resize;\n}\n.fvr[data-v-7c2b99a4] {\n  height: 100%;\n  width: 2px;\n  right: -1px;\n  top: 0;\n  cursor: e-resize;\n}\n.dot[data-v-7c2b99a4] {\n  background: #3399ff;\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n}\n.dot-1[data-v-7c2b99a4] {\n  top: -4px;\n  left: -4px;\n  cursor: nw-resize;\n}\n.dot-2[data-v-7c2b99a4] {\n  top: -4px;\n  left: 50%;\n  transform: translateX(-4px);\n  cursor: n-resize;\n}\n.dot-3[data-v-7c2b99a4] {\n  top: -4px;\n  right: -4px;\n  cursor: ne-resize;\n}\n.dot-4[data-v-7c2b99a4] {\n  top: 50%;\n  right: -4px;\n  transform: translateY(-4px);\n  cursor: e-resize;\n}\n.dot-5[data-v-7c2b99a4] {\n  bottom: -4px;\n  right: -4px;\n  cursor: se-resize;\n}\n.dot-6[data-v-7c2b99a4] {\n  bottom: -4px;\n  left: 50%;\n  transform: translateX(-4px);\n  cursor: s-resize;\n}\n.dot-7[data-v-7c2b99a4] {\n  bottom: -4px;\n  left: -4px;\n  cursor: sw-resize;\n}\n.dot-8[data-v-7c2b99a4] {\n  top: 50%;\n  transform: translateY(-4px);\n  left: -4px;\n  cursor: w-resize;\n}\n.addImage[data-v-7c2b99a4] {\n  position: absolute;\n  width: 0.1rem;\n  height: 0.1rem;\n  z-index: -10;\n}\n", ""]);
+exports.push([module.i, ".theme-dark[data-v-c4df5aae] {\n  background: rgba(42, 43, 42, 0.65);\n}\n.theme-warm[data-v-c4df5aae] {\n  background: rgba(249, 192, 78, 0.65);\n}\n.theme-pink[data-v-c4df5aae] {\n  background: rgba(255, 139, 165, 0.5);\n}\n.theme[data-v-c4df5aae] {\n  background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC\") !important;\n}\n.cropper-container-bg[data-v-c4df5aae] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.container[data-v-c4df5aae] {\n  position: relative;\n  display: inline-block;\n}\n.cropper-container[data-v-c4df5aae] {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  box-sizing: border-box;\n  top: 0;\n  left: 0;\n  overflow-y: hidden;\n  overflow-x: hidden;\n  cursor: move;\n  user-select: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  direction: ltr;\n  touch-action: none;\n  text-align: left;\n}\n.cropper-box-canvas[data-v-c4df5aae],\n.cropper-drag-box[data-v-c4df5aae],\n.cropper-view-box-dr[data-v-c4df5aae],\n.cropper-box[data-v-c4df5aae] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  user-select: none;\n}\n.cropper-box-canvas[data-v-c4df5aae] {\n  display: block;\n  text-align: left;\n}\n.cropper-move[data-v-c4df5aae] {\n  background: rgba(0, 0, 0, 0.1);\n}\n.cropper-context[data-v-c4df5aae] {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.cropper-view-box[data-v-c4df5aae] {\n  display: block;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  outline: 2px solid #39f;\n  outline-color: rgba(51, 153, 255, 0.75);\n  user-select: none;\n}\n.cropper-view-box img[data-v-c4df5aae] {\n  user-select: none;\n  text-align: left;\n  max-width: none;\n  max-height: none;\n}\n.cropper-view-box-dr-bg[data-v-c4df5aae] {\n  top: 0;\n  left: 0;\n  background-color: #fff;\n  opacity: 0.2;\n}\n.fixedBox[data-v-c4df5aae] {\n  display: inline-block;\n}\n.f[data-v-c4df5aae] {\n  display: inline-block;\n  position: absolute;\n}\n.fht[data-v-c4df5aae] {\n  top: -1px;\n  left: 0;\n  width: 100%;\n  height: 2px;\n  cursor: n-resize;\n}\n.fhb[data-v-c4df5aae] {\n  bottom: -1px;\n  left: 0;\n  width: 100%;\n  height: 2px;\n  cursor: s-resize;\n}\n.fvl[data-v-c4df5aae] {\n  height: 100%;\n  width: 2px;\n  left: -1px;\n  top: 0;\n  cursor: w-resize;\n}\n.fvr[data-v-c4df5aae] {\n  height: 100%;\n  width: 2px;\n  right: -1px;\n  top: 0;\n  cursor: e-resize;\n}\n.dot[data-v-c4df5aae] {\n  background: #3399ff;\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n}\n.dot-1[data-v-c4df5aae] {\n  top: -4px;\n  left: -4px;\n  cursor: nw-resize;\n}\n.dot-2[data-v-c4df5aae] {\n  top: -4px;\n  left: 50%;\n  transform: translateX(-4px);\n  cursor: n-resize;\n}\n.dot-3[data-v-c4df5aae] {\n  top: -4px;\n  right: -4px;\n  cursor: ne-resize;\n}\n.dot-4[data-v-c4df5aae] {\n  top: 50%;\n  right: -4px;\n  transform: translateY(-4px);\n  cursor: e-resize;\n}\n.dot-5[data-v-c4df5aae] {\n  bottom: -4px;\n  right: -4px;\n  cursor: se-resize;\n}\n.dot-6[data-v-c4df5aae] {\n  bottom: -4px;\n  left: 50%;\n  transform: translateX(-4px);\n  cursor: s-resize;\n}\n.dot-7[data-v-c4df5aae] {\n  bottom: -4px;\n  left: -4px;\n  cursor: sw-resize;\n}\n.dot-8[data-v-c4df5aae] {\n  top: 50%;\n  transform: translateY(-4px);\n  left: -4px;\n  cursor: w-resize;\n}\n.addImage[data-v-c4df5aae] {\n  position: absolute;\n  width: 0.1rem;\n  height: 0.1rem;\n  z-index: -10;\n}\n", ""]);
 
 // exports
 

@@ -114,7 +114,7 @@
   import Exif from './exif-js-min'
 
   export default {
-    name: "vue-picture-cropper",
+    name: "vue-cutter",
     props: {
       // 容器宽度
       containerWidth: {

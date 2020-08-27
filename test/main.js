@@ -3,9 +3,9 @@ import App from './App.vue'
 
 // 打包测试
 
-import VuePictureCropper from '../dist/index'
+import VueCutter from '../dist/index'
 
-Vue.use(VuePictureCropper)
+Vue.use(VueCutter)
 
 new Vue({
     el: '#app',

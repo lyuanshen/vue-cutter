@@ -1,22 +1,30 @@
-<svg width="1588" height="1100" xmlns="http://www.w3.org/2000/svg">
+<svg width="1999.9999999999998" height="1388" xmlns="http://www.w3.org/2000/svg">
  <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
-
+ <defs>
+  <linearGradient id="svg_10" x1="0" y1="0" x2="1" y2="0">
+   <stop stop-color="#007f00" offset="0"/>
+   <stop stop-color="#ff80ff" offset="1"/>
+  </linearGradient>
+  <linearGradient y2="0" x2="1" y1="0" x1="0" id="svg_11">
+   <stop offset="0" stop-color="#007fff"/>
+   <stop offset="1" stop-color="#ff8000"/>
+  </linearGradient>
+ </defs>
  <g>
   <title>background</title>
-  <rect fill="none" id="canvas_background" height="1102" width="1590" y="-1" x="-1"/>
-  <g display="none" id="canvasGrid">
-   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" id="svg_1"/>
+  <rect x="-1" y="-1" width="2002" height="1390" id="canvas_background" fill="none"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_1" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
   </g>
  </g>
  <g>
   <title>Layer 1</title>
-  <rect fill="none" stroke-width="38" fill-opacity="null" x="617.697404" y="220.139462" width="357" height="350" id="svg_2" stroke="#ff56aa"/>
-  <line fill="none" stroke="#ff56aa" stroke-width="38" fill-opacity="null" x1="617.390569" y1="489.03519" x2="617.348953" y2="715.618761" id="svg_3" stroke-linejoin="null" stroke-linecap="null"/>
-  <line fill="none" stroke="#ff56aa" stroke-width="38" fill-opacity="null" x1="1003.858086" y1="106.365163" x2="1003.81647" y2="332.948734" id="svg_4" stroke-linejoin="null" stroke-linecap="null" transform="rotate(90 1003.8370361328125,219.65690612792977) "/>
-  <line fill="none" stroke="#ff56aa" stroke-width="38" fill-opacity="null" x1="589.425586" y1="457.272718" x2="589.38397" y2="683.856289" id="svg_5" stroke-linejoin="null" stroke-linecap="null" transform="rotate(90 589.4046630859375,570.5643310546876) "/>
-  <line fill="none" stroke="#ff56aa" stroke-width="38" fill-opacity="null" x1="974.35464" y1="74.60269" x2="974.313024" y2="301.186261" id="svg_6" stroke-linejoin="null" stroke-linecap="null"/>
-  <text fill="#00bfbf" stroke-width="0" stroke-opacity="null" x="281.820343" y="244.356403" id="svg_7" font-size="24" font-family="'Courier New', Courier, monospace" text-anchor="start" xml:space="preserve" transform="matrix(17.936110171387064,0,0,19.884821465574543,-4386.377327909057,-4312.026685377771) " stroke="#00a1ff" font-weight="bold">V</text>
-  <text fill="#000000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="262.764479" y="850.381317" id="svg_10" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" transform="matrix(11.612123489379883,0,0,4.974902629852295,-2788.335446834564,-3293.579475954175) " stroke="#ff56aa"/>
-  <text fill="#ff56aa" stroke-width="0" x="138.646979" y="895.596186" id="svg_11" font-size="24" font-family="'Courier New', Courier, monospace" text-anchor="start" xml:space="preserve" transform="matrix(5.695070391919101,0,0,12.530432344906833,-781.4488996006172,-10188.480066833483) " stroke="#ff56aa" font-weight="bold" font-style="normal">VUE PICTURE CROPPER</text>
+  <rect fill="none" stroke-width="45" x="700.000018" y="199.499999" width="600" height="601" id="svg_2" stroke="#007fff"/>
+  <line fill="none" stroke="#007fff" stroke-width="45" x1="1334.293607" y1="45.685882" x2="1334.127631" y2="354.022881" id="svg_3" stroke-linejoin="null" stroke-linecap="null" transform="rotate(90 1334.2095947265625,199.8543853759767) "/>
+  <line fill="none" stroke="#007fff" stroke-width="45" x1="700.654806" y1="693.61027" x2="700.48883" y2="1001.94727" id="svg_6" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#007fff" stroke-width="45" x1="1300.661958" y1="-6.398067" x2="1300.495982" y2="301.938932" id="svg_7" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#007fff" stroke-width="45" x1="645.594809" y1="645.693035" x2="645.428833" y2="954.030034" id="svg_8" stroke-linejoin="null" stroke-linecap="null" transform="rotate(90 645.5120239257812,799.8615722656251) "/>
+  <text fill="url(#svg_10)" stroke-width="0" x="433.645121" y="435.823661" id="svg_9" font-size="24" font-family="'Courier New', Courier, monospace" text-anchor="start" xml:space="preserve" transform="matrix(35.00184363544286,0,0,35.06509966368703,-14434.121514648949,-14521.048302428675) " stroke="#00ff00" font-weight="normal">V</text>
+  <text font-weight="bold" stroke="#007fff" transform="matrix(15.715333380711382,0,0,9.41445378823761,-4148.612877710283,-9210.452397510295) " xml:space="preserve" text-anchor="start" font-family="'Shadows Into Light', serif" font-size="24" id="svg_4" y="1113.697127" x="265.505231" stroke-width="0" fill="url(#svg_11)">VUE CUTTER</text>
  </g>
 </svg>
