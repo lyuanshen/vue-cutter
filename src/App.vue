@@ -2,20 +2,9 @@
 <!--  开发测试-->
     <div id="app">
         <vue-cutter
-            ref="cropper"
-            :container-width="600"
-            :container-height="450"
-            image="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3995073927,3598178723&fm=26&gp=0.jpg"git subtree push --prefix=dist origin gh-pages
+          :container-width="600"
+          image="https://cdn1-images.epio.app/image/download/aHR0cHM6Ly93d3cubXlteXBpYy5uZXQvZGF0YS9hdHRhY2htZW50L2ZvcnVtLzIwMTgwMS8wOC8wMzQ5MjdkMXRzcXQ2cjZtZHkyeHZkLmpwZy50aHVtYi5qcGc=/350X500"
         ></vue-cutter>
-        <img :src="img" alt="">
-        <div style="width: 100%;margin-top: 38px">
-            <el-button @click="getCropperAxis"
-                       type="primary">裁剪
-            </el-button>
-            <el-button @click="addImage"
-                       type="primary">addImage
-            </el-button>
-        </div>
     </div>
 </template>
 

@@ -1,0 +1,25 @@
+<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <defs>
+  <linearGradient y2="0" x2="1" y1="0" x1="0" id="svg_10">
+   <stop offset="0" stop-color="#007f00"/>
+   <stop offset="1" stop-color="#ff80ff"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="1002" width="1002" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#007fff" id="svg_2" height="601" width="600" y="199.499999" x="199.999995" stroke-width="45" fill="none"/>
+  <line transform="rotate(90 848.5006713867188,199.85438537597665) " stroke-linecap="null" stroke-linejoin="null" id="svg_3" y2="354.022881" x2="848.417679" y1="45.685882" x1="848.583655" stroke-width="45" stroke="#007fff" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_6" y2="1001.94727" x2="200.493291" y1="693.61027" x1="200.659267" stroke-width="45" stroke="#007fff" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_7" y2="301.938932" x2="800.500443" y1="-6.398067" x1="800.666419" stroke-width="45" stroke="#007fff" fill="none"/>
+  <line transform="rotate(90 152.65907287597648,799.8615722656251) " stroke-linecap="null" stroke-linejoin="null" id="svg_8" y2="954.030034" x2="152.576087" y1="645.693035" x1="152.742063" stroke-width="45" stroke="#007fff" fill="none"/>
+  <text font-weight="normal" stroke="#00ff00" transform="matrix(35.00184363544286,0,0,35.06509966368703,-14434.121514648949,-14521.048302428675) " xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="24" id="svg_9" y="435.823661" x="419.542214" stroke-width="0" fill="url(#svg_10)">V</text>
+ </g>
+</svg>
