@@ -1,0 +1,30 @@
+<svg width="2500" height="2000" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <defs>
+  <linearGradient id="svg_5" x1="0.492188" y1="1" x2="0.496094" y2="0">
+   <stop stop-color="#007fff" offset="0.496094"/>
+   <stop stop-color="#ff8000" offset="1"/>
+  </linearGradient>
+  <linearGradient y2="0" x2="0.496094" y1="1" x1="0.464844" id="svg_12">
+   <stop offset="0.390625" stop-color="#007f00"/>
+   <stop offset="1" stop-color="#ff80ff"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="2002" width="2502" y="-1" x="-1"/>
+  <g display="none" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" id="svg_1"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#007fff" id="svg_2" height="601" width="600" y="699.499999" x="950.000018" stroke-width="45" fill="none"/>
+  <line transform="rotate(90 1617.5432128906252,699.8483276367189) " stroke-linecap="null" stroke-linejoin="null" id="svg_3" y2="854.01735" x2="1617.457725" y1="545.680351" x1="1617.623701" stroke-width="45" stroke="#007fff" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_6" y2="1501.941739" x2="950.486064" y1="1193.604739" x1="950.65204" stroke-width="45" stroke="#007fff" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_7" y2="801.933401" x2="1550.493216" y1="493.596402" x1="1550.659192" stroke-width="45" stroke="#007fff" fill="none"/>
+  <line transform="rotate(90 887.1756591796874,1299.8588867187502) " stroke-linecap="null" stroke-linejoin="null" id="svg_8" y2="1454.024503" x2="887.092852" y1="1145.687504" x1="887.258828" stroke-width="45" stroke="#007fff" fill="none"/>
+  <text font-weight="normal" stroke="#00ff00" transform="matrix(35.00184363544285,0,0,31.131643276354367,-14404.121846527609,-12732.439725934075) " xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="24" id="svg_9" y="449.173105" x="440.073283" stroke-width="0" fill="url(#svg_12)">V</text>
+  <text fill="url(#svg_5)" stroke-width="0" x="275.290291" y="1167.461606" id="svg_4" font-size="24" font-family="'Shadows Into Light', serif" text-anchor="start" xml:space="preserve" transform="matrix(17.38029423604912,0,0,9.41445378823761,-4613.990969519688,-9210.452397510295) " stroke="#007fff" font-weight="bold">VUE CUTTER</text>
+ </g>
+</svg>
