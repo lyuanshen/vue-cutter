@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="266" src="https://raw.githubusercontent.com/lyuanshen/vue-pictrue-cropper/a2319bbac4f56274e90fe1f0cc22a84e91b00667/src/assets/logo2.svg">
+  <img width="266" src="https://raw.githubusercontent.com/lyuanshen/vue-cutter/eae5c873a00eea27658abb042792e599984c8c98/src/assets/logo2.svg">
 </p>
 
 <p align="center">
@@ -38,20 +38,20 @@ npm install --save vue-picture-cropper
 
 ```js
 // main.js里面使用
-import vuePictureCropper from 'vue-picture-cropper'
-Vue.use(vuePictureCropper)
+import VueCutter from 'vue-cutter'
+Vue.use(VueCutter)
 
 // 组件内使用
-import { VuePictureCropper } from 'vue-picture-cropper'
-components: { VuePictureCropper }
+import { VueCutter } from 'vue-cutter'
+components: { VueCutter }
 ```
 
 ```vue
-<vue-picture-cropper
+<vue-cutter
    :container-width="option.width"
    :container-height="option.height"
    :outputType="option.type">
-</vue-picture-cropper>
+</vue-cutter>
 ```
 
 ### 属性
