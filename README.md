@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="450" src="https://raw.githubusercontent.com/lyuanshen/vue-cutter/c421be7ae48eabc7b0617bb7f14db749e95db31b/src/assets/logo3.svg">
+  <img width="450" src="https://raw.githubusercontent.com/gracy520/vue-cutter/f13673823bc0f396c931215b9185f83c7e86f32f/src/assets/logo2.svg">
 </p>
 
 <p align="center">
