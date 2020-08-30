@@ -3,6 +3,11 @@
     "g": "Guide",
     "m": "My opensources",
     "s": "Languages",
-    "d": "Donate"
+    "d": "Donate",
+    "searchBox": "What to search"
+  },
+  "dashboard": {
+    "description": "A custom picture cropping plugin for PC and mobile",
+    "start": "Get Started"
   }
 }

@@ -9,6 +9,7 @@
         }"
         class="tags-menu">
         <i @click="SideMenu(drawer)"
+           style="color: #445e7a"
           :class="drawer ? 'el-icon-s-unfold':'el-icon-s-fold'"></i>
       </div>
 
@@ -39,11 +40,11 @@
         }"
           class="search-box" :class="searchBox.isActive? 'search-box-active':''">
           <i :class="searchBox.isActive? 'search-box-icon-active':''"
-             @click="searchBo"
+             @click="searchBo(searchBox.oIn)"
             class="navbar-tag-search el-icon-search"></i>
           <input type="text"
                  v-if="searchBox.input"
-                 placeholder="要搜点什么呢"
+                 :placeholder="$t('nav.searchBox')"
                  @blur="searchBox.isActive = !searchBox.isActive"
                  @focus="searchBox.isActive = !searchBox.isActive">
         </span>
@@ -69,20 +70,22 @@
               </a>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
+                  :disabled="false"
                   command="en"
                 >
                   <i :style="{color: $i18n.locale === 'en' ?'#3eaf7c':''}"
                      :class="$i18n.locale === 'en' ? 'el-icon-caret-right' : ''"></i>
                   <span :style="{color: $i18n.locale === 'en' ?'#3eaf7c':''}"
-                        style="display: inline-block;float: right" @click="$i18n.locale='en'">England</span>
+                        style="display: inline-block;float: right">England</span>
                 </el-dropdown-item>
                 <el-dropdown-item
+                  :disabled="false"
                   command="zh"
                 >
                   <i :style="{color: $i18n.locale === 'zh' ?'#3eaf7c':''}"
                      :class="$i18n.locale === 'zh' ? 'el-icon-caret-right' : ''"></i>
                   <span :style="{color: $i18n.locale === 'zh' ?'#3eaf7c':''}"
-                        style="display: inline-block;float: right" @click="$i18n.locale='zh'">简体中文</span>
+                        style="display: inline-block;float: right">简体中文</span>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -114,39 +117,123 @@
       </div>
 
     </header>
-    <div>
+
+    <div
+      v-if="device ===  'xs' "
+    >
       <el-drawer
-        style="top: 57px;outline: none"
+        style="top: 57px"
         direction="ltr"
-        v-if="device ===  'xs' "
         size="1"
         :show-close="true"
         :append-to-body="true"
-        title="我是标题"
         :visible.sync="drawer"
+        :modal="false"
         :with-header="false"
       >
-<p style="padding: 0 50px"> sss</p>
+        <div class="side-menu-context">
+          <div class="close-bb">
+            <el-menu
+              style="width: 100%;height: 100%;"
+              mode="horizontal "
+            >
+              <el-menu-item>
+                <i class="el-icon-s-promotion"></i>
+                <span class="s-m-i-name">{{$t('nav.g')}}</span>
+              </el-menu-item>
+
+              <el-menu-item>
+                <i class="el-icon-crop"></i>
+                <span class="s-m-i-name">demo</span>
+              </el-menu-item>
+
+              <el-menu-item>
+                <i class="el-icon-coffee-cup"></i>
+                <span class="s-m-i-name">{{$t('nav.d')}}</span>
+              </el-menu-item>
+
+              <el-submenu index="1">
+                <template slot="title">
+                  <i class="el-icon-connection"></i>
+                  <span>{{$t('nav.m')}}</span>
+                </template>
+              </el-submenu>
+
+              <el-submenu index="2">
+                <template slot="title">
+                  <i class="el-icon-setting"></i>
+                  <span>{{$t('nav.s')}}</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item @click="setLang('en')">
+                    <span :style="{color: $i18n.locale === 'en' ?'#3eaf7c':''}">
+                      England
+                    </span>
+                  </el-menu-item >
+                  <el-menu-item @click="setLang('zh')">
+                    <span :style="{color: $i18n.locale === 'zh' ?'#3eaf7c':''}">
+                      简体中文
+                    </span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+
+              <el-menu-item>
+                <svg-icon icon-class="github"
+                          style="font-size: 20px;float: left;margin: 18px 0"/>
+                <span style="margin: 0 12px"
+                  class="s-m-i-name">Github</span>
+              </el-menu-item>
+            </el-menu>
+          </div>
+        </div>
       </el-drawer>
     </div>
 
-    <div>
+    <div
+      v-if="device !== 'md'"
+    >
       <el-drawer
         direction="ttb"
         style="top: 57px;"
+        :show-close="false"
+        size="1"
+        :withHeader="false"
         :visible.sync="searchBox.oIn"
-      ></el-drawer>
+      >
+        <div class="sub-searchBox">
+          <div
+            :class="searchBox.isActive? 'search-box-active':''"
+            class="box">
+            <input
+              :placeholder="$t('nav.searchBox')"
+              type="text">
+          </div>
+        </div>
+      </el-drawer>
     </div>
+
+    <git-hub-corner
+      v-if="device === 'xs'"
+      class="githubCorner"></git-hub-corner>
+
+    <AppMain/>
 
   </div>
 </template>
 
 <script>
   import ResizeHandler from "@/Layout/mixin/ResizeHandler";
+  import GitHubCorner from '@/components/GithubCorner'
+  import AppMain from "@/Layout/components/AppMain";
   import { mapState } from 'vuex'
   export default {
     name: "index",
     mixins: [ResizeHandler],
+    components: {
+      GitHubCorner,
+      AppMain
+    },
     computed: {
       ...mapState({
         device: state => state.app.device
@@ -159,6 +246,9 @@
           boxId: '',
           input: true,
           oIn: false
+        },
+        sideMenu:{
+          colse: false
         },
         drawer: false
       }
@@ -181,9 +271,15 @@
     },
     methods: {
       setLang(e) {
+        this.$i18n.locale = e
         this.$store.dispatch('app/setLanguage',e)
       },
-      searchBo(){
+      searchBo(params){
+        this.searchBox.isActive = !this.searchBox.isActive
+        if (params){
+          this.searchBox.oIn = false;
+          return;
+        }
         if (this.device === 'md') {
           return
         }else {
@@ -198,7 +294,10 @@
         }
       },
       SideMenu(params) {
-        if (!params) return;
+        if (params){
+          this.drawer = false
+          return;
+        }
         if (this.device !== 'xs'){
           return;
         }else {
@@ -218,9 +317,13 @@
 
 <style scoped>
   .navbar {
+    background: white;
     width: 100%;
     height: 57px;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
     border-bottom: 1px solid #eaecef;
   }
 
@@ -341,5 +444,41 @@
     to{
       width: 200px;
     }
+  }
+  .side-menu-context{
+    height: 100%;
+    background: white;
+    width: 230px;
+  }
+  .s-m-i-name{
+    font-size: 0.9rem;
+    color: #2c3e50;
+  }
+  .sub-searchBox{
+    width: 100%;
+    height: 50px;
+  }
+  .sub-searchBox .box{
+    width: 90%;
+    display: inline-block;
+    margin: 7px auto;
+    height: 35px;
+    border: 1px solid #cfd4db;
+    border-radius: 17px;
+  }
+  .sub-searchBox .box input{
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+    border: none;
+    outline: none;
+    background: none;
+    color: #4e6e8e;
+  }
+  .githubCorner{
+    position: fixed;
+    top: 57px;
+    right: 0;
+    z-index: 999;
   }
 </style>
