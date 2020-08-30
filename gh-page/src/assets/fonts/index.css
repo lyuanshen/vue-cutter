@@ -6,3 +6,13 @@
   font-family: HanyiSentyCrayon;
   src: url("HanyiSentyCrayon.ttf");
 }
+
+@font-face {
+  font-family: SourceCodeVariable-Italic;
+  src: url("SourceCodeVariable-Italic.ttf");
+}
+
+@font-face {
+  font-family: SourceCodeVariable-Roman;
+  src: url("SourceCodeVariable-Roman.ttf");
+}
