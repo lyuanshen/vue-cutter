@@ -13,11 +13,11 @@ import VueCutter from 'vue-cutter'
 
 import Highlight from '@/utlis/highlight'
 
-Vue.use(Highlight)
+Vue.use(Highlight);
 
 Vue.use(VueI18n);
 
-Vue.use(VueCutter)
+Vue.use(VueCutter);
 
 const i18n = new VueI18n({
   locale: store.getters.lang,

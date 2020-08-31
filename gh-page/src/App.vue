@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
 <script>
@@ -8,7 +8,21 @@
     name: 'app',
     data() {
       return {
-        msg: 'Welcome to Your Vue.js App'
+        msg: 'Welcome to Your Vue.js App',
+        isRouterAlive: true
+      }
+    },
+    provide() {
+      return{
+        reload : this.reload
+      }
+    },
+    methods: {
+      reload() {
+        this.isRouterAlive = false
+        this.$nextTick(() => {
+          this.isRouterAlive = true
+        })
       }
     }
   }

@@ -21,7 +21,7 @@ const state = {
     '        options: {\n' +
     '          containerWidth: 450,\n' +
     '          containerHeigh: 300,\n' +
-    '          image: \'\'\n' +
+    '          image: \'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=4110377719,1460950412&fm=26&gp=0.jpg\'\n' +
     '        }\n' +
     '      }\n' +
     '    }\n' +

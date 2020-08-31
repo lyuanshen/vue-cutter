@@ -16,6 +16,7 @@
   position: relative;
   top: 58px;
   padding: 5rem 0 3rem 0;
+  font-size: 1rem;
   color: #4e6e8e;
   border-top: 1px solid #eaecef;
 }

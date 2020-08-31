@@ -51,7 +51,7 @@
 
         <nav style="display: inline-block;" v-if="device !== 'xs'">
           <div>
-            <a href="">GitHub</a>
+            <a href="https://github.com/lyuanshen/vue-cutter">GitHub</a>
             <i class="el-icon-link"></i>
           </div>
 
@@ -182,7 +182,7 @@
                 <svg-icon icon-class="github"
                           style="font-size: 20px;float: left;margin: 18px 0"/>
                 <span style="margin: 0 12px"
-                  class="s-m-i-name">Github</span>
+                  class="s-m-i-name"><a href="https://github.com/lyuanshen/vue-cutter" style="text-decoration: none">Github</a></span>
               </el-menu-item>
             </el-menu>
           </div>
@@ -219,8 +219,6 @@
 
     <AppMain/>
 
-    <foot/>
-
   </div>
 </template>
 
@@ -228,15 +226,13 @@
   import ResizeHandler from "@/Layout/mixin/ResizeHandler";
   import GitHubCorner from '@/components/GithubCorner'
   import AppMain from "@/Layout/components/AppMain";
-  import foot from "@/Layout/components/foot";
   import { mapState } from 'vuex'
   export default {
     name: "index",
     mixins: [ResizeHandler],
     components: {
       GitHubCorner,
-      AppMain,
-      foot
+      AppMain
     },
     computed: {
       ...mapState({
@@ -273,10 +269,12 @@
         }
       }
     },
+    inject:['reload'],
     methods: {
       setLang(e) {
         this.$i18n.locale = e
         this.$store.dispatch('app/setLanguage',e)
+        this.reload()
       },
       searchBo(params){
         this.searchBox.isActive = !this.searchBox.isActive
