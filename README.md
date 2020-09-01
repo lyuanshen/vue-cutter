@@ -1,9 +1,9 @@
 <p align="center">
-  <img width="150" src="https://raw.githubusercontent.com/lyuanshen/vue-cutter/5c243a0243b44ed5388419fa5493d7850e2413fd/src/assets/logo.svg">
+  <img width="200" src="https://raw.githubusercontent.com/lyuanshen/vue-cutter/5c243a0243b44ed5388419fa5493d7850e2413fd/src/assets/logo.svg">
 </p>
 
 <p align="center">
-  <img width="400" src="https://github.com/lyuanshen/vue-cutter/blob/master/src/assets/name.png?raw=true">
+  <img width="450" src="https://github.com/lyuanshen/vue-cutter/blob/master/src/assets/name.png?raw=true">
 </p>
 
 <p align="center">
