@@ -15,14 +15,8 @@ module.exports = merge(base, {
         historyApiFallback: true,
         noInfo: true,
         overlay: true,
-        host: '192.168.31.50',
-        port: 8088,
-        proxy: {
-            '/fflist': {
-                target: "http://localhost:8090",
-                changeOrigin: true,
-            }
-        }
+        host: 'localhost',
+        port: 8088
     },
     performance: {
         hints: false
