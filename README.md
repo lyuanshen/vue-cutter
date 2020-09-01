@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="450" src="https://raw.githubusercontent.com/gracy520/vue-cutter/f13673823bc0f396c931215b9185f83c7e86f32f/src/assets/logo2.svg">
+  <img width="450" src="https://raw.githubusercontent.com/gracy520/vue-cutter/f13673823bc0f396c931215b9185f83c7e86f32f/src/assets/logo.svg">
 </p>
 
 <p align="center">
