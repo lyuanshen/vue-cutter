@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img width="408" src="https://github.com/lyuanshen/vue-cutter/blob/master/src/assets/name.png?raw=true">
+  <img width="408" height="67" src="https://github.com/lyuanshen/vue-cutter/blob/master/src/assets/name.png?raw=true">
 </p>
 
 <p align="center">
