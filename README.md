@@ -22,8 +22,9 @@
 
 - 基于`vue`和`javascript`开发的一款图片剪裁处理工具
 - 优点：**原生、轻量、使用简单、功能全面、扩展性强**
-- 目前功能：**缩放、矩形剪裁**
-- 关于缩放：鼠标（鼠标滚轮缩放）
+- 目前功能：**支持旋转、缩放、平移，固定比例，固定尺寸**
+- 支持 `PC端` 和 `移动端`
+- 关于缩放：鼠标（鼠标滚轮缩放）, 移动端双指缩放
 
 ## 在线预览
 
@@ -31,12 +32,17 @@
 
 ## 使用方法
 ### 安装
-[![NPM](https://nodei.co/npm/vue-picture-cropper.png?downloadRank=true)](https://nodei.co/npm/vue-picture-cropper/)
-
 
 ```
-npm install --save vue-picture-cropper
+// npm 安装
+npm install vue-cutter --save
 ```
+
+```
+// yarn 安装
+yarn add vue-cutter --save
+```
+
 
 ### 用法
 
@@ -51,11 +57,30 @@ components: { VueCutter }
 ```
 
 ```vue
-<vue-cutter
-   :container-width="option.width"
-   :container-height="option.height"
-   :outputType="option.type">
-</vue-cutter>
+<template>
+  <div>
+    <vue-cutter
+      :container-bounding="options.bounding"
+      :src="options.src"
+      :output-type="options.outputType"
+    ></vue-cutter>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "App",
+    data() {
+      return{
+        options: {
+          bounding: ['450px', '450px'],
+          src: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=4110377719,1460950412&fm=26&gp=0.jpg',
+          outputType: 'png'
+        }
+      }
+    }
+  }
+</script>
 ```
 
 ### 属性
@@ -68,113 +93,106 @@ components: { VueCutter }
         <td>默认值</td>
     </tr>
     <tr>
-        <td>image</td>
+        <td>containerBounding</td>
+        <td>插件容器的宽高（必填）</td>
+        <td>Array</td>
+        <td>['450px', '300px']  | ['450px']  |  ['50%'] | ['10rem'] | [450]</td>
+        <td>空  || 数组可以有两个或一个参数，两个参数时分别为容器的宽高，一个参数时容器的宽高同为参数</td>
+    </tr>
+    <tr>
+        <td>src</td>
         <td>裁剪图片的地址</td>
         <td>String</td>
-        <td>url 地址 || base64 || blob</td>
+        <td>url 地址  |  base64  | blob</td>
         <td>空</td>
-    </tr>
-    <tr>
-        <td>containerWidth</td>
-        <td>插件容器的宽度</td>
-        <td>Number</td>
-        <td>0~max</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>containerHeight</td>
-        <td>插件容器的高度</td>
-        <td>Number</td>
-        <td>0~max</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>theme</td>
-        <td>容器背景主题</td>
-        <td>String</td>
-        <td>dark || warm || pink</td>
-        <td>dark</td>
     </tr>
     <tr>
         <td>mode</td>
         <td>图片默认渲染方式</td>
         <td>String</td>
-        <td>contain , cover, 100px, 100% auto</td>
-        <td>contain</td>
-    </tr>
-    <tr>
-        <td>maxImgSize</td>
-        <td>限制图片最大宽度和高度</td>
-        <td>Number</td>
-        <td>0~max</td>
-        <td>2000</td>
+        <td>contain  | cover |  100px, 100% auto | original</td>
+        <td>contain </td>
     </tr>
     <tr>
         <td>outputType</td>
         <td>裁剪生成图片的格式</td>
         <td>String</td>
-        <td>jpeg || png || webp</td>
-        <td>jpg (jpg 需要传入jpeg)</td>
+        <td>jpeg  |  png  |  webp  |  jgif</td>
+        <td>jpeg  </td>
     </tr>
     <tr>
-        <td>original</td>
-        <td>上传图片按照原始比例渲染</td>
+        <td>highQuality</td>
+        <td>输出高清的图片</td>
         <td>Boolean</td>
-        <td>true | false</td>
+        <td>true  |  false</td>
         <td>false</td>
     </tr>
     <tr>
-        <td>canScale</td>
-        <td>图片是否允许滚轮缩放</td>
-        <td>Boolean</td>
-        <td>true | false</td>
-        <td>true</td>
-    </tr>
-    <tr>
-        <td>canMoveImage</td>
+        <td>canImgMove</td>
         <td>是否能移动图片</td>
         <td>Boolean</td>
         <td>true | false</td>
         <td>true</td>
     </tr>
     <tr>
-        <td>cropBoxBoundary</td>
+        <td>canScaleImg</td>
+        <td>图片是否允许缩放</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>true</td>
+    </tr>
+    <tr>
+        <td>cropBoxBounding</td>
         <td>裁剪框宽高</td>
         <td>String || Number</td>
         <td>auto || 200 || 200px || 200px 200px || 50% 等</td>
-        <td>auto (容器宽高的50%)</td>
+        <td>auto (图片宽高的80%)</td>
     </tr>
     <tr>
-        <td>fixed</td>
-        <td>是否开启固定宽高比</td>
-        <td>Boolean</td>
-        <td>true | false</td>
-        <td>false</td>
-    </tr>
-    <tr>
-        <td>fixedNumber</td>
-        <td>插件框宽高比</td>
-        <td>Array</td>
-        <td>[1, 1] || other</td>
-        <td>空 （默认容器的宽高比）</td>
-    </tr>
-    <tr>
-        <td>fixedBox</td>
-        <td>固定大小 禁止改变截图框大小</td>
-        <td>Boolean</td>
-        <td>true | false</td>
-        <td>false</td>
-    </tr>
-    <tr>
-        <td>canMoveCropBox</td>
+        <td>canCropMove</td>
         <td>是否能移动裁剪框</td>
         <td>Boolean</td>
         <td>true | false</td>
         <td>true</td>
     </tr>
     <tr>
-        <td>cropCanOverImageBorder</td>
-        <td>截图框是否被限制在图片里面</td>
+        <td>boxInImg</td>
+        <td>裁剪框是否被限制在图片里面</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>false</td>
+    </tr>
+    <tr>
+        <td>fixed</td>
+        <td>裁剪款的宽高比</td>
+        <td>[Array, String]</td>
+        <td>auto | [4, 3] 等</td>
+        <td>默认为空，不开启宽高比；值 `auto` 时 为源图片的宽高比，数组时为两数比</td>
+    </tr>
+    <tr>
+        <td>canResizeCrop</td>
+        <td>裁剪框是否允许缩放</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>true</td>
+    </tr>
+    <tr>
+        <td>cropBorder</td>
+        <td>裁剪框边框类型</td>
+        <td>String</td>
+        <td>solid(实线) |  dashed(虚线)</td>
+        <td>solid</td>
+    </tr>
+    <tr>
+        <td>cropDividingLine</td>
+        <td>裁剪框内的分割线</td>
+        <td>Boolean</td>
+        <td>true | false</td>
+        <td>false</td>
+    </tr>
+    <tr>
+        <td>cropInfo</td>
+        <td>是否开启显示裁剪宽的宽高比</td>
         <td>Boolean</td>
         <td>true | false</td>
         <td>false</td>
@@ -185,11 +203,11 @@ components: { VueCutter }
 ##### 通过 `ref` 和 `$refs` 调用
 
 ```vue
-// 在标签上添加 ref= "cropper"
-<vue-picture-cropper
-    ref="cropper"
->
-</vue-picture-cropper>
+// 在标签上添加 ref= "cutter"
+<vue-cutter
+   ref="cutter"
+ >
+</vue-cutter>
 ```
 
 <table>
@@ -198,14 +216,76 @@ components: { VueCutter }
         <td>说明</td>
     </tr>
     <tr>
-        <td>this.$refs.cropper.addImage()</td>
-        <td>添加将要裁剪的图片</td>
+        <td>this.$refs.cutter.addLocalImage()</td>
+        <td>添加本地要裁剪的图片</td>
     </tr>
-     <tr>
-        <td>this.$refs.cropper.getCropBlob(function)</td>
-        <td>获取 Blob 格式的图片</td>
-     </tr>
+    <tr>
+        <td>this.$refs.cutter.relativeZoom(param)</td>
+        <td>对图片进行缩放，正数为放大，负数为缩小</td>
+    </tr>
+    <tr>
+        <td>this.$refs.cutter.rotateLeft()</td>
+        <td>图片逆时针旋转 90 度</td>
+    </tr>
+    <tr>
+        <td>this.$refs.cutter.rotateRight()</td>
+        <td>图片顺时针旋转 90 度</td>
+    </tr>
+    <tr>
+        <td>this.$refs.cutter.rotateClear()</td>
+        <td>清除旋转</td>
+    </tr>
+    <tr>
+        <td>this.$refs.cutter.getImgAxis()</td>
+        <td>获取图像的轴</td>
+    </tr>
+    <tr>
+        <td>this.$refs.cutter.getCropAxis()</td>
+        <td>获取裁剪框的轴</td>
+    </tr>
+    <tr>
+        <td>this.$refs.cutter.getBase64Data(funtion)</td>
+        <td>获取 base64 格式的图片</td>
+    </tr>
+    <tr>
+        <td>this.$refs.cutter.getBlobData(funtion)</td>
+        <td>获取 blob 格式的图片</td>
+    </tr>
 </table>
+
+```javascript
+
+//获取 base64 格式的图片
+this.$refs.cutter.getBase64Data(data => {
+  console.log(data)
+})
+
+//获取 blob 格式的图片
+this.$refs.cutter.getBlobData(data => {
+   console.log(data)
+})
+```
+
+### 钩子函数：
+##### 图片实时预览函数 @preview
+
+```vue
+<vue-cutter
+   @preview="preview"
+ >
+</vue-cutter>
+```
+
+```javascript
+// method
+preview(data) {
+   const { type, url } = data;
+   // 图片的格式
+   console.log('type:' + type);
+   //图片地址
+   console.log('url:' + url)
+}
+```
 
 ### License
 ###### Released under the MIT License.

@@ -1,7 +1,7 @@
 {
   "name": "vue-cutter",
   "description": "A simple picture clipping plugin for Vue.js",
-  "version": "1.0.42",
+  "version": "2.0.1",
   "author": "LYuanshen <707978562@qq.com>",
   "license": "MIT",
   "main": "/dist/index.js",
@@ -23,8 +23,6 @@
     "test": "cross-env NODE_ENV=test webpack-dev-server --open --hot --config webpack.config.js"
   },
   "dependencies": {
-    "babel-plugin-add-module-exports": "^1.0.2",
-    "vconsole": "^3.3.4",
     "vue": "^2.5.17"
   },
   "browserslist": [
@@ -33,6 +31,7 @@
     "not ie <= 8"
   ],
   "devDependencies": {
+    "babel-plugin-add-module-exports": "^1.0.2",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-runtime": "^6.23.0",
