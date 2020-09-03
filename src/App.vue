@@ -5,9 +5,11 @@
       v-if="IsPCs"
       :container-bounding="['450px','450px']"
       :src="img"
+      mode="200px"
     ></vue-cutter>
     <vue-cutter
       v-else
+      :box-in-img="true"
       :container-bounding="['900px','900px']"
       src="http://192.168.31.50:8088/dev/350X500.jfif?b059dfe1ce50f5a64248ee95a7791508"
     ></vue-cutter>

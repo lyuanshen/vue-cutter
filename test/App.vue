@@ -1,6 +1,7 @@
 <template>
   <div>
     <vue-cutter
+      style="width: 300px;"
       :container-width="options.containerWidth"
       :container-height="options.containerHeigh"
       :image="options.image"
@@ -13,9 +14,9 @@
     data() {
       return{
         options: {
-          containerWidth: 450,
+          containerWidth: 600,
           containerHeigh: 300,
-          image: ''
+          image: 'https://cdn1-images.epio.app/image/download/aHR0cHM6Ly93d3cubXlteXBpYy5uZXQvZGF0YS9hdHRhY2htZW50L2ZvcnVtLzIwMTgwMS8wOC8wMzQ5MjdkMXRzcXQ2cjZtZHkyeHZkLmpwZy50aHVtYi5qcGc=/350X500'
         }
       }
     }
