@@ -312,6 +312,7 @@
       }
     },
     methods: {
+
       getVersion(name) {
         var arr = navigator.userAgent.split(' ');
         var chromeVersion = '';
@@ -697,6 +698,7 @@
             moving: true,
             axis: this.getImgAxis()
           });
+          this.preview();
         })
 
       },
@@ -757,6 +759,7 @@
         }
 
         image.scale = scale;
+        this.preview();
       },
 
       touchScale(e) {
@@ -815,6 +818,7 @@
           }
 
           image.scale = scale;
+          this.preview();
         }
       },
 
@@ -989,6 +993,9 @@
         cropBox.offsetY = (bounding.height - cropBox.height) / 2;
 
         app.initCropBox = true;
+
+        this.$emit('cropInit',"success")
+        this.preview();
       },
 
       getCropAxis() {
@@ -1094,6 +1101,7 @@
             moving: true,
             axis: this.getCropAxis()
           })
+          this.preview();
         })
 
       },
@@ -1289,6 +1297,9 @@
               cropBox.width = fixedWidth;
             }
           }
+
+          this.preview();
+
         })
 
       },
@@ -1319,6 +1330,7 @@
           return false;
         }
         image.scale = scale;
+        this.preview();
       },
 
       getCropChecked(cb) {
@@ -1457,16 +1469,28 @@
       // 向左边旋转
       rotateLeft() {
         this.image.rotate = this.image.rotate <= -3 ? 0 : this.image.rotate - 1;
+        this.preview();
       },
 
       // 向右边旋转
       rotateRight() {
         this.image.rotate = this.image.rotate >= 3 ? 0 : this.image.rotate + 1;
+        this.preview();
       },
 
       // 清除旋转
       rotateClear() {
         this.image.rotate = 0;
+        this.preview();
+      },
+
+      preview(u) {
+        this.getCropChecked(data => {
+          this.$emit('preview', {
+            type: 'blob',
+            url: data.toDataURL("image/" + this.outputType, 1)
+          })
+        })
       }
 
     }
