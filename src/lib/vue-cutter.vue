@@ -6,7 +6,7 @@
          @mouseout="cancelScale"
          class="container">
       <span class="cropper-container-bg theme"></span>
-      <div class="cut-box" >
+      <div class="cut-box">
         <div
           v-if="!app.imgLoading"
           ref="image"
@@ -65,49 +65,65 @@
           class="cropper-view-box-dr">
         </span>
 
+        <span class="crop-info" v-if="cropInfo">
+          {{Math.round(cropBox.width)}} * {{Math.round(cropBox.height)}}
+        </span>
+
         <span class="fixedBox" v-if="canResizeCrop">
           <span class="f fht"
                 v-if="fixed === null"
+                @touchstart="resizeCropBox($event, false, true, 0, 1,22)"
                 @mousedown="resizeCropBox($event, false, true, 0, 1,22)">
           </span>
           <span
             v-if="fixed === null"
+            @touchstart="resizeCropBox($event, true, false, 2, 0,2)"
             @mousedown="resizeCropBox($event, true, false, 2, 0,2)"
             class="f fvr">
           </span>
           <span
             v-if="fixed === null"
+            @touchstart="resizeCropBox($event, false, true, 0, 2,3)"
             @mousedown="resizeCropBox($event, false, true, 0, 2,3)"
             class="f fhb"></span>
           <span
             v-if="fixed === null"
+            @touchstart="resizeCropBox($event, true, false, 1, 0,4)"
             @mousedown="resizeCropBox($event, true, false, 1, 0,4)"
             class="f fvl"></span>
           <span
+            @touchstart="resizeCropBox($event, true, true, 1, 1,1)"
             @mousedown="resizeCropBox($event, true, true, 1, 1,1)"
             class="f dot dot-1"></span>
           <span
             v-if="fixed === null"
+            @touchstart="resizeCropBox($event, false, true, 0, 1,6)"
             @mousedown="resizeCropBox($event, false, true, 0, 1,6)"
             class="f dot dot-2"></span>
           <span
+            @touchstart="resizeCropBox($event, true, true, 2, 1,3)"
             @mousedown="resizeCropBox($event, true, true, 2, 1,3)"
             class="f dot dot-3"></span>
           <span
             v-if="fixed === null"
+            @touchstart="resizeCropBox($event, true, false, 2, 0,8)"
             @mousedown="resizeCropBox($event, true, false, 2, 0,8)"
             class="f dot dot-4"></span>
           <span
+            @touchstart="resizeCropBox($event, true, true, 2, 2,1)"
             @mousedown="resizeCropBox($event, true, true, 2, 2,1)"
             class="f dot dot-5"></span>
           <span
             v-if="fixed === null"
+            @touchstart="resizeCropBox($event, false, true, 0, 2,10)"
             @mousedown="resizeCropBox($event, false, true, 0, 2,10)"
             class="f dot dot-6"></span>
           <span
+            @touchstart="resizeCropBox($event, true, true, 1, 2,3)"
             @mousedown="resizeCropBox($event, true, true, 1, 2,3)"
             class="f dot dot-7"></span>
           <span
+            @touchstart="resizeCropBox($event, true, false, 1, 0,12)"
             v-if="fixed === null"
             @mousedown="resizeCropBox($event, true, false, 1, 0,12)"
             class="f dot dot-8"></span>
@@ -119,6 +135,7 @@
           <span class="line-1 line3"></span>
           <span class="line-1 line4"></span>
         </span>
+
       </div>
 
     </div>
@@ -148,7 +165,17 @@
       },
       highQuality: {
         type: Boolean,
-        default: true
+        default: false
+      },
+      // 倍数  可渲染当前截图框的n倍 0 - 1000;
+      enlarge: {
+        type: [Number, String],
+        default: 1
+      },
+      //输出图片格式
+      outputType: {
+        type: String,
+        default: 'jpeg'
       },
       // 可以压缩图片宽高  默认不超过2000
       maxImgSize: {
@@ -181,7 +208,7 @@
           return null
         }
       },
-      canResizeCrop:{
+      canResizeCrop: {
         type: Boolean,
         default: true
       },
@@ -190,6 +217,10 @@
         default: 'solid'
       },
       cropDividingLine: {
+        type: Boolean,
+        default: false
+      },
+      cropInfo: {
         type: Boolean,
         default: false
       }
@@ -225,10 +256,24 @@
           height: '',
           offsetX: '',
           offsetY: '',
+          rate: '',
           // first click position offsetLeft
           fcpl: '',
           // first click position offsetTop
           fcpt: '',
+        },
+        resizeCropTemp: {
+          canChangeX: '',
+          canChangeY: '',
+          changeCropTypeX: '',
+          changeCropTypeY: '',
+          cropX: '',
+          cropY: '',
+          cropOldW: '',
+          cropOldH: '',
+          cropChangeX: '',
+          cropChangeY: '',
+          dot: ''
         }
       }
     },
@@ -611,19 +656,26 @@
               case -1:
               case 3:
               case -3:
-                maxLeft = cropBox.offsetX - (image.width * (1 - image.scale)) / 2 +
+                console.log('dd')
+                maxLeft =
+                 cropBox.offsetX -
+                  (image.width * (1 - image.scale)) / 2 -
                   (imgW - imgH) / 2;
-                maxTop = cropBox.offsetY - (image.height * (1 - image.scale)) / 2 +
+                maxTop =
+                  cropBox.offsetY -
+                  (image.height * (1 - image.scale)) / 2 -
                   (imgH - imgW) / 2;
-                maxRight = maxLeft - imgW + cropBox.width;
-                maxBottom = maxTop - imgH + cropBox.height;
+                maxRight = maxLeft - imgW + cropBox.width + (imgW - imgH);
+                maxBottom = maxTop - imgH + cropBox.height + (imgH - imgW);
                 break;
               default:
                 maxLeft = cropBox.offsetX - (image.width * (1 - image.scale)) / 2;
                 maxTop = cropBox.offsetY - (image.height * (1 - image.scale)) / 2;
                 maxRight = maxLeft - imgW + cropBox.width;
                 maxBottom = maxTop - imgH + cropBox.height;
+                break;
             }
+
 
             if (axis.x1 >= cAxis.x1) {
               changeX = maxLeft;
@@ -700,6 +752,10 @@
 
         image.imgZF = image.imgZF += 0.01;
 
+        if (!this.checkoutImageAxis(image.offsetX, image.offsetY, scale)) {
+          return false;
+        }
+
         image.scale = scale;
       },
 
@@ -754,8 +810,46 @@
             app.touchNow = false;
           }, 8);
 
+          if (!this.checkoutImageAxis(image.offsetX, image.offsetY, scale)) {
+            return false;
+          }
+
           image.scale = scale;
         }
+      },
+
+      checkoutImageAxis(x, y, scale) {
+        const {image, boxInImg} = this;
+        x = x || image.offsetX;
+        y = y || image.offsetY;
+        scale = scale || image.scale;
+
+        let goScale = true;
+
+        if (boxInImg) {
+          let axis = this.getImgAxis(x, y, scale);
+          let cropAxis = this.getCropAxis();
+          if (axis.x1 >= cropAxis.x1) {
+            goScale = false;
+          }
+
+          // 右边横坐标
+          if (axis.x2 <= cropAxis.x2) {
+            goScale = false;
+          }
+
+          // 纵坐标上面
+          if (axis.y1 >= cropAxis.y1) {
+            goScale = false;
+          }
+
+          // 纵坐标下面
+          if (axis.y2 <= cropAxis.y2) {
+            goScale = false;
+          }
+        }
+
+        return goScale;
       },
 
       cancelTouchScale(e) {
@@ -778,25 +872,25 @@
         let imgH = image.height * image.scale;
         switch (image.rotate) {
           case 0:
-            obj.x1 = x + (image.width * (1 - image.scale)) / 2;
-            obj.x2 = obj.x1 + image.width * image.scale;
-            obj.y1 = y + (image.height * (1 - image.scale)) / 2;
-            obj.y2 = obj.y1 + image.height * image.scale;
+            obj.x1 = x + (image.width * (1 - scale)) / 2;
+            obj.x2 = obj.x1 + image.width * scale;
+            obj.y1 = y + (image.height * (1 - scale)) / 2;
+            obj.y2 = obj.y1 + image.height * scale;
             break;
           case 1:
           case -1:
           case 3:
           case -3:
-            obj.x1 = x + (image.width * (1 - image.scale)) / 2 + (imgW - imgH) / 2;
-            obj.x2 = obj.x1 + image.height * image.scale;
-            obj.y1 = y + (image.height * (1 - image.scale)) / 2 + (imgH - imgW) / 2;
-            obj.y2 = obj.y1 + image.width * image.scale;
+            obj.x1 = x + (image.width * (1 - scale)) / 2 + (imgW - imgH) / 2;
+            obj.x2 = obj.x1 + image.height * scale;
+            obj.y1 = y + (image.height * (1 - scale)) / 2 + (imgH - imgW) / 2;
+            obj.y2 = obj.y1 + image.width * scale;
             break;
           default:
-            obj.x1 = x + (image.width * (1 - image.scale)) / 2;
-            obj.x2 = obj.x1 + image.width * image.scale;
-            obj.y1 = y + (image.height * (1 - image.scale)) / 2;
-            obj.y2 = obj.y1 + image.height * image.scale;
+            obj.x1 = x + (image.width * (1 - scale)) / 2;
+            obj.x2 = obj.x1 + image.width * scale;
+            obj.y1 = y + (image.height * (1 - scale)) / 2;
+            obj.y2 = obj.y1 + image.height * scale;
             break;
         }
         return obj;
@@ -875,7 +969,7 @@
         } else {
           rate = w / h;
         }
-
+        cropBox.rate = rate;
         if (boxInImg) {
           h = w / rate;
           if (w > image.width * image.scale) {
@@ -995,6 +1089,11 @@
 
           cropBox.offsetX = cx;
           cropBox.offsetY = cy;
+
+          this.$emit('cropMove', {
+            moving: true,
+            axis: this.getCropAxis()
+          })
         })
 
       },
@@ -1008,8 +1107,368 @@
       },
 
       resizeCropBox(e, w, h, typeW, typeH, dot) {
+        const {resizeCropTemp, cropBox, fixed} = this;
+        e.preventDefault();
+        window.addEventListener("mousemove", this.changeCropNow);
+        window.addEventListener("mouseup", this.changeCropEnd);
+        window.addEventListener("touchmove", this.changeCropNow);
+        window.addEventListener("touchend", this.changeCropEnd);
+        resizeCropTemp.canChangeX = w;
+        resizeCropTemp.canChangeY = h;
+        resizeCropTemp.dot = dot;
+        resizeCropTemp.changeCropTypeX = typeW;
+        resizeCropTemp.changeCropTypeY = typeH;
+        resizeCropTemp.cropX = e.clientX ? e.clientX : e.touches[0].clientX;
+        resizeCropTemp.cropY = e.clientY ? e.clientY : e.touches[0].clientY;
+        resizeCropTemp.cropOldW = cropBox.width;
+        resizeCropTemp.cropOldH = cropBox.height;
+        resizeCropTemp.cropChangeX = cropBox.offsetX;
+        resizeCropTemp.cropChangeY = cropBox.offsetY;
 
+        console.log(resizeCropTemp)
+
+        if (fixed !== null) {
+          if (!(resizeCropTemp.canChangeX && resizeCropTemp.canChangeY)) {
+            resizeCropTemp.canChangeY = 0;
+            resizeCropTemp.canChangeX = 0;
+          }
+        }
+      },
+
+      changeCropNow(e) {
+        const {resizeCropTemp, cropBox, boxInImg, fixed} = this;
+        e.preventDefault();
+        var nowX = e.clientX ? e.clientX : e.touches ? e.touches[0].clientX : 0;
+        var nowY = e.clientY ? e.clientY : e.touches ? e.touches[0].clientY : 0;
+
+        let containerBounding = this.getContainerBounding;
+
+        // 容器的宽高
+        let wrapperW = containerBounding.width;
+        let wrapperH = containerBounding.height;
+
+        // 不能超过的坐标轴
+        let minX = 0;
+        let minY = 0;
+
+        if (boxInImg) {
+          let axis = this.getImgAxis();
+          let imgW = axis.x2;
+          let imgH = axis.y2;
+          minX = axis.x1 > 0 ? axis.x1 : 0;
+          minY = axis.y1 > 0 ? axis.y1 : 0;
+          if (wrapperW > imgW) {
+            wrapperW = imgW;
+          }
+
+          if (wrapperH > imgH) {
+            wrapperH = imgH;
+          }
+        }
+
+        this.$nextTick(() => {
+          var fw = nowX - resizeCropTemp.cropX;
+          var fh = nowY - resizeCropTemp.cropY;
+
+          if (fixed !== null) {
+            switch (resizeCropTemp.dot) {
+              case 1 :
+                if (fw > fh) {
+                  fh = fw / cropBox.rate
+                } else {
+                  fw = fh * cropBox.rate
+                }
+                break;
+              case 3:
+                if (Math.abs(fw) > Math.abs(fh)) {
+                  fh = -fw / cropBox.rate
+                } else {
+                  fw = -fh * cropBox.rate
+                }
+            }
+          }
+
+          if (resizeCropTemp.canChangeX) {
+            if (resizeCropTemp.changeCropTypeX === 1) {
+              if (resizeCropTemp.cropOldW - fw > 0) {
+                cropBox.width =
+                  wrapperW - resizeCropTemp.cropChangeX - fw <= wrapperW - minX
+                    ? resizeCropTemp.cropOldW - fw
+                    : resizeCropTemp.cropOldW + resizeCropTemp.cropChangeX - minX;
+                cropBox.offsetX =
+                  wrapperW - resizeCropTemp.cropChangeX - fw <= wrapperW - minX
+                    ? resizeCropTemp.cropChangeX + fw
+                    : minX;
+              } else {
+                cropBox.width =
+                  Math.abs(fw) + resizeCropTemp.cropChangeX <= wrapperW
+                    ? Math.abs(fw) - resizeCropTemp.cropOldW
+                    : wrapperW - resizeCropTemp.cropOldW - resizeCropTemp.cropChangeX;
+                cropBox.offsetX = resizeCropTemp.cropChangeX + resizeCropTemp.cropOldW;
+              }
+            } else if (resizeCropTemp.changeCropTypeX === 2) {
+              if (resizeCropTemp.cropOldW + fw > 0) {
+                cropBox.width =
+                  resizeCropTemp.cropOldW + fw + cropBox.offsetX <= wrapperW
+                    ? resizeCropTemp.cropOldW + fw
+                    : wrapperW - cropBox.offsetX;
+                cropBox.offsetX = resizeCropTemp.cropChangeX;
+              } else {
+                cropBox.width =
+                  wrapperW - resizeCropTemp.cropChangeX + Math.abs(fw + resizeCropTemp.cropOldW) <=
+                  wrapperW - minX
+                    ? Math.abs(fw + resizeCropTemp.cropOldW)
+                    : resizeCropTemp.cropChangeX - minX;
+                cropBox.offsetX =
+                  wrapperW - resizeCropTemp.cropChangeX + Math.abs(fw + resizeCropTemp.cropOldW) <=
+                  wrapperW - minX
+                    ? resizeCropTemp.cropChangeX - Math.abs(fw + resizeCropTemp.cropOldW)
+                    : minX;
+              }
+            }
+          }
+
+          if (resizeCropTemp.canChangeY) {
+            if (resizeCropTemp.changeCropTypeY === 1) {
+              if (resizeCropTemp.cropOldH - fh > 0) {
+                cropBox.height =
+                  wrapperH - resizeCropTemp.cropChangeY - fh <= wrapperH - minY
+                    ?
+                    resizeCropTemp.cropOldH - fh
+                    :
+                    resizeCropTemp.cropOldH + resizeCropTemp.cropChangeY - minY;
+                cropBox.offsetY =
+                  wrapperH - resizeCropTemp.cropChangeY - fh <= wrapperH - minY
+                    ? resizeCropTemp.cropChangeY + fh
+                    : minY;
+              } else {
+                cropBox.height =
+                  Math.abs(fh) + resizeCropTemp.cropChangeY <= wrapperH
+                    ? Math.abs(fh) - resizeCropTemp.cropOldH
+                    : wrapperH - resizeCropTemp.cropOldH - resizeCropTemp.cropChangeY;
+                cropBox.offsetY = resizeCropTemp.cropChangeY + resizeCropTemp.cropOldH;
+              }
+            } else if (resizeCropTemp.changeCropTypeY === 2) {
+              if (resizeCropTemp.cropOldH + fh > 0) {
+                cropBox.height =
+                  resizeCropTemp.cropOldH + fh + cropBox.offsetY <= wrapperH
+                    ? resizeCropTemp.cropOldH + fh
+                    : wrapperH - cropBox.offsetY;
+                cropBox.offsetY = resizeCropTemp.cropChangeY;
+              } else {
+                cropBox.height =
+                  wrapperH - resizeCropTemp.cropChangeY + Math.abs(fh + resizeCropTemp.cropOldH) <=
+                  wrapperH - minY
+                    ? Math.abs(fh + resizeCropTemp.cropOldH)
+                    : resizeCropTemp.cropChangeY - minY;
+                cropBox.offsetY =
+                  wrapperH - resizeCropTemp.cropChangeY + Math.abs(fh + resizeCropTemp.cropOldH) <=
+                  wrapperH - minY
+                    ? resizeCropTemp.cropChangeY - Math.abs(fh + resizeCropTemp.cropOldH)
+                    : minY;
+              }
+            }
+          }
+
+          if (resizeCropTemp.canChangeX && fixed !== null) {
+            let fixedHeight = cropBox.width / cropBox.rate;
+            if (fixedHeight + cropBox.offsetY > wrapperH) {
+              cropBox.height = wrapperH - cropBox.offsetY;
+              cropBox.width = cropBox.height * cropBox.rate
+            } else {
+              cropBox.height = fixedHeight;
+            }
+          }
+
+          if (resizeCropTemp.canChangeY && fixed !== null) {
+            var fixedWidth = cropBox.height * cropBox.rate;
+            if (fixedWidth + cropBox.offsetX > wrapperW) {
+              cropBox.width = wrapperW - cropBox.offsetX;
+              cropBox.height = cropBox.width / cropBox.rate;
+            } else {
+              cropBox.width = fixedWidth;
+            }
+          }
+        })
+
+      },
+
+      changeCropEnd() {
+        window.removeEventListener("mousemove", this.changeCropNow);
+        window.removeEventListener("mouseup", this.changeCropEnd);
+        window.removeEventListener("touchmove", this.changeCropNow);
+        window.removeEventListener("touchend", this.changeCropEnd);
+      },
+
+      relativeZoom(param) {
+        const {image, app} = this;
+        let scale = image.scale;
+        let num = param || 1;
+        var coe = 20;
+        coe =
+          coe / image.width > coe / image.height
+            ? coe / image.width
+            : coe / image.height;
+        num = num * coe;
+        num > 0
+          ? (scale += Math.abs(num))
+          : scale > Math.abs(num)
+          ? (scale -= Math.abs(num))
+          : scale;
+        if (!this.checkoutImageAxis(image.offsetX, image.offsetY, scale)) {
+          return false;
+        }
+        image.scale = scale;
+      },
+
+      getCropChecked(cb) {
+        const {image, cropBox, highQuality, enlarge} = this;
+        let canvas = document.createElement("canvas");
+        let img = new Image();
+        let rotate = image.rotate;
+        let trueWidth = image.width;
+        let trueHeight = image.height;
+        let cropOffsertX = cropBox.offsetX;
+        let cropOffsertY = cropBox.offsetY;
+
+        img.onload = () => {
+          if (cropBox.width !== 0) {
+            let ctx = canvas.getContext("2d");
+            let dpr = 1;
+
+            if (highQuality) {
+              dpr = window.devicePixelRatio;
+            }
+
+            if (enlarge !== 1) {
+              dpr = Math.abs(Number(this.enlarge));
+            }
+
+            let width = cropBox.width * dpr;
+            let height = cropBox.height * dpr;
+            let imgW = trueWidth * image.scale * dpr;
+            let imgH = trueHeight * image.scale * dpr;
+
+            // 图片x轴偏移
+            let dx =
+              (image.offsetX - cropOffsertX + (image.width * (1 - image.scale)) / 2) *
+              dpr;
+            // 图片y轴偏移
+            let dy =
+              (image.offsetY - cropOffsertY + (image.height * (1 - image.scale)) / 2) *
+              dpr;
+            setCanvasSize(width, height);
+            ctx.save();
+
+            switch (rotate) {
+              case 0:
+                setCanvasSize(width / image.scale, height / image.scale);
+                ctx.drawImage(
+                  img,
+                  dx / image.scale,
+                  dy / image.scale,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+                break;
+              case 1:
+              case -3:
+                setCanvasSize(width / image.scale, height / image.scale);
+                // 换算图片旋转后的坐标弥补
+                dx =
+                  dx / image.scale + (imgW / image.scale - imgH / image.scale) / 2;
+                dy =
+                  dy / image.scale + (imgH / image.scale - imgW / image.scale) / 2;
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                ctx.drawImage(
+                  img,
+                  dy,
+                  -dx - imgH / image.scale,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+                break;
+              case 2:
+              case -2:
+                setCanvasSize(width / image.scale, height / image.scale);
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                dx = dx / image.scale;
+                dy = dy / image.scale;
+                ctx.drawImage(
+                  img,
+                  -dx - imgW / image.scale,
+                  -dy - imgH / image.scale,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+                break;
+              case 3:
+              case -1:
+                setCanvasSize(width / image.scale, height / image.scale);
+                // 换算图片旋转后的坐标弥补
+                dx =
+                  dx / image.scale + (imgW / image.scale - imgH / image.scale) / 2;
+                dy =
+                  dy / image.scale + (imgH / image.scale - imgW / image.scale) / 2;
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                ctx.drawImage(
+                  img,
+                  -dy - imgW / image.scale,
+                  dx,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+                break;
+            }
+            ctx.restore();
+          };
+          cb(canvas);
+        };
+        var s = this.src.substring(0, 4);
+        if (s !== "data") {
+          img.crossOrigin = "Anonymous";
+        }
+        img.src = image.url;
+
+        function setCanvasSize(width, height) {
+          canvas.width = Math.round(width);
+          canvas.height = Math.round(height);
+        }
+      },
+
+      // 获取转换成base64 的图片信息
+      getBase64Data(cb) {
+        this.getCropChecked(data => {
+          cb(data.toDataURL("image/" + this.outputType, 1));
+        });
+      },
+
+      //canvas获取为blob对象
+      getBlobData(cb) {
+        this.getCropChecked(data => {
+          data.toBlob(
+            blob => cb(blob),
+            "image/" + this.outputType,
+            1
+          );
+        });
+      },
+
+      // 向左边旋转
+      rotateLeft() {
+        this.image.rotate = this.image.rotate <= -3 ? 0 : this.image.rotate - 1;
+      },
+
+      // 向右边旋转
+      rotateRight() {
+        this.image.rotate = this.image.rotate >= 3 ? 0 : this.image.rotate + 1;
+      },
+
+      // 清除旋转
+      rotateClear() {
+        this.image.rotate = 0;
       }
+
     }
   }
 </script>

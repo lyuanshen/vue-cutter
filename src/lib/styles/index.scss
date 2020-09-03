@@ -169,7 +169,7 @@
   left: 0;
   height: 1px;
   width: 100%;
-  border-top: 2px dashed #39f;
+  border-top: 1px dashed #39f;
 }
 .line1{
   top: 33.3%;
@@ -183,11 +183,23 @@
   left: 0;
   width: 1px;
   height: 100%;
-  border-left: 2px dashed #39f;
+  border-left: 1px dashed #39f;
 }
 .line3{
   left: 33.3%;
 }
 .line4{
   left: 66.6%;
+}
+
+.crop-info{
+  display: inline-block;
+  position: absolute;
+  padding: 1px 6px;
+  background: rgba(141, 191, 234, 0.31);
+  top: -15px;
+  color: #dde4ea;
+  left: 0;
+  line-height: 1;
+  font-size: 0.6875rem;
 }
