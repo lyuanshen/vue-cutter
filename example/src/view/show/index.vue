@@ -79,6 +79,7 @@
       },
       getImg(){
         this.$refs.cutter.getBase64Data(data => {
+          console.log(data)
           this.img = data
         })
       }
