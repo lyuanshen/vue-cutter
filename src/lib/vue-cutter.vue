@@ -910,7 +910,7 @@
         if (boundList.length === 1) {
           if (boundList[0] === 'auto') {
             let bounding = this.getContainerBounding
-            this.initCropBox(bounding.width * 0.5 + 'px ' + bounding.height * 0.5 + 'px')
+            this.initCropBox(image.width * 0.8 + 'px ' + image.height * 0.8 + 'px')
             return;
           } else if (boundList[0].search('px') !== -1 || boundList[0].search('%') !== -1) {
             this.initCropBox(boundList[0] + ' ' + boundList[0])
