@@ -28,7 +28,7 @@
 
 ## 在线预览
 
-> [demo : https://lyuanshen.github.io/vue-pictrue-cropper](https://lyuanshen.github.io/vue-pictrue-cropper/)
+> [demo : https://lyuanshen.github.io/vue-cutter/](https://lyuanshen.github.io/vue-cutter/)
 
 ## 使用方法
 ### 安装
