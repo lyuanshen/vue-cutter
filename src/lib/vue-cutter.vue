@@ -202,6 +202,40 @@ export default {
     cropInfo: {
       type: Boolean,
       default: false
+    },
+
+    // 输出图片压缩比
+    outputSize: {
+      type: Number,
+      default: 1
+    },
+
+    outputType: {
+      type: String,
+      default: "jpeg"
+    },
+
+    // 输出截图是否缩放
+    full: {
+      type: Boolean,
+      default: false
+    },
+
+    highQuality: {
+      type: Boolean,
+      default: false
+    },
+
+    // 倍数  可渲染当前截图框的n倍 0 - 1000;
+    enlarge: {
+      type: [Number, String],
+      default: 1
+    },
+
+    // 上传图片按照原始比例显示
+    original: {
+      type: Boolean,
+      default: false
     }
 
   },
@@ -213,7 +247,9 @@ export default {
         height: 0,
         touches: [],
         touchNow: false,
-        support: ''
+        support: '',
+        // 控制emit触发频率
+        isCanShow: true
       },
       image: {
         url: '',
@@ -272,6 +308,24 @@ export default {
       if (val !== '') {
         this.checkedImg();
       }
+    },
+    app:{
+      deep: true,
+      handler(){
+        this.preview();
+      }
+    },
+    image: {
+      deep: true,
+      handler(){
+        this.preview();
+      }
+    },
+    cropBox: {
+      deep: true,
+      handler(){
+        this.preview();
+      }
     }
   },
   mounted() {
@@ -281,6 +335,7 @@ export default {
         : document.onmousewheel !== undefined
         ? "mousewheel"
         : "DOMMouseScroll";
+
   },
   methods: {
     initApp() {
@@ -1221,8 +1276,273 @@ export default {
       window.removeEventListener("mouseup", this.changeCropEnd);
       window.removeEventListener("touchmove", this.changeCropNow);
       window.removeEventListener("touchend", this.changeCropEnd);
-    }
+    },
 
+    getCropChecked(cb){
+      const { image, cropBox,
+        full, highQuality, enlarge } = this;
+      let canvas = document.createElement("canvas");
+      let img = new Image();
+      let rotate = image.rotate;
+      let trueWidth = image.width;
+      let trueHeight = image.height;
+      let cropOffsertX = cropBox.x;
+      let cropOffsertY = cropBox.y;
+      img.onload = () => {
+        if (image.width !== 0) {
+          let ctx = canvas.getContext("2d");
+          let dpr = 1;
+          if (highQuality && !full){
+            dpr = window.devicePixelRatio;
+          }
+          if ((enlarge !== 1) && !full){
+            dpr = Math.abs(Number(enlarge));
+          }
+          let width = cropBox.width * dpr;
+          let height = cropBox.height * dpr;
+          let imgW = trueWidth * image.scale * dpr;
+          let imgH = trueHeight * image.scale * dpr;
+          // 图片x轴偏移
+          let dx =
+            (image.x - cropOffsertX + (image.width * (1 - image.scale)) / 2) *
+            dpr;
+          // 图片y轴偏移
+          let dy =
+            (image.y - cropOffsertY + (image.height * (1 - image.scale)) / 2) *
+            dpr;
+          //保存状态
+          setCanvasSize(width, height);
+          ctx.save();
+          switch (rotate){
+            case 0:
+              if (full) {
+                ctx.drawImage(img, dx, dy, imgW, imgH);
+              } else {
+                // 输出原图比例截图
+                setCanvasSize(width / image.scale, height / image.scale);
+                ctx.drawImage(
+                  img,
+                  dx / image.scale,
+                  dy / image.scale,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+              }
+              break;
+            case 1:
+            case -3:
+              if (full) {
+                // 换算图片旋转后的坐标弥补
+                dx = dx + (imgW - imgH) / 2;
+                dy = dy + (imgH - imgW) / 2;
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                ctx.drawImage(img, dy, -dx - imgH, imgW, imgH);
+              } else {
+                setCanvasSize(width / image.scale, height / image.scale);
+                // 换算图片旋转后的坐标弥补
+                dx =
+                  dx / image.scale + (imgW / image.scale - imgH / image.scale) / 2;
+                dy =
+                  dy / image.scale + (imgH / image.scale - imgW / image.scale) / 2;
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                ctx.drawImage(
+                  img,
+                  dy,
+                  -dx - imgH / image.scale,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+              }
+              break;
+            case 2:
+            case -2:
+              if (full) {
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                ctx.drawImage(img, -dx - imgW, -dy - imgH, imgW, imgH);
+              } else {
+                setCanvasSize(width / image.scale, height / image.scale);
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                dx = dx / image.scale;
+                dy = dy / image.scale;
+                ctx.drawImage(
+                  img,
+                  -dx - imgW / image.scale,
+                  -dy - imgH / image.scale,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+              }
+              break;
+            case 3:
+            case -1:
+              if (full) {
+                // 换算图片旋转后的坐标弥补
+                dx = dx + (imgW - imgH) / 2;
+                dy = dy + (imgH - imgW) / 2;
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                ctx.drawImage(img, -dy - imgW, dx, imgW, imgH);
+              } else {
+                setCanvasSize(width / image.scale, height / image.scale);
+                // 换算图片旋转后的坐标弥补
+                dx =
+                  dx / image.scale + (imgW / image.scale - imgH / image.scale) / 2;
+                dy =
+                  dy / image.scale + (imgH / image.scale - imgW / image.scale) / 2;
+                ctx.rotate((rotate * 90 * Math.PI) / 180);
+                ctx.drawImage(
+                  img,
+                  -dy - imgW / image.scale,
+                  dx,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+              }
+              break;
+            default:
+              if (full) {
+                ctx.drawImage(img, dx, dy, imgW, imgH);
+              } else {
+                // 输出原图比例截图
+                setCanvasSize(width / image.scale, height / image.scale);
+                ctx.drawImage(
+                  img,
+                  dx / image.scale,
+                  dy / image.scale,
+                  imgW / image.scale,
+                  imgH / image.scale
+                );
+              }
+          }
+          ctx.restore();
+        }else {
+          let width = trueWidth * image.scale;
+          let height = trueHeight * image.scale;
+          let ctx = canvas.getContext("2d");
+          ctx.save();
+          switch (rotate) {
+            case 0:
+              setCanvasSize(width, height);
+              ctx.drawImage(img, 0, 0, width, height);
+              break;
+            case 1:
+            case -3:
+              // 旋转90度 或者-270度 宽度和高度对调
+              setCanvasSize(height, width);
+              ctx.rotate((rotate * 90 * Math.PI) / 180);
+              ctx.drawImage(img, 0, -height, width, height);
+              break;
+            case 2:
+            case -2:
+              setCanvasSize(width, height);
+              ctx.rotate((rotate * 90 * Math.PI) / 180);
+              ctx.drawImage(img, -width, -height, width, height);
+              break;
+            case 3:
+            case -1:
+              setCanvasSize(height, width);
+              ctx.rotate((rotate * 90 * Math.PI) / 180);
+              ctx.drawImage(img, -width, 0, width, height);
+              break;
+            default:
+              setCanvasSize(width, height);
+              ctx.drawImage(img, 0, 0, width, height);
+          }
+          ctx.restore();
+        }
+        cb(canvas);
+      }
+
+      // 判断图片是否是base64
+      var s = this.src.substring(0, 4);
+      if (s !== "data") {
+        img.crossOrigin = "Anonymous";
+      }
+      img.src = image.url;
+
+      function setCanvasSize(width, height){
+        canvas.width = Math.round(width);
+        canvas.height = Math.round(height);
+      }
+    },
+
+    // 获取转换成base64 的图片信息
+    getCropData(cb) {
+      this.getCropChecked(data => {
+        cb(data.toDataURL("image/" + this.outputType, this.outputSize));
+      });
+    },
+
+    //canvas获取为blob对象
+    getCropBlob(cb) {
+      this.getCropChecked(data => {
+        data.toBlob(
+          blob => cb(blob),
+          "image/" + this.outputType,
+          this.outputSize
+        );
+      });
+    },
+
+    // 向左边旋转
+    rotateLeft() {
+      this.image.rotate = this.image.rotate <= -3 ? 0 : this.image.rotate - 1;
+    },
+
+    // 向右边旋转
+    rotateRight() {
+      this.image.rotate = this.image.rotate >= 3 ? 0 : this.image.rotate + 1;
+    },
+
+    // 清除旋转
+    rotateClear() {
+      this.image.rotate = 0;
+    },
+
+    preview(){
+      const { app, cropBox, image } = this;
+      if (app.isCanShow){
+        app.isCanShow = false;
+        setTimeout(() => {
+          app.isCanShow = true;
+        }, 16);
+      }else {
+        return false;
+      }
+      let w = cropBox.width;
+      let h = cropBox.height;
+      let scale = image.scale;
+      let obj = {};
+      obj.div = {
+        width: `${w}px`,
+        height: `${h}px`
+      };
+      let transformX = (image.x - cropBox.x) / scale;
+      let transformY = (image.y - cropBox.y) / scale;
+      let transformZ = 0;
+      obj.w = w;
+      obj.h = h;
+      obj.url = image.url;
+      obj.img = {
+        width: `${image.width}px`,
+        height: `${image.height}px`,
+        transform: `scale(${image.scale})translate3d(${transformX}px, ${transformY}px, ${transformZ}px)rotateZ(${image
+          .rotate * 90}deg)`
+      };
+
+      obj.html = `
+      <div class="show-preview" style="width: ${obj.w}px; height: ${
+        obj.h
+      }px,; overflow: hidden">
+        <div style="width: ${w}px; height: ${h}px">
+          <img src=${obj.url} style="width: ${image.width}px; height: ${
+        image.height
+      }px; transform:
+          scale(${scale})translate3d(${transformX}px, ${transformY}px, ${transformZ}px)rotateZ(${image
+        .rotate * 90}deg)">
+        </div>
+      </div>`;
+      this.$emit("preview", obj);
+    }
   }
 }
 </script>
