@@ -4,11 +4,10 @@
        @mouseover="scaleImg" @mouseout="cancelScale"
        v-show="app.init">
     <div
-      v-if="image.url"
+      v-if="image.url && !image.loading"
       class="cropper-box"
     >
       <div class="cropper-box-canvas"
-           v-show="!image.loading"
            :style="{
              width: image.width + 'px',
              height: image.height + 'px',
@@ -22,14 +21,15 @@
     </div>
 
     <div
-      class="cropper-drag-box modal"
+      v-if="image.url && !image.loading"
+      class="cropper-drag-box cropper-modal"
       @mousedown="startMove"
       @touchstart="startMove"
     >
     </div>
 
     <div class="cropper-context"
-         v-if="cropBox.initCropBox"
+         v-if="cropBox.initCropBox && !image.loading"
          :style="{
       width: cropBox.width + 'px',
       height: cropBox.height + 'px',
@@ -122,7 +122,12 @@
 
     </div>
 
-
+    <input type="file"
+           class="filepath"
+           id="uploadFile"
+           @change="uploadPic"
+           style="width: 0.01rem;"
+           accept="image/jpg,image/jpeg,image/png,image/PNG">
   </div>
 </template>
 
@@ -300,13 +305,16 @@ export default {
   created() {
     this.$nextTick(() => {
       this.initApp();
-      this.checkedImg();
+      this.checkedImg(this.src);
     })
   },
   watch: {
+    containerBounding(){
+      this.initApp()
+    },
     src: function (val) {
       if (val !== '') {
-        this.checkedImg();
+        this.checkedImg(this.src);
       }
     },
     app:{
@@ -375,9 +383,9 @@ export default {
       this.$emit('appInit', 'success');
     },
 
-    checkedImg() {
-      const {src, image} = this;
-      if (src === null || src === '') {
+    checkedImg(src) {
+      const { image } = this;
+      if (src === null || src === '' || typeof src === 'undefined') {
         image.url = '';
         return;
       }
@@ -428,7 +436,7 @@ export default {
         this.$emit("img-load", "error");
       };
       // 判断如果不是base64图片 再添加crossOrigin属性，否则会导致iOS低版本(10.2)无法显示图片
-      if (src.substr(0, 4) !== "data") {
+      if (src.substring(0, 4) !== "data") {
         img.crossOrigin = "";
       }
       if (this.isIE) {
@@ -440,7 +448,7 @@ export default {
         xhr.responseType = "blob";
         xhr.send();
       } else {
-        img.src = this.src;
+        img.src = src;
       }
     },
 
@@ -460,9 +468,12 @@ export default {
           -(image.height - image.height * image.scale) / 2 +
           (app.height - image.height * image.scale) / 2;
 
-        image.loading = false;
 
         this.goAutoCrop();
+
+        setTimeout(() => {
+          image.loading = false;
+        },0);
 
         // 图片加载成功的回调
         this.$emit("img-load", "success");
@@ -1466,14 +1477,14 @@ export default {
     },
 
     // 获取转换成base64 的图片信息
-    getCropData(cb) {
+    getBase64Data(cb) {
       this.getCropChecked(data => {
         cb(data.toDataURL("image/" + this.outputType, this.outputSize));
       });
     },
 
     //canvas获取为blob对象
-    getCropBlob(cb) {
+    getBlobData(cb) {
       this.getCropChecked(data => {
         data.toBlob(
           blob => cb(blob),
@@ -1496,6 +1507,37 @@ export default {
     // 清除旋转
     rotateClear() {
       this.image.rotate = 0;
+    },
+
+    relativeZoom(params){
+      const {image} = this;
+      let scale = image.scale;
+      let num = params || 1;
+      var coe = 20;
+      coe =
+        coe / image.width > coe / image.height
+          ? coe / image.height
+          : coe / image.width;
+      num = num * coe;
+      num > 0
+        ? (scale += Math.abs(num))
+        : scale > Math.abs(num)
+        ? (scale -= Math.abs(num))
+        : scale;
+      if (!this.checkoutImgAxis(image.x, image.y, scale)) {
+        return false;
+      }
+      image.scale = scale;
+    },
+
+    addLocalImage(){
+      let el = document.getElementById('uploadFile');
+      el.click();
+    },
+
+    uploadPic(params){
+      let url = window.URL.createObjectURL(params.target.files[0])
+      this.checkedImg(url)
     },
 
     preview(){

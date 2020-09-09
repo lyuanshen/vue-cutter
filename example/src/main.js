@@ -3,15 +3,24 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
+import 'element-ui/lib/theme-chalk/index.css';
+
 import VueCutter from 'vue-cutter'
 Vue.use(VueCutter)
 
-import { Button, Container, Header, Aside, Main, Row, Col } from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(Button).use(Container).use(Header).use(Aside).use(Main)
-  .use(Row).use(Col)
 
-Vue.prototype.$ELEMENT = { size: 'mini', zIndex: 3000 };
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
+
+// app.js
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+
 
 
 new Vue({

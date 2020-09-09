@@ -14,7 +14,7 @@
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
     "vue": "^2.6.11",
-    "vue-cutter": "^2.0.1"
+    "vue-cutter": "^2.0.61"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

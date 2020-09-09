@@ -1,11 +1,17 @@
 {
   "name": "vue-cutter",
   "description": "A simple picture clipping plugin for Vue.js",
-  "version": "2.0.1",
+  "version": "2.0.61",
+
   "author": "LYuanshen <707978562@qq.com>",
   "license": "MIT",
   "main": "/dist/index.js",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "files": [
+    "dist",
+    "src/lib",
+    "LICENSE",
+    "package.json"
+  ],
   "keywords": [
     "vue",
     "cropper",

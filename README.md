@@ -73,7 +73,7 @@ components: { VueCutter }
     data() {
       return{
         options: {
-          bounding: ['450px', '450px'],
+          bounding: '500px 300px',
           src: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=4110377719,1460950412&fm=26&gp=0.jpg',
           outputType: 'png'
         }
@@ -95,9 +95,9 @@ components: { VueCutter }
     <tr>
         <td>containerBounding</td>
         <td>插件容器的宽高（必填）</td>
-        <td>Array</td>
-        <td>['450px', '300px']  | ['450px']  |  ['50%'] | ['10rem'] | [450]</td>
-        <td>空  || 数组可以有两个或一个参数，两个参数时分别为容器的宽高，一个参数时容器的宽高同为参数</td>
+        <td>String</td>
+        <td>'450px 300px' | '45% 30%' | '450px' | '45%' | '450'</td>
+        <td>空  || 字符串可以有两个或一个参数，两个参数时分别为容器的宽高，一个参数时容器的宽高同为参数</td>
     </tr>
     <tr>
         <td>src</td>
@@ -111,7 +111,7 @@ components: { VueCutter }
         <td>图片默认渲染方式</td>
         <td>String</td>
         <td>contain  | cover |  100px, 100% auto | original</td>
-        <td>contain </td>
+        <td> contain </td>
     </tr>
     <tr>
         <td>outputType</td>
@@ -128,14 +128,14 @@ components: { VueCutter }
         <td>false</td>
     </tr>
     <tr>
-        <td>canImgMove</td>
+        <td>canImgMoved</td>
         <td>是否能移动图片</td>
         <td>Boolean</td>
         <td>true | false</td>
         <td>true</td>
     </tr>
     <tr>
-        <td>canScaleImg</td>
+        <td>canImgScale</td>
         <td>图片是否允许缩放</td>
         <td>Boolean</td>
         <td>true | false</td>
@@ -144,7 +144,7 @@ components: { VueCutter }
     <tr>
         <td>cropBoxBounding</td>
         <td>裁剪框宽高</td>
-        <td>String || Number</td>
+        <td>String</td>
         <td>auto || 200 || 200px || 200px 200px || 50% 等</td>
         <td>auto (图片宽高的80%)</td>
     </tr>
@@ -156,11 +156,11 @@ components: { VueCutter }
         <td>true</td>
     </tr>
     <tr>
-        <td>boxInImg</td>
+        <td>canCropOverImg</td>
         <td>裁剪框是否被限制在图片里面</td>
         <td>Boolean</td>
         <td>true | false</td>
-        <td>false</td>
+        <td>true</td>
     </tr>
     <tr>
         <td>fixed</td>
@@ -170,18 +170,11 @@ components: { VueCutter }
         <td>默认为空，不开启宽高比；值 `auto` 时 为源图片的宽高比，数组时为两数比</td>
     </tr>
     <tr>
-        <td>canResizeCrop</td>
+        <td>canCropResized</td>
         <td>裁剪框是否允许缩放</td>
         <td>Boolean</td>
         <td>true | false</td>
         <td>true</td>
-    </tr>
-    <tr>
-        <td>cropBorder</td>
-        <td>裁剪框边框类型</td>
-        <td>String</td>
-        <td>solid(实线) |  dashed(虚线)</td>
-        <td>solid</td>
     </tr>
     <tr>
         <td>cropDividingLine</td>
@@ -276,15 +269,22 @@ this.$refs.cutter.getBlobData(data => {
 </vue-cutter>
 ```
 
-```javascript
+```vue
+// data
+data(){
+   return{
+     html: ''
+  }
+}
+
 // method
 preview(data) {
-   const { type, url } = data;
-   // 图片的格式
-   console.log('type:' + type);
-   //图片地址
-   console.log('url:' + url)
+   const { html } = data;
+   this.html = html;
 }
+
+// html
+<div v-html="html"></div>
 ```
 
 ### License

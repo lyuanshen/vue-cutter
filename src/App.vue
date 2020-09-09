@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="display: inline-block">
     <vue-cutter
       ref="cutter"
       container-bounding="600"
@@ -10,13 +10,16 @@
       :crop-dividing-line="true"
       @preview="pre"
     ></vue-cutter>
-    <img :src="uur" alt="">
 
-    <div v-html="html"></div>
+
+<!--    <span v-html="html" style="display: inline-block"></span>-->
+    <img :src="uur" alt="" style="display: inline-block">
     <input type="text" v-model="img">
     <button @click="get">get</button>
     <button @click="l">l</button>
     <button @click="r">r</button>
+    <button @click="relativeZoom">relativeZoom</button>
+    <button @click="addLocalImage">addLocalImage</button>
   </div>
 </template>
 
@@ -45,6 +48,12 @@ export default {
     },
     pre(data){
       this.html = data.html
+    },
+    relativeZoom(){
+      this.$refs.cutter.relativeZoom(1)
+    },
+    addLocalImage(){
+      this.$refs.cutter.addLocalImage()
     }
   }
 }

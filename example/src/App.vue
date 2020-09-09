@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <show></show>
+    <dashboard></dashboard>
   </div>
 </template>
 
 <script>
-import show from '@/view/show'
+import dashboard from '@/view/dashboard'
 export default {
   name: 'App',
   components: {
-    show
+    dashboard
   }
 }
 </script>
@@ -25,6 +25,6 @@ export default {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-x: hidden;
   }
 </style>
